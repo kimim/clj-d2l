@@ -1,0 +1,159 @@
+#+begin_src clojure
+  (ns clj-d2l.priliminaries
+    (:require [org.apache.clojure-mxnet.ndarray :as ndarray]
+              [org.apache.clojure-mxnet.random :as random]
+              [org.apache.clojure-mxnet.context :as context]))
+#+end_src
+
+#+RESULTS:
+: nil
+
+Create a vector from in range 0 - 11:
+#+begin_src clojure
+(def x (ndarray/arange 0 12))
+#+end_src
+
+#+RESULTS:
+: #'clj-d2l.priliminaries/x
+
+#+begin_src clojure
+x
+#+end_src
+
+#+RESULTS:
+: #object[org.apache.mxnet.NDArray 0x26361e7 "[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0]\n<NDArray (12) cpu(0) float32>"]
+
+#+begin_src clojure :results output
+(println (str x))
+#+end_src
+
+#+RESULTS:
+: [0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0]
+: <NDArray (12) cpu(0) float32>
+
+#+begin_src clojure
+(ndarray/shape x)
+(ndarray/size x)
+#+end_src
+
+#+RESULTS:
+: #object[org.apache.mxnet.Shape 0x511bf58e "(12)"]
+: 12
+
+#+begin_src clojure
+(def y (ndarray/reshape x [3 4]))
+#+end_src
+
+#+RESULTS:
+: #'clj-d2l.priliminaries/y
+
+#+begin_src clojure :results output
+(println (str y))
+#+end_src
+
+#+RESULTS:
+: [
+:  [0.0,1.0,2.0,3.0]
+:  [4.0,5.0,6.0,7.0]
+:  [8.0,9.0,10.0,11.0]
+: ]
+: <NDArray (3,4) cpu(0) float32>
+
+#+begin_src clojure :results output
+(println (str (ndarray/zeros [2 3 4])))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[
+ [
+  [0.0,0.0,0.0,0.0]
+  [0.0,0.0,0.0,0.0]
+  [0.0,0.0,0.0,0.0]
+  ]
+ [
+  [0.0,0.0,0.0,0.0]
+  [0.0,0.0,0.0,0.0]
+  [0.0,0.0,0.0,0.0]
+  ]
+]
+<NDArray (2,3,4) cpu(0) float32>
+#+end_example
+
+#+begin_src clojure :results output
+(println (str (ndarray/ones [2 3 4])))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[
+ [
+  [1.0,1.0,1.0,1.0]
+  [1.0,1.0,1.0,1.0]
+  [1.0,1.0,1.0,1.0]
+  ]
+ [
+  [1.0,1.0,1.0,1.0]
+  [1.0,1.0,1.0,1.0]
+  [1.0,1.0,1.0,1.0]
+  ]
+]
+<NDArray (2,3,4) cpu(0) float32>
+#+end_example
+
+#+begin_src clojure :results output
+(println (str (random/normal 0 1 [3 4])))
+#+end_src
+
+#+RESULTS:
+: [
+:  [-0.7882176,0.7417728,-1.4734439,-1.0730928]
+:  [-1.0424827,-1.3278849,-1.4749662,-0.52414197]
+:  [1.2662556,0.8950642,-0.6015945,1.2040559]
+: ]
+: <NDArray (3,4) cpu(0) float32>
+
+#+begin_src clojure :results output
+(println (str (ndarray/->ndarray [[2 1 4 3] [1 2 3 4] [4 3 2 1]])))
+#+end_src
+
+#+RESULTS:
+: [
+:  [2.0,1.0,4.0,3.0]
+:  [1.0,2.0,3.0,4.0]
+:  [4.0,3.0,2.0,1.0]
+: ]
+: <NDArray (3,4) cpu(0) float32>
+
+#+begin_src clojure
+(def x (ndarray/->ndarray [1 2 4 8]))
+(def y (ndarray/->ndarray [2 2 2 2]))
+(ndarray/+ x y)
+(ndarray/- x y)
+(ndarray// x y)
+(ndarray/** x y)
+#+end_src
+
+#+RESULTS:
+: #'clj-d2l.priliminaries/x#'clj-d2l.priliminaries/y#object[org.apache.mxnet.NDArray 0x7861b0ae "[3.0,4.0,6.0,10.0]\n<NDArray (4) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x402961a3 "[-1.0,0.0,2.0,6.0]\n<NDArray (4) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x4162d87c "[0.5,1.0,2.0,4.0]\n<NDArray (4) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x7ccd4114 "[1.0,4.0,16.0,64.0]\n<NDArray (4) cpu(0) float32>"]
+
+#+begin_src clojure
+(ndarray/exp x)
+#+end_src
+
+#+RESULTS:
+: #object[org.apache.mxnet.NDArray 0x2586afa9 "[2.7182817,7.389056,54.59815,2980.958]\n<NDArray (4) cpu(0) float32>"]
+
+#+begin_src clojure
+(def X (-> (ndarray/arange 0 12) (ndarray/reshape [3 4])))
+(def Y (ndarray/->ndarray [[2 1 4 3][1 2 3 4][4 3 2 1]]))
+(ndarray/concatenate [X Y] {:axis 0})
+(ndarray/concatenate [X Y] {:axis 1})
+(ndarray/concat X Y)
+#+end_src
+
+#+RESULTS:
+: #'clj-d2l.priliminaries/X#'clj-d2l.priliminaries/Y#object[org.apache.mxnet.NDArray 0x670d8995 "[\n [0.0,1.0,2.0,3.0]\n [4.0,5.0,6.0,7.0]\n [8.0,9.0,10.0,11.0]\n [2.0,1.0,4.0,3.0]\n [1.0,2.0,3.0,4.0]\n [4.0,3.0,2.0,1.0]\n]\n<NDArray (6,4) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x5f6e105 "[\n [0.0,1.0,2.0,3.0,2.0,1.0,4.0,3.0]\n [4.0,5.0,6.0,7.0,1.0,2.0,3.0,4.0]\n [8.0,9.0,10.0,11.0,4.0,3.0,2.0,1.0]\n]\n<NDArray (3,8) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x23c92729 "[\n [0.0,1.0,2.0,3.0,2.0,1.0,4.0,3.0]\n [4.0,5.0,6.0,7.0,1.0,2.0,3.0,4.0]\n [8.0,9.0,10.0,11.0,4.0,3.0,2.0,1.0]\n]\n<NDArray (3,8) cpu(0) float32>"]false
+
+#+begin_src clojure
+#+end_src
