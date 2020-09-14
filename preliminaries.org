@@ -1,8 +1,8 @@
 #+begin_src clojure
-  (ns clj-d2l.priliminaries
-    (:require [org.apache.clojure-mxnet.ndarray :as ndarray]
-              [org.apache.clojure-mxnet.random :as random]
-              [org.apache.clojure-mxnet.context :as context]))
+(ns clj-d2l.priliminaries
+  (:require [org.apache.clojure-mxnet.ndarray :as ndarray]
+            [org.apache.clojure-mxnet.random :as random]
+            [org.apache.clojure-mxnet.context :as context]))
 #+end_src
 
 #+RESULTS:
@@ -125,6 +125,8 @@ x
 : ]
 : <NDArray (3,4) cpu(0) float32>
 
+** Operations
+
 #+begin_src clojure
 (def x (ndarray/->ndarray [1 2 4 8]))
 (def y (ndarray/->ndarray [2 2 2 2]))
@@ -153,7 +155,53 @@ x
 #+end_src
 
 #+RESULTS:
-: #'clj-d2l.priliminaries/X#'clj-d2l.priliminaries/Y#object[org.apache.mxnet.NDArray 0x670d8995 "[\n [0.0,1.0,2.0,3.0]\n [4.0,5.0,6.0,7.0]\n [8.0,9.0,10.0,11.0]\n [2.0,1.0,4.0,3.0]\n [1.0,2.0,3.0,4.0]\n [4.0,3.0,2.0,1.0]\n]\n<NDArray (6,4) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x5f6e105 "[\n [0.0,1.0,2.0,3.0,2.0,1.0,4.0,3.0]\n [4.0,5.0,6.0,7.0,1.0,2.0,3.0,4.0]\n [8.0,9.0,10.0,11.0,4.0,3.0,2.0,1.0]\n]\n<NDArray (3,8) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x23c92729 "[\n [0.0,1.0,2.0,3.0,2.0,1.0,4.0,3.0]\n [4.0,5.0,6.0,7.0,1.0,2.0,3.0,4.0]\n [8.0,9.0,10.0,11.0,4.0,3.0,2.0,1.0]\n]\n<NDArray (3,8) cpu(0) float32>"]false
+: #'clj-d2l.priliminaries/X#'clj-d2l.priliminaries/Y#object[org.apache.mxnet.NDArray 0x2400a288 "[\n [0.0,1.0,2.0,3.0]\n [4.0,5.0,6.0,7.0]\n [8.0,9.0,10.0,11.0]\n [2.0,1.0,4.0,3.0]\n [1.0,2.0,3.0,4.0]\n [4.0,3.0,2.0,1.0]\n]\n<NDArray (6,4) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x6ef933ff "[\n [0.0,1.0,2.0,3.0,2.0,1.0,4.0,3.0]\n [4.0,5.0,6.0,7.0,1.0,2.0,3.0,4.0]\n [8.0,9.0,10.0,11.0,4.0,3.0,2.0,1.0]\n]\n<NDArray (3,8) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x742d812e "[\n [0.0,1.0,2.0,3.0,2.0,1.0,4.0,3.0]\n [4.0,5.0,6.0,7.0,1.0,2.0,3.0,4.0]\n [8.0,9.0,10.0,11.0,4.0,3.0,2.0,1.0]\n]\n<NDArray (3,8) cpu(0) float32>"]
+
+=equal= only find the equal elements:
 
 #+begin_src clojure
+(ndarray/equal X Y)
 #+end_src
+
+#+RESULTS:
+: #object[org.apache.mxnet.NDArray 0x64bfa293 "[\n [0.0,1.0,0.0,1.0]\n [0.0,0.0,0.0,0.0]\n [0.0,0.0,0.0,0.0]\n]\n<NDArray (3,4) cpu(0) float32>"]
+
+#+begin_src clojure
+(ndarray/sum X)
+#+end_src
+
+#+RESULTS:
+: #object[org.apache.mxnet.NDArray 0x72590175 "[66.0]\n<NDArray (1) cpu(0) float32>"]
+
+** Broadcasting Mechanism
+
+#+begin_src clojure
+(def a (-> (ndarray/arange 0 3) (ndarray/reshape [3 1])))
+(def b (-> (ndarray/arange 0 2) (ndarray/reshape [1 2])))
+a b
+#+end_src
+
+#+RESULTS:
+: #'clj-d2l.priliminaries/a#'clj-d2l.priliminaries/b#object[org.apache.mxnet.NDArray 0x7a1d338f "[\n [0.0]\n [1.0]\n [2.0]\n]\n<NDArray (3,1) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x1a51976f "[\n [0.0,1.0]\n]\n<NDArray (1,2) cpu(0) float32>"]
+
+#+begin_src clojure
+(ndarray/broadcast-add a b)
+(ndarray/broadcast-sub a b)
+(ndarray/broadcast-mul a b)
+(ndarray/broadcast-div a b)
+(ndarray/broadcast-equal a b)
+#+end_src
+
+#+RESULTS:
+: #object[org.apache.mxnet.NDArray 0x37a18229 "[\n [0.0,1.0]\n [1.0,2.0]\n [2.0,3.0]\n]\n<NDArray (3,2) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x4a4fd40a "[\n [0.0,-1.0]\n [1.0,0.0]\n [2.0,1.0]\n]\n<NDArray (3,2) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x3c2a518c "[\n [0.0,0.0]\n [0.0,1.0]\n [0.0,2.0]\n]\n<NDArray (3,2) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x105aa119 "[\n [NaN,0.0]\n [Infinity,1.0]\n [Infinity,2.0]\n]\n<NDArray (3,2) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x25440e8e "[\n [1.0,0.0]\n [0.0,1.0]\n [0.0,0.0]\n]\n<NDArray (3,2) cpu(0) float32>"]
+
+** Indexing and Slicing
+
+#+begin_src clojure
+X
+(ndarray/slice X 1)
+(ndarray/slice X 1 3)
+#+end_src
+
+#+RESULTS:
+: #object[org.apache.mxnet.NDArray 0x67a6ce89 "[\n [0.0,1.0,2.0,3.0]\n [4.0,5.0,6.0,7.0]\n [8.0,9.0,10.0,11.0]\n]\n<NDArray (3,4) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0xb8db59d "[\n [4.0,5.0,6.0,7.0]\n]\n<NDArray (1,4) cpu(0) float32>"]#object[org.apache.mxnet.NDArray 0x7b44a3de "[\n [4.0,5.0,6.0,7.0]\n [8.0,9.0,10.0,11.0]\n]\n<NDArray (2,4) cpu(0) float32>"]
