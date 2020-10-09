@@ -16,19 +16,19 @@ make speed test with vectors.
 #+begin_src clojure :results output
 (let [elapsed (stopwatch/start)]
   (nd/+ a b)
-  (println "Elapsed: " (/ (elapsed) 1000000.) "sec"))
+  (println "Elapsed: " (/ (elapsed) 1e9) "sec"))
 #+end_src
 
 #+RESULTS:
-: Elapsed:  0.233517 sec
+: Elapsed:  2.1572E-4 sec
 
 #+begin_src clojure :results output
 (def c (nd/zeros manager [n]))
 (let [elapsed (stopwatch/start)]
   (doseq [i (range n)]
     (nd/set c [i] (+ (nd/get-element a [i]) (nd/get-element b [i]))))
-  (println "Elapsed: " (/ (elapsed) 1000000.) "sec"))
+  (println "Elapsed: " (/ (elapsed) 1e9) "sec"))
 #+end_src
 
 #+RESULTS:
-: Elapsed:  7428.953089 sec
+: Elapsed:  7.346650854 sec
