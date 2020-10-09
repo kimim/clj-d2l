@@ -1,7 +1,6 @@
 #+begin_src clojure
 (ns clj-d2l.priliminaries
-  (:require [clj-djl.ndarray :as nd]
-            [clj-djl.utils :refer [pp]])
+  (:require [clj-djl.ndarray :as nd])
   (:import [ai.djl.ndarray.types DataType]))
 #+end_src
 
@@ -15,10 +14,20 @@ a helper function:
   `(print (str ~expr)))
 #+end_src
 
+#+RESULTS:
+: #'clj-d2l.priliminaries/pp
+
 Create a vector from in range 0 - 11:
 
 #+begin_src clojure
-(def x (nd/arange 0 12))
+(def ndm (nd/new-base-manager))
+#+end_src
+
+#+RESULTS:
+: #'clj-d2l.priliminaries/ndm
+
+#+begin_src clojure
+(def x (nd/arange ndm 0 12))
 #+end_src
 
 #+RESULTS:
@@ -30,7 +39,7 @@ Create a vector from in range 0 - 11:
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.mxnet.engine.MxNDArray 0x2cf100e5 ND: (12) cpu() int32
+: #object[ai.djl.mxnet.engine.MxNDArray 0x1215ea33 ND: (12) cpu() int32
 : [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
 : ]
 : ND: (12) cpu() int32
@@ -44,7 +53,7 @@ Create a vector from in range 0 - 11:
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.ndarray.types.Shape 0x79bb7ddd "(12)"]12
+: #object[ai.djl.ndarray.types.Shape 0x7cfd9ada "(12)"]12
 
 #+begin_src clojure :results output
 (def y (nd/reshape x [3 4]))
@@ -80,25 +89,23 @@ automatically inference the rest dimention specified with =-1=:
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.ndarray.types.Shape 0x1da4057a (2, 3)]
+: #object[ai.djl.ndarray.types.Shape 0x2c464cb7 (2, 3)]
 
 #+begin_src clojure :results output
-(print (str (nd/create [2 3])))
+(print (str (nd/create ndm (int-array [2 3]))))
 #+end_src
 
 #+RESULTS:
-: ND: (2, 3) cpu() float32
-: [[ 0.00000000e+00,  0.00000000e+00,  1.35925951e-43],
-:  [ 0.00000000e+00,  4.46097167e-34,  4.56949416e-41],
-: ]
+: ND: (2) cpu() int32
+: [ 2,  3]
 
 #+begin_src clojure :results output
-(print (str (nd/zeros 2 3)))
-(print (str (nd/zeros 2 3 4)))
-(print (str (nd/zeros 2 2 2 2)))
-(print (str (nd/zeros [2 3])))
-(print (str (nd/zeros [2 3 4])))
-(print (str (nd/zeros [2 2 2 2])))
+(print (str (nd/zeros ndm 2 3)))
+(print (str (nd/zeros ndm 2 3 4)))
+(print (str (nd/zeros ndm 2 2 2 2)))
+(print (str (nd/zeros ndm [2 3])))
+(print (str (nd/zeros ndm [2 3 4])))
+(print (str (nd/zeros ndm [2 2 2 2])))
 #+end_src
 
 #+RESULTS:
@@ -166,12 +173,12 @@ ND: (2, 2, 2, 2) cpu() float32
 #+end_example
 
 #+begin_src clojure :results output
-(print (str (nd/ones 2 3)))
-(print (str (nd/ones 2 3 4)))
-(print (str (nd/ones 2 2 2 2)))
-(print (str (nd/ones [2 3])))
-(print (str (nd/ones [2 3 4])))
-(print (str (nd/ones [2 2 2 2])))
+(print (str (nd/ones ndm 2 3)))
+(print (str (nd/ones ndm 2 3 4)))
+(print (str (nd/ones ndm 2 2 2 2)))
+(print (str (nd/ones ndm [2 3])))
+(print (str (nd/ones ndm [2 3 4])))
+(print (str (nd/ones ndm [2 2 2 2])))
 #+end_src
 
 #+RESULTS:
@@ -256,22 +263,20 @@ ND: (2, 2, 2, 2) cpu() float32
 
 #+RESULTS:
 : ND: (3, 4) cpu() float32
-: [[-1.771 , -0.5459, -0.4514, -2.3556],
-:  [ 0.5794,  0.5414, -1.8561,  2.6785],
-:  [-1.9769,  1.2546, -0.208 , -0.5488],
+: [[ 0.2444, -0.6811, -0.0372, -0.1353],
+:  [-0.4877,  0.3772, -0.0226,  0.4102],
+:  [ 0.5746,  0.5713,  1.4661, -2.758 ],
 : ]
 
 #+begin_src clojure :results output
-(print (str (nd/create [2 1 4 3] [2 2])))
+(print (str (nd/create ndm (int-array [2 1 4 3]) (nd/shape [2 2]))))
 #+end_src
 
 #+RESULTS:
-: ND: (2, 2) cpu() float32
-: [[2., 1.],
-:  [4., 3.],
+: ND: (2, 2) cpu() int32
+: [[ 2,  1],
+:  [ 4,  3],
 : ]
-
-
 
 #+begin_src clojure :results output
 ;;(println (str (nd/->ndarray [[2 1 4 3] [1 2 3 4] [4 3 2 1]])))
@@ -280,8 +285,8 @@ ND: (2, 2, 2, 2) cpu() float32
 #+RESULTS:
 
 #+begin_src clojure :results output
-(def x (nd/create [1 2 4 8] [2 2]))
-(def y (nd/create [2 2 2 2] [2 2]))
+(def x (nd/create ndm (int-array [1 2 4 8]) (nd/shape [2 2])))
+(def y (nd/create ndm (int-array [2 2 2 2]) (nd/shape [2 2])))
 (pp x)
 (pp y)
 (pp (nd/+ x y))
@@ -294,41 +299,37 @@ ND: (2, 2, 2, 2) cpu() float32
 
 #+RESULTS:
 #+begin_example
-ND: (2, 2) cpu() float32
-[[1., 2.],
- [4., 8.],
+ND: (2, 2) cpu() int32
+[[ 1,  2],
+ [ 4,  8],
 ]
-ND: (2, 2) cpu() float32
-[[2., 2.],
- [2., 2.],
+ND: (2, 2) cpu() int32
+[[ 2,  2],
+ [ 2,  2],
 ]
-ND: (2, 2) cpu() float32
-[[ 3.,  4.],
- [ 6., 10.],
+ND: (2, 2) cpu() int32
+[[ 3,  4],
+ [ 6, 10],
 ]
-ND: (2, 2) cpu() float32
-[[-1.,  0.],
- [ 2.,  6.],
+ND: (2, 2) cpu() int32
+[[-1,  0],
+ [ 2,  6],
 ]
-ND: (2, 2) cpu() float32
-[[ 2.,  4.],
- [ 8., 16.],
+ND: (2, 2) cpu() int32
+[[ 2,  4],
+ [ 8, 16],
 ]
 ND: (2, 2) cpu() float32
 [[0.5, 1. ],
  [2. , 4. ],
 ]
-ND: (2, 2) cpu() float32
-[[ 1.,  4.],
- [16., 64.],
+ND: (2, 2) cpu() int32
+[[ 1,  4],
+ [16, 64],
 ]
-ND: (2, 2) cpu() float32
-[[ 2.71828175e+00,  7.38905621e+00],
- [ 5.45981483e+01,  2.98095801e+03],
-]
-ND: (2, 2) cpu() boolean
-[[false,  true],
- [false, false],
+ND: (2, 2) cpu() int32
+[[   2,    7],
+ [  54, 2980],
 ]
 #+end_example
 
@@ -343,9 +344,8 @@ ND: (2, 2) cpu() boolean
 : ]
 
 #+begin_src clojure :results output
-(def X (-> (nd/arange 0 12) (nd/reshape [3 4])))
-;;(def Y (nd/create [2, 1, 4, 3, 1, 2, 3, 4, 4, 3, 2, 1] [3 4]))
-(def Y (-> (nd/arange 0 12) (nd/reshape [3 4])))
+(def X (-> (nd/arange ndm 0 12) (nd/reshape [3 4])))
+(def Y (nd/create ndm (int-array [2, 1, 4, 3, 1, 2, 3, 4, 4, 3, 2, 1]) (nd/shape [3 4])))
 (pp (nd/concat X Y))
 (pp (nd/concat X Y :axis 0))
 (pp (nd/concat X Y :axis 1))
@@ -357,22 +357,22 @@ ND: (6, 4) cpu() int32
 [[ 0,  1,  2,  3],
  [ 4,  5,  6,  7],
  [ 8,  9, 10, 11],
- [ 0,  1,  2,  3],
- [ 4,  5,  6,  7],
- [ 8,  9, 10, 11],
+ [ 2,  1,  4,  3],
+ [ 1,  2,  3,  4],
+ [ 4,  3,  2,  1],
 ]
 ND: (6, 4) cpu() int32
 [[ 0,  1,  2,  3],
  [ 4,  5,  6,  7],
  [ 8,  9, 10, 11],
- [ 0,  1,  2,  3],
- [ 4,  5,  6,  7],
- [ 8,  9, 10, 11],
+ [ 2,  1,  4,  3],
+ [ 1,  2,  3,  4],
+ [ 4,  3,  2,  1],
 ]
 ND: (3, 8) cpu() int32
-[[ 0,  1,  2,  3,  0,  1,  2,  3],
- [ 4,  5,  6,  7,  4,  5,  6,  7],
- [ 8,  9, 10, 11,  8,  9, 10, 11],
+[[ 0,  1,  2,  3,  2,  1,  4,  3],
+ [ 4,  5,  6,  7,  1,  2,  3,  4],
+ [ 8,  9, 10, 11,  4,  3,  2,  1],
 ]
 #+end_example
 
@@ -382,9 +382,9 @@ ND: (3, 8) cpu() int32
 
 #+RESULTS:
 : ND: (3, 4) cpu() boolean
-: [[ true,  true,  true,  true],
-:  [ true,  true,  true,  true],
-:  [ true,  true,  true,  true],
+: [[false,  true, false,  true],
+:  [false, false, false, false],
+:  [false, false, false, false],
 : ]
 
 #+begin_src clojure :results output
