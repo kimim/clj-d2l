@@ -24,7 +24,7 @@ make speed test with vectors.
 #+RESULTS:
 : Elapsed:  2.1572E-4 sec
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (def c (nd/zeros manager [n]))
 (let [elapsed (stopwatch/start)]
   (doseq [i (range n)]
