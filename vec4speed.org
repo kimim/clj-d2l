@@ -1,3 +1,5 @@
+#+PROPERTY: header-args :exports both
+
 make speed test with vectors.
 
 #+begin_src clojure :results silent
