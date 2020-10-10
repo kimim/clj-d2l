@@ -1,44 +1,28 @@
 #+begin_src clojure :results silent
 (ns clj-d2l.priliminaries
-  (:require [clj-djl.ndarray :as nd])
+  (:require [clj-djl.ndarray :as nd]
+            [clj-d2l.utils :refer [pp]])
   (:import [ai.djl.ndarray.types DataType]))
 #+end_src
 
-a helper function:
-
-#+begin_src clojure :exports both
-(defmacro pp [expr]
-  `(print (str ~expr)))
-#+end_src
-
-#+RESULTS:
-: #'clj-d2l.priliminaries/pp
-
 Create a vector from in range 0 - 11:
 
-#+begin_src clojure :exports both
+#+begin_src clojure :results output :exports both
 (def ndm (nd/new-base-manager))
+(pp ndm)
 #+end_src
 
 #+RESULTS:
-: #'clj-d2l.priliminaries/ndm
+: UID: 0b26759d-e9ed-4289-89cc-46e9de92e28c Parent UID: 3661c86c-2636-4d1f-827e-9c3092443bc5 isOpen: true Resource size: 0
 
-#+begin_src clojure :exports both
+#+begin_src clojure :results output :exports both
 (def x (nd/arange ndm 0 12))
+(pp x)
 #+end_src
 
 #+RESULTS:
-: #'clj-d2l.priliminaries/x
-
-#+begin_src clojure :results drawer :exports both
-x
-#+end_src
-
-#+RESULTS:
-:results:
-#object[ai.djl.mxnet.engine.MxNDArray 0x272f1dc0 "ND: (12) cpu() int32\n[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]\n"]
-:end:
-
+: ND: (12) cpu() int32
+: [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
 
 #+begin_src clojure :exports both
 (nd/get-shape x)
@@ -46,11 +30,12 @@ x
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.ndarray.types.Shape 0x7cfd9ada "(12)"]12
+: #object[ai.djl.ndarray.types.Shape 0x9ad8589 "(12)"]
+: 12
 
 #+begin_src clojure :results output :exports both
 (def y (nd/reshape x [3 4]))
-(println (str y))
+(pp y)
 #+end_src
 
 #+RESULTS:
@@ -59,13 +44,13 @@ x
 :  [ 4,  5,  6,  7],
 :  [ 8,  9, 10, 11],
 : ]
-:
+
 
 automatically inference the rest dimention specified with =-1=:
 
 #+begin_src clojure :results output :exports both
 (def y (nd/reshape x [3 -1]))
-(println (str y))
+(pp y)
 #+end_src
 
 #+RESULTS:
@@ -74,31 +59,31 @@ automatically inference the rest dimention specified with =-1=:
 :  [ 4,  5,  6,  7],
 :  [ 8,  9, 10, 11],
 : ]
-:
 
 
 #+begin_src clojure :results output :exports both
-(print (nd/shape 2 3))
+(println (nd/shape 2 3))
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.ndarray.types.Shape 0x2c464cb7 (2, 3)]
+: #object[ai.djl.ndarray.types.Shape 0x5760ba5a (2, 3)]
 
 #+begin_src clojure :results output :exports both
-(print (str (nd/create ndm (int-array [2 3]))))
+(println (nd/create ndm (int-array [2 3])))
 #+end_src
 
 #+RESULTS:
-: ND: (2) cpu() int32
+: #object[ai.djl.mxnet.engine.MxNDArray 0x2df4c9f4 ND: (2) cpu() int32
 : [ 2,  3]
+: ]
 
 #+begin_src clojure :results output :exports both
-(print (str (nd/zeros ndm 2 3)))
-(print (str (nd/zeros ndm 2 3 4)))
-(print (str (nd/zeros ndm 2 2 2 2)))
-(print (str (nd/zeros ndm [2 3])))
-(print (str (nd/zeros ndm [2 3 4])))
-(print (str (nd/zeros ndm [2 2 2 2])))
+(pp (nd/zeros ndm 2 3))
+(pp (nd/zeros ndm 2 3 4))
+(pp (nd/zeros ndm 2 2 2 2))
+(pp (nd/zeros ndm [2 3]))
+(pp (nd/zeros ndm [2 3 4]))
+(pp (nd/zeros ndm [2 2 2 2]))
 #+end_src
 
 #+RESULTS:
@@ -166,12 +151,12 @@ ND: (2, 2, 2, 2) cpu() float32
 #+end_example
 
 #+begin_src clojure :results output :exports both
-(print (str (nd/ones ndm 2 3)))
-(print (str (nd/ones ndm 2 3 4)))
-(print (str (nd/ones ndm 2 2 2 2)))
-(print (str (nd/ones ndm [2 3])))
-(print (str (nd/ones ndm [2 3 4])))
-(print (str (nd/ones ndm [2 2 2 2])))
+(pp (nd/ones ndm 2 3))
+(pp (nd/ones ndm 2 3 4))
+(pp (nd/ones ndm 2 2 2 2))
+(pp (nd/ones ndm [2 3]))
+(pp (nd/ones ndm [2 3 4]))
+(pp (nd/ones ndm [2 2 2 2]))
 #+end_src
 
 #+RESULTS:
@@ -240,7 +225,7 @@ ND: (2, 2, 2, 2) cpu() float32
 
 
 #+begin_src clojure :results output :exports both
-(print (str (nd/random-normal 0 1 [3 4] DataType/FLOAT32)))
+(pp (nd/random-normal 0 1 [3 4] DataType/FLOAT32))
 #+end_src
 
 #+RESULTS:
@@ -251,7 +236,7 @@ ND: (2, 2, 2, 2) cpu() float32
 : ]
 
 #+begin_src clojure :results output :exports both
-(print (str (nd/random-normal [3 4])))
+(pp (nd/random-normal [3 4]))
 #+end_src
 
 #+RESULTS:
@@ -262,7 +247,7 @@ ND: (2, 2, 2, 2) cpu() float32
 : ]
 
 #+begin_src clojure :results output :exports both
-(print (str (nd/create ndm (int-array [2 1 4 3]) (nd/shape [2 2]))))
+(pp (nd/create ndm (int-array [2 1 4 3]) (nd/shape [2 2])))
 #+end_src
 
 #+RESULTS:
