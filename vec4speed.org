@@ -1,5 +1,3 @@
-#+PROPERTY: header-args :exports both
-
 make speed test with vectors.
 
 #+begin_src clojure :results silent
@@ -15,7 +13,7 @@ make speed test with vectors.
 (def b (nd/ones manager [n]))
 #+end_src
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (let [elapsed (stopwatch/start)]
   (nd/+ a b)
   (println "Elapsed: " (/ (elapsed) 1e9) "sec"))
