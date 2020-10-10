@@ -1,15 +1,12 @@
-#+begin_src clojure
+#+begin_src clojure :results silent
 (ns clj-d2l.priliminaries
   (:require [clj-djl.ndarray :as nd])
   (:import [ai.djl.ndarray.types DataType]))
 #+end_src
 
-#+RESULTS:
-: nil
-
 a helper function:
 
-#+begin_src clojure
+#+begin_src clojure :exports both
 (defmacro pp [expr]
   `(print (str ~expr)))
 #+end_src
@@ -19,21 +16,21 @@ a helper function:
 
 Create a vector from in range 0 - 11:
 
-#+begin_src clojure
+#+begin_src clojure :exports both
 (def ndm (nd/new-base-manager))
 #+end_src
 
 #+RESULTS:
 : #'clj-d2l.priliminaries/ndm
 
-#+begin_src clojure
+#+begin_src clojure :exports both
 (def x (nd/arange ndm 0 12))
 #+end_src
 
 #+RESULTS:
 : #'clj-d2l.priliminaries/x
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (println x)
 (println (str x))
 #+end_src
@@ -47,7 +44,7 @@ Create a vector from in range 0 - 11:
 :
 
 
-#+begin_src clojure
+#+begin_src clojure :exports both
 (nd/get-shape x)
 (nd/size x)
 #+end_src
@@ -55,7 +52,7 @@ Create a vector from in range 0 - 11:
 #+RESULTS:
 : #object[ai.djl.ndarray.types.Shape 0x7cfd9ada "(12)"]12
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (def y (nd/reshape x [3 4]))
 (println (str y))
 #+end_src
@@ -70,7 +67,7 @@ Create a vector from in range 0 - 11:
 
 automatically inference the rest dimention specified with =-1=:
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (def y (nd/reshape x [3 -1]))
 (println (str y))
 #+end_src
@@ -84,14 +81,14 @@ automatically inference the rest dimention specified with =-1=:
 :
 
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (print (nd/shape 2 3))
 #+end_src
 
 #+RESULTS:
 : #object[ai.djl.ndarray.types.Shape 0x2c464cb7 (2, 3)]
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (print (str (nd/create ndm (int-array [2 3]))))
 #+end_src
 
@@ -99,7 +96,7 @@ automatically inference the rest dimention specified with =-1=:
 : ND: (2) cpu() int32
 : [ 2,  3]
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (print (str (nd/zeros ndm 2 3)))
 (print (str (nd/zeros ndm 2 3 4)))
 (print (str (nd/zeros ndm 2 2 2 2)))
@@ -172,7 +169,7 @@ ND: (2, 2, 2, 2) cpu() float32
 ]
 #+end_example
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (print (str (nd/ones ndm 2 3)))
 (print (str (nd/ones ndm 2 3 4)))
 (print (str (nd/ones ndm 2 2 2 2)))
@@ -246,7 +243,7 @@ ND: (2, 2, 2, 2) cpu() float32
 #+end_example
 
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (print (str (nd/random-normal 0 1 [3 4] DataType/FLOAT32)))
 #+end_src
 
@@ -257,7 +254,7 @@ ND: (2, 2, 2, 2) cpu() float32
 :  [ 1.8917, -1.1688, -1.2347,  1.5581],
 : ]
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (print (str (nd/random-normal [3 4])))
 #+end_src
 
@@ -268,7 +265,7 @@ ND: (2, 2, 2, 2) cpu() float32
 :  [ 0.5746,  0.5713,  1.4661, -2.758 ],
 : ]
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (print (str (nd/create ndm (int-array [2 1 4 3]) (nd/shape [2 2]))))
 #+end_src
 
@@ -278,13 +275,13 @@ ND: (2, 2, 2, 2) cpu() float32
 :  [ 4,  3],
 : ]
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 ;;(println (str (nd/->ndarray [[2 1 4 3] [1 2 3 4] [4 3 2 1]])))
 #+end_src
 
 #+RESULTS:
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (def x (nd/create ndm (int-array [1 2 4 8]) (nd/shape [2 2])))
 (def y (nd/create ndm (int-array [2 2 2 2]) (nd/shape [2 2])))
 (pp x)
@@ -296,6 +293,7 @@ ND: (2, 2, 2, 2) cpu() float32
 (pp (nd/** x y))
 (pp (nd/exp x))
 #+end_src
+
 
 #+RESULTS:
 #+begin_example
@@ -333,7 +331,7 @@ ND: (2, 2) cpu() int32
 ]
 #+end_example
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (pp (nd/= x y))
 #+end_src
 
@@ -343,7 +341,7 @@ ND: (2, 2) cpu() int32
 :  [false, false],
 : ]
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (def X (-> (nd/arange ndm 0 12) (nd/reshape [3 4])))
 (def Y (nd/create ndm (int-array [2, 1, 4, 3, 1, 2, 3, 4, 4, 3, 2, 1]) (nd/shape [3 4])))
 (pp (nd/concat X Y))
@@ -376,7 +374,7 @@ ND: (3, 8) cpu() int32
 ]
 #+end_example
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (pp (nd/= X Y))
 #+end_src
 
@@ -387,7 +385,7 @@ ND: (3, 8) cpu() int32
 :  [false, false, false, false],
 : ]
 
-#+begin_src clojure :results output
+#+begin_src clojure :results output :exports both
 (pp (nd/sum X))
 #+end_src
 
