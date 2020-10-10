@@ -30,18 +30,14 @@ Create a vector from in range 0 - 11:
 #+RESULTS:
 : #'clj-d2l.priliminaries/x
 
-#+begin_src clojure :results output :exports both
-(println x)
-(println (str x))
+#+begin_src clojure :results drawer :exports both
+x
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.mxnet.engine.MxNDArray 0x1215ea33 ND: (12) cpu() int32
-: [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
-: ]
-: ND: (12) cpu() int32
-: [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
-:
+:results:
+#object[ai.djl.mxnet.engine.MxNDArray 0x272f1dc0 "ND: (12) cpu() int32\n[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]\n"]
+:end:
 
 
 #+begin_src clojure :exports both
