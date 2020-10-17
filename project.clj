@@ -7,7 +7,8 @@
                  ;;[clj-djl "0.1.2"]
                  [com.github.kimim/clj-djl "master-SNAPSHOT"]
                  [dm3/stopwatch "0.1.1"]
-                 ]
+                 [tech.tablesaw/tablesaw-core "0.38.1"]
+                 [tech.tablesaw/tablesaw-jsplot "0.38.1"]]
   :repositories [["jitpack" "https://jitpack.io"]]
   :main ^:skip-aot clj-d2l.core
   :target-path "target/%s"

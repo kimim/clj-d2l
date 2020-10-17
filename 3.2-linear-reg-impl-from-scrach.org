@@ -1,0 +1,43 @@
+#+begin_src clojure :results silent
+(ns clj-d2l.linreg
+  (:require [clj-djl.ndarray :as nd])
+  (:import [ai.djl.ndarray.types DataType]
+           [tech.tablesaw.api Table FloatColumn]
+           [tech.tablesaw.plotly.api ScatterPlot]
+           [tech.tablesaw.plotly Plot]))
+#+end_src
+
+#+begin_src clojure :results output
+(defn synthetic-data [ndm w b num]
+  (let [X (nd/random-normal ndm [num (nd/size w)])
+        y (nd/+ (.dot X w) b)
+        noise (nd/random-normal ndm 0 0.01 (nd/get-shape y) DataType/FLOAT32)]
+    [X (nd/+ y noise)]))
+
+(def ndm (nd/new-base-manager))
+(def true-w (nd/create ndm (float-array 2 -3.4)))
+(def true-b 4.2)
+(def dp (synthetic-data ndm true-w true-b 1000))
+(def features (get dp 0))
+(def labels (get dp 1))
+(println (nd/get features [0]))
+(println (nd/get-element labels [0]))
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x7ae4e465 ND: (2) cpu() float32
+: [2.2122, 1.1631]
+: ]
+: -7.2838364
+
+Now we can show the data with plotly:
+
+#+begin_src clojure :results silent
+(def X (nd/to-array (nd/get features ":,1")))
+(def y (nd/to-array labels))
+(def data (-> (Table/create "data")
+              (.addColumns (into-array
+                            [(FloatColumn/create "X" X)
+                             (FloatColumn/create "y" y)]))))
+(Plot/show (ScatterPlot/create "Synthetic Data" data "X" "y"))
+#+end_src
