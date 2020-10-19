@@ -22,20 +22,19 @@
     [X (nd/+ y noise)]))
 
 (def ndm (nd/new-base-manager))
-(def true-w (nd/create ndm (float-array 2 -3.4)))
+(def true-w (nd/create ndm (float-array [2 -3.4])))
 (def true-b 4.2)
 (def dp (synthetic-data ndm true-w true-b 1000))
 (def features (get dp 0))
 (def labels (get dp 1))
-(println (nd/get features [0]))
-(println (nd/get-element labels [0]))
+(println "features(0): "(nd/to-vec (nd/get features [0])))
+(println "labels(0): " (nd/get-element labels [0]))
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.mxnet.engine.MxNDArray 0xedc2a99 ND: (2) cpu() float32
-: [-1.0888,  0.7539]
-: ]
-: 5.3342447
+: features(0):  [0.46895626 -0.38616464]
+: labels(0):  6.4401927
+
 
 Now we can show the data with plotly:
 
@@ -66,38 +65,44 @@ Now we can show the data with plotly:
             (nd/head))
       y (-> (ds/get-batch-labels batch)
             (nd/head))]
-  (println X)
-  (println y)
+  (println (str X))
+  (println (nd/to-vec (nd/+ (nd/dot X true-w) true-b)))
+  (println (nd/to-vec y))
   (ds/close-batch batch))
 #+end_src
 
 #+RESULTS:
 #+begin_example
-#object[ai.djl.mxnet.engine.MxNDArray 0x5e293c91 ND: (10, 2) cpu() float32
-[[-1.0888,  0.7539],
- [-0.6448, -0.4084],
- [-0.3078, -0.9533],
- [ 1.544 ,  0.4687],
- [-0.0866,  0.7691],
- [ 2.0251,  0.4522],
- [ 0.2695, -0.5218],
- [ 0.1846,  1.1946],
- [ 2.0816, -0.7907],
- [ 0.0928, -0.2341],
+ND: (10, 2) cpu() float32
+[[ 0.469 , -0.3862],
+ [ 0.2153, -0.0174],
+ [-1.0371,  2.2525],
+ [-0.4918, -0.5001],
+ [ 0.3933, -0.2833],
+ [-1.2047,  0.7674],
+ [ 0.4937, -0.0862],
+ [-0.2858,  1.0306],
+ [-1.0228,  1.2596],
+ [ 2.0344, -1.9732],
 ]
-]
-#object[ai.djl.mxnet.engine.MxNDArray 0x7424c792 ND: (10) cpu() float32
-[ 5.3342,  7.7686,  8.4708, -2.6326,  1.8771, -4.2141,  5.0716, -0.5087, -0.1887,  4.6805]
-]
+
+[6.4508724 4.689804 -5.5326004 4.916846 5.949824 -0.8186259 5.48046 0.124224186 -2.1281738 14.977803]
+[6.4401927 4.698271 -5.539703 4.918553 5.946199 -0.8408556 5.4797535 0.14164165 -2.13503 14.978927]
 #+end_example
 
 ** Initializing Model Parameters
 
-#+begin_src clojure :results silent :exports both
+#+begin_src clojure :results output :exports both
 (def w (nd/random-normal ndm 0 0.01 [2 1] DataType/FLOAT32 (device/default-device)))
 (def b (nd/zeros ndm [1]))
 (def params (nd/new-ndlist w b))
+(println (nd/to-vec (nd/get params 0)))
+(println (nd/to-vec (nd/get params 1)))
 #+end_src
+
+#+RESULTS:
+: [-2.9706323E-4 0.0017388038]
+: [0.0]
 
 ** Defining the Model
 
@@ -110,17 +115,21 @@ Now we can show the data with plotly:
 
 #+begin_src clojure :results silent :export both
 (defn squared-loss [y-hat y]
-  (nd// (nd/* (nd/- y-hat y) (nd/- y-hat y)) 2))
+  (nd// (nd/* (nd/- y-hat (nd/reshape y (nd/get-shape y-hat)))
+              (nd/- y-hat (nd/reshape y (nd/get-shape y-hat))))
+        2))
 #+end_src
 
 ** Defining the Optimization Algorithm
+
+stochastic gradient descent (SGD):
 
 #+begin_src clojure :results silent :export both
 (defn sgd [params lr batch-size]
   (doseq [i (range (nd/size params))]
     (let [param (.get params i)]
       ;; param = param - param.gradient * lr / batchSize
-      (.subi param (nd// (nd/* (nd/get-gradient param) lr) batch-size)))))
+      (nd/-! param (nd// (nd/* (nd/get-gradient param) lr) batch-size)))))
 #+end_src
 
 ** Training
@@ -129,6 +138,7 @@ Now we can show the data with plotly:
 (def lr 0.03)
 (def epochs 3)
 (def i (atom 0))
+
 (doseq [param params]
   (nd/attach-gradient param))
 
@@ -140,7 +150,7 @@ Now we can show the data with plotly:
                 (nd/head))]
       (swap! i inc)
       #_(print @i " ")
-      (if (< @i 96)
+      (if (< @i 95)
         (do
           (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
             (let [l (-> (linreg X (.get params 0) (.get params 1)) (squared-loss y))]
@@ -152,6 +162,21 @@ Now we can show the data with plotly:
 #+end_src
 
 #+RESULTS:
-: epoch 1 , loss  10.957267
-: epoch 2 , loss  10.957267
-: epoch 3 , loss  10.957267
+: epoch 1 , loss  5.1671846E-5
+: epoch 2 , loss  5.1671846E-5
+: epoch 3 , loss  5.1671846E-5
+
+#+begin_src clojure :results output :exports both
+;;float[] w = trueW.sub(params.get(0).reshape(trueW.getShape())).toFloatArray();
+    (println (nd/to-vec (.get params 0)))
+    (println (nd/to-vec true-w))
+    (def w (nd/to-vec (nd/- true-w (nd/reshape (.get params 0) (nd/get-shape true-w)))))
+    (println "Error in estimating w:" (vec w))
+    (println "Error in estimating w:" (- true-b (nd/get-element (.get params 1))))
+    #+end_src
+
+#+RESULTS:
+: [1.9994181 -3.3990464]
+: [2.0 -3.4]
+: Error in estimating w: [5.8186054E-4 -9.536743E-4]
+: Error in estimating w: 9.881973266603339E-4
