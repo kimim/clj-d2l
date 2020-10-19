@@ -1,4 +1,6 @@
-make speed test with vectors.
+* Linear Regression
+
+** Vectorization for Speed
 
 #+begin_src clojure :results silent
 (ns clj-d2l.vec4speed
@@ -32,3 +34,6 @@ make speed test with vectors.
 
 #+RESULTS:
 : Elapsed:  7.346650854 sec
+
+
+** The Normal Distribution and Squared Loss

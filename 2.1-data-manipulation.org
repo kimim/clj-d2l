@@ -1,3 +1,7 @@
+* Data Manipulation
+
+** Getting Started
+
 #+begin_src clojure :results silent
 (ns clj-d2l.priliminaries
   (:require [clj-djl.ndarray :as nd]
@@ -246,6 +250,8 @@ ND: (2, 2, 2, 2) cpu() float32
 :  [ 0.5746,  0.5713,  1.4661, -2.758 ],
 : ]
 
+** Operations
+
 #+begin_src clojure :results output :exports both
 (pp (nd/create ndm (int-array [2 1 4 3]) (nd/shape [2 2])))
 #+end_src
@@ -373,3 +379,9 @@ ND: (3, 8) cpu() int32
 #+RESULTS:
 : ND: () cpu() int32
 : 66
+
+** Broadcasting Mechanism
+
+** Indexing and Slicing
+
+** Saving Memory

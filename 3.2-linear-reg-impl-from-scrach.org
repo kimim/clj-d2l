@@ -1,16 +1,23 @@
+* Linear Regression Implementation from Scratch
+
 #+begin_src clojure :results silent
 (ns clj-d2l.linreg
-  (:require [clj-djl.ndarray :as nd])
+  (:require [clj-djl.ndarray :as nd]
+            [clj-djl.device :as device]
+            [clj-djl.engine :as engine]
+            [clj-djl.training.dataset :as ds])
   (:import [ai.djl.ndarray.types DataType]
            [tech.tablesaw.api Table FloatColumn]
            [tech.tablesaw.plotly.api ScatterPlot]
            [tech.tablesaw.plotly Plot]))
 #+end_src
 
-#+begin_src clojure :results output
+** Generating the Dataset
+
+#+begin_src clojure :results output :exports both
 (defn synthetic-data [ndm w b num]
   (let [X (nd/random-normal ndm [num (nd/size w)])
-        y (nd/+ (.dot X w) b)
+        y (nd/+ (nd/dot X w) b)
         noise (nd/random-normal ndm 0 0.01 (nd/get-shape y) DataType/FLOAT32)]
     [X (nd/+ y noise)]))
 
@@ -25,10 +32,10 @@
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.mxnet.engine.MxNDArray 0x7ae4e465 ND: (2) cpu() float32
-: [2.2122, 1.1631]
+: #object[ai.djl.mxnet.engine.MxNDArray 0xedc2a99 ND: (2) cpu() float32
+: [-1.0888,  0.7539]
 : ]
-: -7.2838364
+: 5.3342447
 
 Now we can show the data with plotly:
 
@@ -41,3 +48,110 @@ Now we can show the data with plotly:
                              (FloatColumn/create "y" y)]))))
 (Plot/show (ScatterPlot/create "Synthetic Data" data "X" "y"))
 #+end_src
+
+** Reading the Dataset
+
+#+begin_src clojure :results silent :exports both
+(def batch-size 10)
+(def dataset (-> (ds/new-array-dataset-builder)
+                 (ds/set-data features)
+                 (ds/opt-labels labels)
+                 (ds/set-sampling batch-size false)
+                 (ds/build)))
+#+end_src
+
+#+begin_src clojure :results output :exports both
+(let [batch (.next (ds/get-data dataset ndm))
+      X (-> (ds/get-batch-data batch)
+            (nd/head))
+      y (-> (ds/get-batch-labels batch)
+            (nd/head))]
+  (println X)
+  (println y)
+  (ds/close-batch batch))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+#object[ai.djl.mxnet.engine.MxNDArray 0x5e293c91 ND: (10, 2) cpu() float32
+[[-1.0888,  0.7539],
+ [-0.6448, -0.4084],
+ [-0.3078, -0.9533],
+ [ 1.544 ,  0.4687],
+ [-0.0866,  0.7691],
+ [ 2.0251,  0.4522],
+ [ 0.2695, -0.5218],
+ [ 0.1846,  1.1946],
+ [ 2.0816, -0.7907],
+ [ 0.0928, -0.2341],
+]
+]
+#object[ai.djl.mxnet.engine.MxNDArray 0x7424c792 ND: (10) cpu() float32
+[ 5.3342,  7.7686,  8.4708, -2.6326,  1.8771, -4.2141,  5.0716, -0.5087, -0.1887,  4.6805]
+]
+#+end_example
+
+** Initializing Model Parameters
+
+#+begin_src clojure :results silent :exports both
+(def w (nd/random-normal ndm 0 0.01 [2 1] DataType/FLOAT32 (device/default-device)))
+(def b (nd/zeros ndm [1]))
+(def params (nd/new-ndlist w b))
+#+end_src
+
+** Defining the Model
+
+#+begin_src clojure :results silent :export both
+(defn linreg [X w b]
+  (nd/+ (nd/dot X w) b))
+#+end_src
+
+** Defining the Loss Function
+
+#+begin_src clojure :results silent :export both
+(defn squared-loss [y-hat y]
+  (nd// (nd/* (nd/- y-hat y) (nd/- y-hat y)) 2))
+#+end_src
+
+** Defining the Optimization Algorithm
+
+#+begin_src clojure :results silent :export both
+(defn sgd [params lr batch-size]
+  (doseq [i (range (nd/size params))]
+    (let [param (.get params i)]
+      ;; param = param - param.gradient * lr / batchSize
+      (.subi param (nd// (nd/* (nd/get-gradient param) lr) batch-size)))))
+#+end_src
+
+** Training
+
+#+begin_src clojure :results output :exports both
+(def lr 0.03)
+(def epochs 3)
+(def i (atom 0))
+(doseq [param params]
+  (nd/attach-gradient param))
+
+(doseq [epoch (range epochs)]
+  (doseq [batch (iterator-seq (ds/get-data dataset ndm))]
+    (let [X (-> (ds/get-batch-data batch)
+                (nd/head))
+          y (-> (ds/get-batch-labels batch)
+                (nd/head))]
+      (swap! i inc)
+      #_(print @i " ")
+      (if (< @i 96)
+        (do
+          (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
+            (let [l (-> (linreg X (.get params 0) (.get params 1)) (squared-loss y))]
+              (.backward gc l)))
+          (sgd params lr batch-size)
+          (ds/close-batch batch)))))
+  (let [train-loss (squared-loss (linreg features (.get params 0) (.get params 1)) labels)]
+    (println "epoch" (inc epoch ) ", loss " (nd/get-element (.mean train-loss)))))
+#+end_src
+
+#+RESULTS:
+: epoch 1 , loss  10.957267
+: epoch 2 , loss  10.957267
+: epoch 3 , loss  10.957267
