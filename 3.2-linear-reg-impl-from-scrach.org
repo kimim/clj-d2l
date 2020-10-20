@@ -32,8 +32,8 @@
 #+end_src
 
 #+RESULTS:
-: features(0):  [0.46895626 -0.38616464]
-: labels(0):  6.4401927
+: features(0):  [-0.92293715 0.38278535]
+: labels(0):  1.0584149
 
 
 Now we can show the data with plotly:
@@ -74,20 +74,20 @@ Now we can show the data with plotly:
 #+RESULTS:
 #+begin_example
 ND: (10, 2) cpu() float32
-[[ 0.469 , -0.3862],
- [ 0.2153, -0.0174],
- [-1.0371,  2.2525],
- [-0.4918, -0.5001],
- [ 0.3933, -0.2833],
- [-1.2047,  0.7674],
- [ 0.4937, -0.0862],
- [-0.2858,  1.0306],
- [-1.0228,  1.2596],
- [ 2.0344, -1.9732],
+[[-0.9229,  0.3828],
+ [ 0.6635, -0.0755],
+ [-0.1635, -0.7772],
+ [ 0.1268,  0.3709],
+ [-0.0902,  1.5387],
+ [-0.3424, -2.0866],
+ [-1.0622, -0.4591],
+ [ 1.8084, -0.2429],
+ [ 1.9257,  0.3537],
+ [-1.608 ,  0.8233],
 ]
 
-[6.4508724 4.689804 -5.5326004 4.916846 5.949824 -0.8186259 5.48046 0.124224186 -2.1281738 14.977803]
-[6.4401927 4.698271 -5.539703 4.918553 5.946199 -0.8408556 5.4797535 0.14164165 -2.13503 14.978927]
+[1.0526552 5.783718 6.5155067 3.192329 -1.2117848 10.609713 3.6366546 8.642559 6.8487735 -1.8151007]
+[1.0584149 5.790399 6.5163217 3.1864026 -1.2001294 10.603197 3.6390767 8.655985 6.8404655 -1.8164747]
 #+end_example
 
 ** Initializing Model Parameters
@@ -95,13 +95,12 @@ ND: (10, 2) cpu() float32
 #+begin_src clojure :results output :exports both
 (def w (nd/random-normal ndm 0 0.01 [2 1] DataType/FLOAT32 (device/default-device)))
 (def b (nd/zeros ndm [1]))
-(def params (nd/new-ndlist w b))
-(println (nd/to-vec (nd/get params 0)))
-(println (nd/to-vec (nd/get params 1)))
+(println (nd/to-vec w))
+(println (nd/to-vec b))
 #+end_src
 
 #+RESULTS:
-: [-2.9706323E-4 0.0017388038]
+: [-0.008550827 -0.004881284]
 : [0.0]
 
 ** Defining the Model
@@ -126,10 +125,9 @@ stochastic gradient descent (SGD):
 
 #+begin_src clojure :results silent :export both
 (defn sgd [params lr batch-size]
-  (doseq [i (range (nd/size params))]
-    (let [param (.get params i)]
-      ;; param = param - param.gradient * lr / batchSize
-      (nd/-! param (nd// (nd/* (nd/get-gradient param) lr) batch-size)))))
+  (doseq [param params]
+    ;; param = param - param.gradient * lr / batchSize
+    (nd/-! param (nd// (nd/* (nd/get-gradient param) lr) batch-size))))
 #+end_src
 
 ** Training
@@ -139,7 +137,7 @@ stochastic gradient descent (SGD):
 (def epochs 3)
 (def i (atom 0))
 
-(doseq [param params]
+(doseq [param [w b]]
   (nd/attach-gradient param))
 
 (doseq [epoch (range epochs)]
@@ -153,29 +151,29 @@ stochastic gradient descent (SGD):
       (if (< @i 95)
         (do
           (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
-            (let [l (-> (linreg X (.get params 0) (.get params 1)) (squared-loss y))]
+            (let [l (-> (linreg X w b) (squared-loss y))]
               (.backward gc l)))
-          (sgd params lr batch-size)
+          (sgd [w b] lr batch-size)
           (ds/close-batch batch)))))
-  (let [train-loss (squared-loss (linreg features (.get params 0) (.get params 1)) labels)]
-    (println "epoch" (inc epoch ) ", loss " (nd/get-element (.mean train-loss)))))
+  (let [train-loss (squared-loss (linreg features w b) labels)]
+    (println "epoch" (inc epoch) ", loss " (nd/get-element (.mean train-loss)))))
 #+end_src
 
 #+RESULTS:
-: epoch 1 , loss  5.1671846E-5
-: epoch 2 , loss  5.1671846E-5
-: epoch 3 , loss  5.1671846E-5
+: epoch 1 , loss  0.04106543
+: epoch 2 , loss  0.04106543
+: epoch 3 , loss  0.04106543
 
 #+begin_src clojure :results output :exports both
-(println (nd/to-vec (.get params 0)))
+(println (nd/to-vec w))
 (println (nd/to-vec true-w))
-(def w (nd/to-vec (nd/- true-w (nd/reshape (.get params 0) (nd/get-shape true-w)))))
-(println "Error in estimating w:" (vec w))
-(println "Error in estimating w:" (- true-b (nd/get-element (.get params 1))))
+(def w-error (nd/to-vec (nd/- true-w (nd/reshape w (nd/get-shape true-w)))))
+(println "Error in estimating w:" (vec w-error))
+(println "Error in estimating w:" (- true-b (nd/get-element b)))
 #+end_src
 
 #+RESULTS:
-: [1.9994181 -3.3990464]
+: [1.8740603 -3.273324]
 : [2.0 -3.4]
-: Error in estimating w: [5.8186054E-4 -9.536743E-4]
-: Error in estimating w: 9.881973266603339E-4
+: Error in estimating w: [0.12593973 -0.12667608]
+: Error in estimating w: 0.21756167411804217
