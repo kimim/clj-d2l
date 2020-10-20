@@ -1,0 +1,129 @@
+* Concise Implementation of Linear Regression
+
+** Generating the Dataset
+
+#+begin_src clojure :results silent
+(ns clj-d2l.linreg-easy
+  (:require [clj-djl.ndarray :as nd]
+            [clj-djl.device :as device]
+            [clj-djl.engine :as engine]
+            [clj-djl.training.dataset :as ds]
+            [clj-djl.model :as model]
+            [clj-djl.nn :as nn]
+            [clj-djl.training.loss :as loss]
+            [clj-djl.training.tracker :as tracker]
+            [clj-djl.training.optimizer :as optimizer]
+            [clj-djl.training :as training]
+            [clj-djl.training.listener :as listener]
+            [clj-djl.metric :as metric])
+  (:import [ai.djl.ndarray.types DataType]
+           [tech.tablesaw.api Table FloatColumn]
+           [tech.tablesaw.plotly.api ScatterPlot]
+           [tech.tablesaw.plotly Plot]))
+#+end_src
+
+#+begin_src clojure :results output :exports both
+(defn synthetic-data [ndm w b num]
+  (let [X (nd/random-normal ndm [num (nd/size w)])
+        y (nd/+ (nd/dot X w) b)
+        noise (nd/random-normal ndm 0 0.01 (nd/get-shape y) DataType/FLOAT32)]
+    [X (nd/+ y noise)]))
+
+(def ndm (nd/new-base-manager))
+(def true-w (nd/create ndm (float-array [2 -3.4])))
+(def true-b 4.2)
+(def dp (synthetic-data ndm true-w true-b 1000))
+(def features (get dp 0))
+(def labels (get dp 1))
+(println "features(0): "(nd/to-vec (nd/get features [0])))
+(println "labels(0): " (nd/get-element labels [0]))
+#+end_src
+
+#+RESULTS:
+: features(0):  [1.4441339 -0.19774863]
+: labels(0):  7.7618065
+
+
+** Reading the Dataset
+
+#+begin_src clojure :results silent :exports both
+(def batch-size 10)
+(def dataset (-> (ds/new-array-dataset-builder)
+                 (ds/set-data features)
+                 (ds/opt-labels labels)
+                 (ds/set-sampling batch-size false)
+                 (ds/build)))
+#+end_src
+
+* Defining the Model
+
+#+begin_src clojure :results silent :exports both
+(def model (model/new-instance "lin-reg"))
+(def net (nn/sequential-block))
+(def linear-block (-> (nn/new-linear-builder) (nn/opt-bias true) (nn/set-units 1) (nn/build)))
+(nn/add net linear-block)
+(model/set-block model net)
+#_(def linear-block (nn/linear {:opt-bias true
+                                :units 1}))
+#+end_src
+
+
+** Defining the Loss Function
+
+#+begin_src clojure :results silent :exports both
+(def loss (loss/l2-loss))
+#+end_src
+
+
+** Defining the Optimization Algorithm
+
+#+begin_src clojure :results silent :exports both
+(def lrt (tracker/fixed 0.3))
+(def sgd (-> (optimizer/sgd) (optimizer/set-learning-rate-tracker lrt) (optimizer/build)))
+#+end_src
+
+
+** Instantiate Configuration and Trainer
+
+#+begin_src clojure :results silent :exports both
+(def config (-> (training/new-default-training-config loss)
+                (training/opt-optimizer sgd)
+                (training/add-training-listeners (listener/logging))))
+(def trainer (model/new-trainer model config))
+#+end_src
+
+
+** Initializing Model Parameters
+
+#+begin_src clojure :results silent :exports both
+(training/initialize trainer [(nd/shape batch-size 2)])
+#+end_src
+
+
+** Metrics
+
+#+begin_src clojure :results silent :exports both
+(def metrics (metric/new-metrics))
+(training/set-metrics trainer metrics)
+#+end_src
+
+
+** Training
+
+#+begin_src clojure :results output :exports both
+(def epochs 3)
+
+(doseq [epoch (range epochs)]
+  (doseq [batch (iterator-seq (ds/get-data dataset ndm))]
+    (let [X (-> (ds/get-batch-data batch)
+                (nd/head))
+          y (-> (ds/get-batch-labels batch)
+                (nd/head))]
+      (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
+        (let [l (-> (linreg X w b) (squared-loss y))]
+          (.backward gc l)))
+      (sgd [w b] lr batch-size)
+      (ds/close-batch batch)))
+  (let [train-loss (squared-loss (linreg features w b) labels)]
+    (println "epoch" (inc epoch) ", loss " (nd/get-element (.mean train-loss)))))
+#+end_src
