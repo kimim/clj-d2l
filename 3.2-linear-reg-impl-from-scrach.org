@@ -167,13 +167,12 @@ stochastic gradient descent (SGD):
 : epoch 3 , loss  5.1671846E-5
 
 #+begin_src clojure :results output :exports both
-;;float[] w = trueW.sub(params.get(0).reshape(trueW.getShape())).toFloatArray();
-    (println (nd/to-vec (.get params 0)))
-    (println (nd/to-vec true-w))
-    (def w (nd/to-vec (nd/- true-w (nd/reshape (.get params 0) (nd/get-shape true-w)))))
-    (println "Error in estimating w:" (vec w))
-    (println "Error in estimating w:" (- true-b (nd/get-element (.get params 1))))
-    #+end_src
+(println (nd/to-vec (.get params 0)))
+(println (nd/to-vec true-w))
+(def w (nd/to-vec (nd/- true-w (nd/reshape (.get params 0) (nd/get-shape true-w)))))
+(println "Error in estimating w:" (vec w))
+(println "Error in estimating w:" (- true-b (nd/get-element (.get params 1))))
+#+end_src
 
 #+RESULTS:
 : [1.9994181 -3.3990464]
