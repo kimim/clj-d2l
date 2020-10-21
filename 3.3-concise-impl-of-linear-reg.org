@@ -4,7 +4,8 @@
 
 #+begin_src clojure :results silent
 (ns clj-d2l.linreg-easy
-  (:require [clj-djl.ndarray :as nd]
+  (:require [clojure.java.io :as io]
+                [clj-djl.ndarray :as nd]
             [clj-djl.device :as device]
             [clj-djl.engine :as engine]
             [clj-djl.training.dataset :as ds]
@@ -19,7 +20,8 @@
   (:import [ai.djl.ndarray.types DataType]
            [tech.tablesaw.api Table FloatColumn]
            [tech.tablesaw.plotly.api ScatterPlot]
-           [tech.tablesaw.plotly Plot]))
+           [tech.tablesaw.plotly Plot]
+           [java.nio.file Paths]))
 #+end_src
 
 #+begin_src clojure :results output :exports both
@@ -187,3 +189,37 @@ Training:    100% |████████████████████�
 [nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 3 finished.
 [nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Train: L2Loss: 5.51E-05
 #+end_example
+
+#+begin_src clojure :results output :exports both
+(def params (-> model (model/get-block) (model/get-parameters)))
+(def w (.getArray (.valueAt params 0)))
+(def b (.getArray (.valueAt params 1)))
+(def w-error (nd/to-vec (nd/- true-w (nd/reshape w (nd/get-shape true-w)))))
+(println "Error in estimating w:" (vec w-error))
+(println "Error in estimating w:" (- true-b (nd/get-element b)))
+#+end_src
+
+#+RESULTS:
+: Error in estimating w: [0.0013849735 -0.0010635853]
+: Error in estimating w: 1.0366439819353701E-4
+
+** Saving Your Model
+
+#+begin_src clojure :results output :exports both
+(defn save-model [model path epoch name]
+  (let [nio-path (java.nio.file.Paths/get path (into-array [""]))]
+    (io/make-parents path)
+    (model/set-property model "Epoch" epoch)
+    (model/save model nio-path name)))
+
+(save-model model "models/lin-reg" "3" "lin-reg")
+(println (str model))
+#+end_src
+
+#+RESULTS:
+: Model (
+: 	Name: lin-reg
+: 	Model location: /home/kimim/workspace/clj-d2l/models/lin-reg
+: 	Data Type: float32
+: 	Epoch: 3
+: )
