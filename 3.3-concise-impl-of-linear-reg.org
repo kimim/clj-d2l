@@ -40,8 +40,8 @@
 #+end_src
 
 #+RESULTS:
-: features(0):  [1.4441339 -0.19774863]
-: labels(0):  7.7618065
+: features(0):  [2.2122064 1.1630787]
+: labels(0):  4.662078
 
 
 ** Reading the Dataset
@@ -114,16 +114,76 @@
 (def epochs 3)
 
 (doseq [epoch (range epochs)]
-  (doseq [batch (iterator-seq (ds/get-data dataset ndm))]
-    (let [X (-> (ds/get-batch-data batch)
-                (nd/head))
-          y (-> (ds/get-batch-labels batch)
-                (nd/head))]
-      (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
-        (let [l (-> (linreg X w b) (squared-loss y))]
-          (.backward gc l)))
-      (sgd [w b] lr batch-size)
-      (ds/close-batch batch)))
-  (let [train-loss (squared-loss (linreg features w b) labels)]
-    (println "epoch" (inc epoch) ", loss " (nd/get-element (.mean train-loss)))))
+  (doseq [batch (training/iterate-dataset trainer dataset)]
+    (training/train-batch trainer batch)
+    (training/step trainer)
+    (ds/close-batch batch))
+  (training/notify-listeners trainer (fn [listner] (.onEpoch listner trainer))))
 #+end_src
+
+#+RESULTS:
+#+begin_example
+
+Training:      1% |█                                       | L2Loss: _
+Training:      2% |█                                       | L2Loss: _
+Training:      3% |██                                      | L2Loss: _
+Training:      4% |██                                      | L2Loss: _
+Training:      5% |███                                     | L2Loss: 6.83
+Training:      6% |███                                     | L2Loss: 6.83
+Training:      7% |███                                     | L2Loss: 6.83
+Training:      8% |████                                    | L2Loss: 6.83
+Training:      9% |████                                    | L2Loss: 6.83
+Training:     10% |█████                                   | L2Loss: 3.45
+Training:     20% |█████████                               | L2Loss: 1.73
+Training:     30% |█████████████                           | L2Loss: 1.15
+Training:     40% |█████████████████                       | L2Loss: 0.86
+Training:     50% |█████████████████████                   | L2Loss: 0.69
+Training:     60% |█████████████████████████               | L2Loss: 0.58
+Training:     70% |█████████████████████████████           | L2Loss: 0.49
+Training:     80% |█████████████████████████████████       | L2Loss: 0.43
+Training:     90% |█████████████████████████████████████   | L2Loss: 0.38
+Training:    100% |████████████████████████████████████████| L2Loss: 0.35
+Training:      1% |█                                       | L2Loss: 0.35
+Training:      2% |█                                       | L2Loss: 0.35
+Training:      3% |██                                      | L2Loss: 0.35
+Training:      4% |██                                      | L2Loss: 0.35
+Training:      5% |███                                     | L2Loss: 4.90E-05
+Training:      6% |███                                     | L2Loss: 4.90E-05
+Training:      7% |███                                     | L2Loss: 4.90E-05
+Training:      8% |████                                    | L2Loss: 4.90E-05
+Training:      9% |████                                    | L2Loss: 4.90E-05
+Training:     10% |█████                                   | L2Loss: 4.47E-05
+Training:     20% |█████████                               | L2Loss: 5.39E-05
+Training:     30% |█████████████                           | L2Loss: 5.40E-05
+Training:     40% |█████████████████                       | L2Loss: 5.12E-05
+Training:     50% |█████████████████████                   | L2Loss: 5.70E-05
+Training:     60% |█████████████████████████               | L2Loss: 5.75E-05
+Training:     70% |█████████████████████████████           | L2Loss: 5.76E-05
+Training:     80% |█████████████████████████████████       | L2Loss: 5.71E-05
+Training:     90% |█████████████████████████████████████   | L2Loss: 5.61E-05
+Training:    100% |████████████████████████████████████████| L2Loss: 5.51E-05
+Training:      1% |█                                       | L2Loss: 5.51E-05
+Training:      2% |█                                       | L2Loss: 5.51E-05
+Training:      3% |██                                      | L2Loss: 5.51E-05
+Training:      4% |██                                      | L2Loss: 5.51E-05
+Training:      5% |███                                     | L2Loss: 4.90E-05
+Training:      6% |███                                     | L2Loss: 4.90E-05
+Training:      7% |███                                     | L2Loss: 4.90E-05
+Training:      8% |████                                    | L2Loss: 4.90E-05
+Training:      9% |████                                    | L2Loss: 4.90E-05
+Training:     10% |█████                                   | L2Loss: 4.47E-05
+Training:     20% |█████████                               | L2Loss: 5.39E-05
+Training:     30% |█████████████                           | L2Loss: 5.40E-05
+Training:     50% |█████████████████████                   | L2Loss: 5.70E-05
+Training:     60% |█████████████████████████               | L2Loss: 5.75E-05
+Training:     70% |█████████████████████████████           | L2Loss: 5.76E-05
+Training:     80% |█████████████████████████████████       | L2Loss: 5.71E-05
+Training:     90% |█████████████████████████████████████   | L2Loss: 5.61E-05
+Training:    100% |████████████████████████████████████████| L2Loss: 5.51E-05
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 1 finished.
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Train: L2Loss: 0.35
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 2 finished.
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Train: L2Loss: 5.51E-05
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 3 finished.
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Train: L2Loss: 5.51E-05
+#+end_example
