@@ -1,0 +1,59 @@
+* The Image Classification Dataset
+
+#+begin_src clojure :results silent
+(ns clj-d2l.image-classification
+  (:require [clojure.java.io :as io]
+            [clj-djl.ndarray :as nd]
+            [clj-djl.device :as device]
+            [clj-djl.engine :as engine]
+            [clj-djl.training.dataset :as ds]
+            [clj-djl.model :as model]
+            [clj-djl.nn :as nn]
+            [clj-djl.training.loss :as loss]
+            [clj-djl.training.tracker :as tracker]
+            [clj-djl.training.optimizer :as optimizer]
+            [clj-djl.training :as training]
+            [clj-djl.training.listener :as listener]
+            [clj-djl.metric :as metric])
+  (:import [ai.djl.ndarray.types DataType]
+           [ai.djl.basicdataset FashionMnist]
+           [ai.djl.training.dataset Dataset$Usage]
+           [tech.tablesaw.api Table FloatColumn]
+           [tech.tablesaw.plotly.api ScatterPlot]
+           [tech.tablesaw.plotly Plot]
+           [java.nio.file Paths]))
+#+end_src
+
+
+** Getting the Dataset
+
+#+begin_src emacs-lisp
+(setq org-babel-clojure-sync-nrepl-timeout 1000)
+#+end_src
+
+#+RESULTS:
+: 1000
+
+#+begin_src clojure :results output :exports both
+(def batch-size 256)
+(def random-shuffle true)
+
+(def mnist-train (-> (FashionMnist/builder)
+                     (ds/opt-usage Dataset$Usage/TRAIN)
+                     (ds/set-sampling batch-size random-shuffle)
+                     (ds/build)
+                     (ds/prepare)))
+
+(def mnist-test (-> (FashionMnist/builder)
+                    (ds/opt-usage Dataset$Usage/TEST)
+                    (ds/set-sampling batch-size random-shuffle)
+                    (ds/build)
+                    (ds/prepare)))
+
+(println "train dataset size: "(.size mnist-train))
+(println "test dataset size: " (.size mnist-test))
+#+end_src
+
+#+RESULTS:
+: train dataset size:  60000
+: test dataset size:  10000

@@ -5,7 +5,7 @@
 #+begin_src clojure :results silent
 (ns clj-d2l.linreg-easy
   (:require [clojure.java.io :as io]
-                [clj-djl.ndarray :as nd]
+            [clj-djl.ndarray :as nd]
             [clj-djl.device :as device]
             [clj-djl.engine :as engine]
             [clj-djl.training.dataset :as ds]
