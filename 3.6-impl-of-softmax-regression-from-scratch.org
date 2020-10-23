@@ -1,0 +1,50 @@
+* Implementation of Softmax Regression from Scratch
+
+#+begin_src emacs-lisp
+(setq org-babel-clojure-sync-nrepl-timeout 1000)
+#+end_src
+
+#+RESULTS:
+: 1000
+
+#+begin_src clojure
+(ns clj-d2l.softmax-scratch
+  (:require [clojure.java.io :as io]
+            [clj-djl.ndarray :as nd]
+            [clj-djl.device :as device]
+            [clj-djl.engine :as engine]
+            [clj-djl.training.dataset :as ds]
+            [clj-djl.model :as model]
+            [clj-djl.nn :as nn]
+            [clj-djl.training.loss :as loss]
+            [clj-djl.training.tracker :as tracker]
+            [clj-djl.training.optimizer :as optimizer]
+            [clj-djl.training :as training]
+            [clj-djl.training.listener :as listener]
+            [clj-djl.metric :as metric])
+  (:import [ai.djl.ndarray.types DataType]
+           [java.nio.file Paths]))
+#+end_src
+
+#+RESULTS:
+: nil
+
+** Initializing Model Parameters
+
+#+begin_src clojure :results silent
+(def ndm (nd/new-base-manager))
+#+end_src
+
+** The Softmax
+
+#+begin_src clojure  :results output :exports both
+(def X (nd/create ndm [[(int 1) 2 3] [4 5 6]]))
+(println (str X))
+#+end_src
+
+#+RESULTS:
+: ND: (2, 3) cpu() int32
+: [[ 1,  2,  3],
+:  [ 4,  5,  6],
+: ]
+:
