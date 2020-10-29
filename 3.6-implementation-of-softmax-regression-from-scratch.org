@@ -1,0 +1,203 @@
+* Implementation of Softmax Regression from Scratch
+
+#+begin_src clojure :results silent
+(ns clj-d2l.softmax-from-scratch
+  (:require [clojure.java.io :as io]
+            [clj-djl.ndarray :as nd]
+            [clj-djl.device :as device]
+            [clj-djl.engine :as engine]
+            [clj-djl.training.dataset :as ds]
+            [clj-djl.model :as model]
+            [clj-djl.nn :as nn]
+            [clj-djl.training.loss :as loss]
+            [clj-djl.training.tracker :as tracker]
+            [clj-djl.training.optimizer :as optimizer]
+            [clj-djl.training :as training]
+            [clj-djl.training.listener :as listener]
+            [clj-djl.metric :as metric])
+  (:import [ai.djl.ndarray.types DataType]
+           [ai.djl.basicdataset FashionMnist]
+           [ai.djl.training.dataset Dataset$Usage]
+           [java.nio.file Paths]))
+#+end_src
+
+#+begin_src emacs-lisp
+(setq org-babel-clojure-sync-nrepl-timeout 1000)
+#+end_src
+
+#+RESULTS:
+: 1000
+
+#+begin_src clojure :results output :exports both
+(def batch-size 256)
+(def random-shuffle true)
+
+(def mnist-train (-> (FashionMnist/builder)
+                     (ds/opt-usage Dataset$Usage/TRAIN)
+                     (ds/set-sampling batch-size random-shuffle)
+                     (ds/build)
+                     (ds/prepare)))
+
+(def mnist-test (-> (FashionMnist/builder)
+                    (ds/opt-usage Dataset$Usage/TEST)
+                    (ds/set-sampling batch-size random-shuffle)
+                    (ds/build)
+                    (ds/prepare)))
+
+(println "train dataset size: "(.size mnist-train))
+(println "test dataset size: " (.size mnist-test))
+#+end_src
+
+#+RESULTS:
+: train dataset size:  60000
+: test dataset size:  10000
+
+** Initializing Model Parameters
+
+#+begin_src clojure :results silent :exports both
+(def num-inputs 784)
+(def num-outputs 10)
+(def manager (nd/new-base-manager))
+(def W (nd/random-normal manager 0 0.01 [num-inputs num-outputs] DataType/FLOAT32 (device/default-device)))
+(def b (nd/zeros manager [num-outputs] :float32))
+(def params (nd/ndlist [W b]))
+#+end_src
+
+** The Softmax
+
+#+begin_src clojure :results output :exports both
+(def X (nd/create manager [[1 2 3] [4 5 6]]))
+(nd/pp (nd/sum X [0] true))
+(nd/pp (nd/sum X [1] true))
+(nd/pp (nd/sum X [0 1] true))
+(nd/pp (nd/sum X [0 1] false))
+(nd/pp (nd/sum X))
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ND: (1, 3) cpu() int64
+[[ 5,  7,  9],
+]
+
+ND: (2, 1) cpu() int64
+[[ 6],
+ [15],
+]
+
+ND: (1, 1) cpu() int64
+[[21],
+]
+
+ND: () cpu() int64
+21
+
+ND: () cpu() int64
+21
+
+#+end_example
+
+
+#+begin_src clojure :results output :exports both
+(defn softmax [ndarray]
+  (let [Xexp (nd/exp X)
+        partition (nd/sum Xexp [1] true)]
+    (nd// Xexp partition)))
+
+(def X (nd/random-normal manager [2 5]))
+(nd/pp (softmax X))
+(nd/pp (nd/sum (softmax X) [1]))
+#+end_src
+
+#+RESULTS:
+: ND: (2, 5) cpu() float32
+: [[0.0648, 0.4625, 0.0107, 0.435 , 0.0269],
+:  [0.1024, 0.1017, 0.201 , 0.5444, 0.0505],
+: ]
+:
+: ND: (2) cpu() float32
+: [1., 1.]
+:
+
+** The Model
+
+#+begin_src java
+public class Net {
+    public static NDArray net(NDArray X) {
+        NDArray currentW = params.get(0);
+        NDArray currentB = params.get(1);
+        return softmax(X.reshape(new Shape(-1, numInputs)).dot(currentW).add(currentB));
+    }
+}
+#+end_src
+
+
+#+begin_src clojure :results silent :exports both
+(defn net [ndarray]
+  (let [current-W (.get params 0)
+        current-B (.get params 1)]
+    (-> ndarray
+        (nd/reshape [-1 num-inputs])
+        (nd/dot current-W)
+        (nd/+ current-B)
+        softmax)))
+#+end_src
+
+** The Loss Function
+
+#+begin_src java
+NDArray yHat = manager.create(new float[][]{{0.1f, 0.3f, 0.6f}, {0.3f, 0.2f, 0.5f}});
+yHat.get(new NDIndex(":, {}", manager.create(new int[]{0, 2})));
+#+end_src
+
+#+begin_src clojure :results output :exports both
+(def y-hat (nd/create manager [[0.1 0.3 0.6][0.3 0.2 0.5]]))
+(nd/pp (nd/get y-hat ":,{}" (nd/create manager [0 2])))
+#+end_src
+
+#+RESULTS:
+: ND: (2, 1) cpu() float64
+: [[0.1],
+:  [0.5],
+: ]
+:
+
+#+begin_src clojure :results output :exports both
+(defn cross-entropy [y-hat y]
+  (-> (nd/get y-hat ":, {}" (.toType y DataType/INT32 false))
+      (.log)
+      (.neg)))
+
+(nd/pp (cross-entropy y-hat (nd/create manager [0 2])))
+#+end_src
+
+#+RESULTS:
+: ND: (2, 1) cpu() float64
+: [[2.3026],
+:  [0.6931],
+: ]
+:
+
+** Classification Accuracy
+
+#+begin_src clojure :results silent :exports both
+(defn accuracy [y-hat y]
+  (if (> (nd/size (nd/get-shape y-hat)) 1)
+    (-> (nd/= (.argMax y-hat 1) y)
+        (nd/sum)
+        (nd/to-type :float32 false)
+        (nd/get-element))
+    (-> (nd/= y-hat y)
+        (nd/sum)
+        (nd/to-type :float32 false)
+        (nd/get-element))))
+#+end_src
+
+#+begin_src clojure :results value :exports both
+(def ndm (nd/new-base-manager))
+(def y (nd/create ndm [0 2]))
+(/ (accuracy y-hat y) (nd/size y))
+#+end_src
+
+#+RESULTS:
+: #'clj-d2l.softmax-from-scratch/ndm#'clj-d2l.softmax-from-scratch/y0.5
