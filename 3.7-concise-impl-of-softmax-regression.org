@@ -1,0 +1,164 @@
+* Concise Implementation of Softmax Regression
+
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.concise-softmax-reg
+  (:require [clojure.java.io :as io]
+            [clj-djl.ndarray :as nd]
+            [clj-djl.device :as device]
+            [clj-djl.engine :as engine]
+            [clj-djl.training.dataset :as ds]
+            [clj-djl.model :as model]
+            [clj-djl.nn :as nn]
+            [clj-djl.training.loss :as loss]
+            [clj-djl.training.tracker :as tracker]
+            [clj-djl.training.optimizer :as optimizer]
+            [clj-djl.training :as training]
+            [clj-djl.training.listener :as listener]
+            [clj-djl.metric :as metric])
+  (:import [ai.djl.ndarray.types DataType]
+           [ai.djl.basicdataset FashionMnist]
+           [ai.djl.training.dataset Dataset$Usage]
+           [ai.djl.training.evaluator Accuracy]
+           [ai.djl.training.listener TrainingListener$Defaults]
+           [ai.djl.metric Metrics]
+           [ai.djl.training EasyTrain]
+           [java.nio.file Paths]))
+#+end_src
+
+#+begin_src clojure :results silent :exports both
+(def batch-size 256)
+(def random-shuffle true)
+
+(def mnist-train (-> (FashionMnist/builder)
+                     (ds/opt-usage Dataset$Usage/TRAIN)
+                     (ds/set-sampling batch-size random-shuffle)
+                     (ds/build)
+                     (ds/prepare)))
+
+(def mnist-test (-> (FashionMnist/builder)
+                    (ds/opt-usage Dataset$Usage/TEST)
+                    (ds/set-sampling batch-size random-shuffle)
+                    (ds/build)
+                    (ds/prepare)))
+#+end_src
+
+
+
+** Initializing Model Parameters
+
+#+begin_src clojure :results silent :exports both
+(defn softmax [arrays]
+  (nd/new-ndlist (nd/log-softmax (nd/singleton-or-throw arrays) 1)))
+
+
+(def manager (nd/new-base-manager))
+
+(def model (model/new-instance "softmax-regression"))
+
+(def net (nn/sequential-block))
+
+(-> net
+    (nn/add (nn/batch-flatten-block (* 28 28)))
+    (nn/add (-> (nn/new-linear-builder) (nn/set-units 10) (nn/build))))
+
+(model/set-block model net)
+#+end_src
+
+
+
+** The Softmax
+
+#+begin_src clojure :results silent :exports both
+(def loss (loss/sotfmax-cross-entropy-loss))
+#+end_src
+
+** Optimization Algorithm
+
+#+begin_src clojure :results silent :exports both
+(def lrt (tracker/fixed 0.1))
+(def sgd (-> (optimizer/sgd) (optimizer/set-learning-rate-tracker lrt) (optimizer/build)))
+#+end_src
+
+** Instantiate Configuration and Trainer
+
+#+begin_src clojure :results silent :exports both
+(def config (-> (training/new-default-training-config loss)
+                (training/opt-optimizer sgd)
+                (training/add-evaluator (Accuracy.))
+                (training/add-training-listeners (TrainingListener$Defaults/logging))))
+
+(def trainer (model/new-trainer model config))
+#+end_src
+
+** Initializing Trainer
+
+#+begin_src clojure :results silent :exports both
+(training/initialize trainer [(nd/shape [1 (* 28 28)])])
+#+end_src
+
+** Metrics
+
+#+begin_src clojure :results silent :exports both
+(def metrics (Metrics.))
+(training/set-metrics trainer metrics)
+#+end_src
+
+
+** Training
+
+#+begin_src clojure :results output :exports both
+(def num-epochs 5)
+(EasyTrain/fit trainer num-epochs mnist-train mnist-test)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.74, SoftmaxCrossEntropyLoss: 0.80
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.81, SoftmaxCrossEntropyLoss: 0.57
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.82, SoftmaxCrossEntropyLoss: 0.53
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.83, SoftmaxCrossEntropyLoss: 0.50
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.84, SoftmaxCrossEntropyLoss: 0.49
+
+Validating:  100% |████████████████████████████████████████|
+[Finalizer] INFO ai.djl.training.listener.LoggingTrainingListener - forward P50: 0.405 ms, P90: 0.861 ms
+[Finalizer] INFO ai.djl.training.listener.LoggingTrainingListener - training-metrics P50: 0.037 ms, P90: 0.051 ms
+[Finalizer] INFO ai.djl.training.listener.LoggingTrainingListener - backward P50: 1.054 ms, P90: 1.706 ms
+[Finalizer] INFO ai.djl.training.listener.LoggingTrainingListener - step P50: 0.498 ms, P90: 0.753 ms
+[Finalizer] INFO ai.djl.training.listener.LoggingTrainingListener - epoch P50: 55.685 s, P90: 63.680 s
+[Finalizer] WARN ai.djl.BaseModel - Model: softmax-regression was not closed explicitly.
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 1 finished.
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.74, SoftmaxCrossEntropyLoss: 0.80
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.79, SoftmaxCrossEntropyLoss: 0.63
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 2 finished.
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.81, SoftmaxCrossEntropyLoss: 0.57
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.81, SoftmaxCrossEntropyLoss: 0.57
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 3 finished.
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.82, SoftmaxCrossEntropyLoss: 0.53
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.82, SoftmaxCrossEntropyLoss: 0.54
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 4 finished.
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.83, SoftmaxCrossEntropyLoss: 0.50
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.82, SoftmaxCrossEntropyLoss: 0.53
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 5 finished.
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.84, SoftmaxCrossEntropyLoss: 0.49
+[nREPL-session-37be5dc0-b384-4058-91e6-e80169eef8ef] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.82, SoftmaxCrossEntropyLoss: 0.51
+#+end_example
+
+#+begin_src clojure :results value :exports both
+(.getEvaluations (.getTrainingResult trainer))
+#+end_src
+
+#+RESULTS:
+| validate_Accuracy | 0.8224 | train_Accuracy | 0.83503336 | train_SoftmaxCrossEntropyLoss | 0.48581553 | validate_SoftmaxCrossEntropyLoss | 0.513945 | train_loss | 0.48581553 | validate_loss | 0.513945 |
