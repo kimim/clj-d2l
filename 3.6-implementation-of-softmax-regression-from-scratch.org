@@ -60,7 +60,6 @@
 (def manager (nd/new-base-manager))
 (def W (nd/random-normal manager 0 0.01 [num-inputs num-outputs] DataType/FLOAT32 (device/default-device)))
 (def b (nd/zeros manager [num-outputs] :float32))
-(def params (nd/ndlist [W b]))
 #+end_src
 
 ** The Softmax
@@ -100,7 +99,7 @@ ND: () cpu() int64
 
 #+begin_src clojure :results output :exports both
 (defn softmax [ndarray]
-  (let [Xexp (nd/exp X)
+  (let [Xexp (nd/exp ndarray)
         partition (nd/sum Xexp [1] true)]
     (nd// Xexp partition)))
 
@@ -111,44 +110,28 @@ ND: () cpu() int64
 
 #+RESULTS:
 : ND: (2, 5) cpu() float32
-: [[0.0648, 0.4625, 0.0107, 0.435 , 0.0269],
-:  [0.1024, 0.1017, 0.201 , 0.5444, 0.0505],
+: [[0.0751, 0.2678, 0.195 , 0.3406, 0.1216],
+:  [0.0554, 0.4219, 0.0528, 0.1088, 0.3611],
 : ]
 :
 : ND: (2) cpu() float32
-: [1., 1.]
+: [1.    , 1.    ]
 :
 
 ** The Model
 
-#+begin_src java
-public class Net {
-    public static NDArray net(NDArray X) {
-        NDArray currentW = params.get(0);
-        NDArray currentB = params.get(1);
-        return softmax(X.reshape(new Shape(-1, numInputs)).dot(currentW).add(currentB));
-    }
-}
-#+end_src
-
-
 #+begin_src clojure :results silent :exports both
 (defn net [ndarray]
-  (let [current-W (.get params 0)
-        current-B (.get params 1)]
+  (let [current-W W
+        current-b b]
     (-> ndarray
         (nd/reshape [-1 num-inputs])
         (nd/dot current-W)
-        (nd/+ current-B)
+        (nd/+ current-b)
         softmax)))
 #+end_src
 
 ** The Loss Function
-
-#+begin_src java
-NDArray yHat = manager.create(new float[][]{{0.1f, 0.3f, 0.6f}, {0.3f, 0.2f, 0.5f}});
-yHat.get(new NDIndex(":, {}", manager.create(new int[]{0, 2})));
-#+end_src
 
 #+begin_src clojure :results output :exports both
 (def y-hat (nd/create manager [[0.1 0.3 0.6][0.3 0.2 0.5]]))
@@ -183,21 +166,117 @@ yHat.get(new NDIndex(":, {}", manager.create(new int[]{0, 2})));
 #+begin_src clojure :results silent :exports both
 (defn accuracy [y-hat y]
   (if (> (nd/size (nd/get-shape y-hat)) 1)
-    (-> (nd/= (.argMax y-hat 1) y)
+    (-> (.argMax y-hat 1)
+        (nd/to-type :int64 false)
+        (nd/= (nd/to-type y :int64 false))
         (nd/sum)
         (nd/to-type :float32 false)
         (nd/get-element))
-    (-> (nd/= y-hat y)
+    (-> (nd/= y-hat (nd/to-type y :int64 false))
         (nd/sum)
         (nd/to-type :float32 false)
         (nd/get-element))))
+
+(defn evaluate-accuracy [net data-iter]
+  (let [acc (atom [0 0])]
+    (doseq [batch (training/iter-seq data-iter)]
+      (let [X (nd/head (.getData batch))
+            y (nd/head (.getLabels batch))]
+        (swap! acc update 0 + (accuracy (net X) y))
+        (swap! acc update 1 + (nd/size y))
+        (.close batch)))
+    (reduce / @acc)))
 #+end_src
 
+
 #+begin_src clojure :results value :exports both
-(def ndm (nd/new-base-manager))
-(def y (nd/create ndm [0 2]))
-(/ (accuracy y-hat y) (nd/size y))
+(evaluate-accuracy net (.getData mnist-test manager))
 #+end_src
 
 #+RESULTS:
-: #'clj-d2l.softmax-from-scratch/ndm#'clj-d2l.softmax-from-scratch/y0.5
+: 0.0524
+
+
+** Model Training
+
+#+begin_src clojure :results silent :exports both
+(defn accumulate [atom x y z]
+  (swap! atom update 0 + x)
+  (swap! atom update 1 + y)
+  (swap! atom update 2 + z))
+
+(defn sgd [params lr batch-size]
+  (doseq [param params]
+    (nd/-! param (nd// (nd/* (nd/get-gradient param) lr) batch-size))))
+#+end_src
+
+
+
+#+begin_src clojure :results silent :exports both
+(defn train-epoch-ch3 [net train-iter lr loss updater]
+  (let [acc (atom [0 0 0])]
+    (doseq [param [W b]]
+      (nd/attach-gradient param))
+    (doseq [batch (training/iter-seq train-iter)]
+      (let [X (-> batch ds/get-batch-data nd/head (nd/reshape [-1 num-inputs]))
+            y (-> batch ds/get-batch-labels nd/head)
+            ]
+        (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
+          (let [y-hat (net X)
+                l (loss y-hat y)]
+            (.backward gc l)
+            (accumulate acc (nd/get-element (nd/sum l)) (accuracy y-hat y) (nd/size y)))))
+      (sgd [W b] lr batch-size)
+      (.close batch))
+    [(/ (@acc 0) (@acc 2)) (/ (@acc 1) (@acc 2))]))
+#+end_src
+
+#+begin_src clojure :results silent :exports both
+(defn train-ch3 [net train-ds test-ds lr loss num-epochs updater]
+  (doseq [i (range num-epochs)]
+    (let [train-metrics (train-epoch-ch3 net (.getData train-ds manager) lr loss updater)
+          accuracy (evaluate-accuracy net (.getData test-ds manager))
+          train-accuracy (get train-metrics 1)
+          train-loss (get train-metrics 0)]
+      (println "Epoch " i ": Test Accuracy: " accuracy)
+      (println "Train Accuracy: " train-accuracy)
+      (println "Train Loss: "train-loss))))
+#+end_src
+
+
+#+begin_src clojure :results output :exports both
+(def num-epochs 3)
+(def lr 0.1)
+(train-ch3 net mnist-train mnist-test lr cross-entropy num-epochs sgd)
+#+end_src
+
+#+RESULTS:
+: Epoch  0 : Test Accuracy:  0.8213
+: Train Accuracy:  0.8322333333333334
+: Train Loss:  0.5015458701451619
+: Epoch  1 : Test Accuracy:  0.8249
+: Train Accuracy:  0.83705
+: Train Loss:  0.48598715953826904
+: Epoch  2 : Test Accuracy:  0.8276
+: Train Accuracy:  0.8399166666666666
+: Train Loss:  0.47418531277974446
+
+
+** Prediction
+
+#+begin_src clojure :results output :exports both
+(defn predict-ch3 [net dataset ndmanager]
+  (let [batch (.next (.getData dataset ndmanager))
+        X (nd/head (ds/get-batch-data batch))
+        y-hat (.argMax (net X) 1)
+        y (nd/head (ds/get-batch-labels batch))]
+    [y-hat y]))
+
+(def prediction (predict-ch3 net mnist-test manager))
+(println "Prediction:   " (take 20 (nd/to-vec (prediction 0))))
+(println "Actual label: "(take 20 (map int (nd/to-vec (prediction 1)))))
+#+end_src
+
+#+RESULTS:
+: Prediction:    (0 3 1 9 0 3 8 4 8 6 4 5 9 3 3 5 3 9 3 1)
+: Actual label:  (6 3 1 9 0 3 8 2 8 4 4 5 9 3 3 5 4 9 3 1)
