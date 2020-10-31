@@ -16,6 +16,17 @@
             [com.hypirion.clj-xchart :as c]))
 #+end_src
 
+#+begin_src clojure :results silent
+(defn plot [filename title x y]
+  (-> (c/xy-chart
+     {title
+      {:x x
+       :y y
+       :style {:marker-type :none}}})
+    (c/spit filename)))
+#+end_src
+
+
 ** Hidden Layers
 
 *** Incorporating Hidden Layers
@@ -45,33 +56,101 @@ ReLU(z) = max(z, 0)
 (def X (nd/to-vec x))
 (def Y (nd/to-vec y))
 
-(-> (c/xy-chart
-     {"ReLU"
-      {:x X
-       :y Y
-       :style {:marker-type :none}}})
-    (c/spit "figure/relu.svg"))
+(plot "figure/relu.svg" "ReLU" X Y)
 #+end_src
 
 #+RESULTS:
 [[./figure/relu.svg]]
 
-#+begin_src clojure :results silent
-(try
-  (let [gc (-> (engine/get-instance) (engine/new-gradient-collector))
-        y (nn/relu x)]
-    (.backward gc y)))
-(def res (nd/get-gradient x))
+The derivative of the relu function is:
 
+#+begin_src clojure :results silent
+(with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
+  (let [y (nn/relu x)]
+    (.backward gc y)))
+
+(def res (nd/get-gradient x))
 (def X (nd/to-vec x))
 (def Y (nd/to-vec res))
 
-(-> (c/xy-chart
-     {"grad of ReLU"
-      {:x X
-       :y Y
-       :style {:marker-type :none}}})
-    (c/spit "figure/grad_relu.svg"))
+(plot "figure/grad_relu.svg" "grad of ReLU" X Y)
 #+end_src
 
 [[./figure/grad_relu.svg]]
+
+** Sigmoid Function
+
+#+begin_export latex
+\begin{equation}
+sigmoid(x) = \frac{1}{1+\exp{-x}}
+\end{equation}
+#+end_export
+
+#+begin_src clojure :results silent
+(def y (nn/sigmoid x))
+(def Y (nd/to-vec y))
+(plot "figure/sigmoid.svg" "Sigmoid" X Y)
+#+end_src
+
+#+RESULTS:
+[[./figure/sigmoid.svg]]
+
+The derivative of the sigmoid function is:
+
+#+begin_export latex
+\begin{equation}
+\frac{d}{dx}sigmoid(x) = \frac{\exp{-x}}{(1+\exp{-x})^2 = sigmoid(x)(1 - sigmoid(x))
+\end{equation}
+#+end_export
+
+#+begin_src clojure :results silent
+(with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
+  (let [y (nn/sigmoid x)]
+    (.backward gc y)))
+
+(def res (nd/get-gradient x))
+(def Y (nd/to-vec res))
+(plot "figure/grad_sigmoid.svg" "grad of Sigmoid" X Y)
+#+end_src
+
+#+RESULTS:
+[[./figure/grad_sigmoid.svg]]
+
+** Tanh Function
+
+#+begin_export latex
+\begin{equation}
+tanh(x) = \frac{1-\exp(-2x)}{1+\exp{-2x}}
+\end{equation}
+#+end_export
+
+#+begin_src clojure :results silent
+(def y (nn/tanh x))
+(def Y (nd/to-vec y))
+(plot "figure/tanh.svg" "Tanh" X Y)
+#+end_src
+
+#+RESULTS:
+[[./figure/tanh.svg]]
+
+
+The derivative of the Tanh function is:
+
+#+begin_export latex
+\begin{equation}
+\frac{d}{dx}tanh(x) = 1 - tanh^2(x)
+\end{equation}
+#+end_export
+
+#+begin_src clojure :results silent
+(with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
+  (let [y (nn/tanh x)]
+    (.backward gc y)))
+
+(def res (nd/get-gradient x))
+(def Y (nd/to-vec res))
+(plot "figure/grad_tanh.svg" "grad of Tanh" X Y)
+#+end_src
+
+#+RESULTS:
+[[./figure/grad_tanh.svg]]
