@@ -64,7 +64,7 @@ ReLU(z) = max(z, 0)
 
 The derivative of the relu function is:
 
-#+begin_src clojure :results silent
+#+begin_src clojure :results silent :exports both
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/relu x)]
     (.backward gc y)))
@@ -86,7 +86,7 @@ sigmoid(x) = \frac{1}{1+\exp{-x}}
 \end{equation}
 #+end_export
 
-#+begin_src clojure :results silent
+#+begin_src clojure :results silent :exports both
 (def y (nn/sigmoid x))
 (def Y (nd/to-vec y))
 (plot "figure/sigmoid.svg" "Sigmoid" X Y)
@@ -103,7 +103,7 @@ The derivative of the sigmoid function is:
 \end{equation}
 #+end_export
 
-#+begin_src clojure :results silent
+#+begin_src clojure :results silent :exports both
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/sigmoid x)]
     (.backward gc y)))
@@ -124,7 +124,7 @@ tanh(x) = \frac{1-\exp(-2x)}{1+\exp{-2x}}
 \end{equation}
 #+end_export
 
-#+begin_src clojure :results silent
+#+begin_src clojure :results silent :exports both
 (def y (nn/tanh x))
 (def Y (nd/to-vec y))
 (plot "figure/tanh.svg" "Tanh" X Y)
@@ -142,7 +142,7 @@ The derivative of the Tanh function is:
 \end{equation}
 #+end_export
 
-#+begin_src clojure :results silent
+#+begin_src clojure :results silent :exports both
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/tanh x)]
     (.backward gc y)))
