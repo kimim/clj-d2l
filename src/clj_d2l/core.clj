@@ -27,3 +27,9 @@
        :y y
        :style {:marker-type :none}}})
     (c/spit filename)))
+
+(defmacro pp [expr]
+  `(print (str ~expr)))
+
+(defmacro ppln [expr]
+  `(println (str ~expr)))
