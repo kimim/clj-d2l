@@ -1,0 +1,69 @@
+* Data Preprocessing
+
+#+begin_src clojure :results silent
+(ns clj-d2l.data-preprocess
+  (:require [clj-djl.ndarray :as nd]
+            [clj-d2l.core :as d2l]
+            [tablecloth.api :as ds]
+            [clojure.java.io :as io]))
+#+end_src
+
+** Reading the Dataset
+
+#+begin_src clojure :results output :exports both
+(let [filename "data/house_tiny.csv"
+      records ["NumRooms,Alley,Price\n"  ;; Column names
+               "NA,Pave,127500\n"        ;;Each row represents a data example
+               "2,NA,106000\n"
+               "4,NA,178100\n"
+               "NA,NA,140000\n"]]
+  (io/make-parents filename)
+  (map #(spit filename % :append true) records))
+
+(def data (ds/dataset "data/house_tiny.csv"))
+
+(d2l/pp data)
+#+end_src
+
+#+RESULTS:
+: data/house_tiny.csv [4 3]:
+:
+: | NumRooms | Alley |  Price |
+: |----------|-------|--------|
+: |          |  Pave | 127500 |
+: |        2 |       | 106000 |
+: |        4 |       | 178100 |
+: |          |       | 140000 |
+
+
+** Handling Missing Data
+
+#+begin_src clojure :results silent :exports both
+(def dataset
+ (let [data (ds/replace-missing data "NumRooms" :value tech.v2.datatype.functional/mean)
+       data (ds/add-or-replace-columns data {"Alley_nil" (map #(if (nil? %) 1 0)(data "Alley"))
+                                             "Alley" (map #(if (nil? %) 0 1) (data "Alley"))})
+       inputs (ds/select-columns data ["NumRooms" "Alley" "Alley_nil"])
+       outputs (ds/select-columns data "Price")]
+   [inputs outputs]))
+#+end_src
+
+** Conversion to the Tensor Format
+
+#+begin_src clojure :results output :exports both
+(def ndm (nd/new-base-manager))
+(def X (nd/create ndm (get dataset 0)))
+(def y (nd/create ndm (get dataset 1)))
+(d2l/pp X)
+(d2l/pp y)
+#+end_src
+
+#+RESULTS:
+: ND: (4, 3) cpu() int32
+: [[ 3,  1,  0],
+:  [ 2,  0,  1],
+:  [ 4,  0,  1],
+:  [ 3,  0,  1],
+: ]
+: ND: (4) cpu() int32
+: [127500, 106000, 178100, 140000]
