@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/calculus.clj
 * Calculus
 
 ** Derivatives and Differentiation
@@ -6,8 +7,6 @@
 (ns clj-d2l.calculus
   (:require [clj-djl.ndarray :as nd]
             [clj-d2l.core :as d2l]
-            [tablecloth.api :as ds]
-            [tech.ml.dataset.tensor :as tensor]
             [clojure.java.io :as io]))
 #+end_src
 

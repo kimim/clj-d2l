@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/linreg.clj
 * Linear Regression Implementation from Scratch
 
 #+begin_src clojure :results silent

@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/linreg_easy.clj
 * Concise Implementation of Linear Regression
 
 ** Generating the Dataset

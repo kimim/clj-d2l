@@ -1,9 +1,10 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/data_manipulation.clj
 * Data Manipulation
 
 ** Getting Started
 
 #+begin_src clojure :results silent
-(ns clj-d2l.priliminaries
+(ns clj-d2l.data-manipulation
   (:require [clj-djl.ndarray :as nd]
             [clj-d2l.core :as d2l])
   (:import [ai.djl.ndarray.types DataType]))

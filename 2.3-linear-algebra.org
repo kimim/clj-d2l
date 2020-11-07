@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/linear_algebra.clj
 * Linear Algebra
 
 #+begin_src clojure :results silent :exports both

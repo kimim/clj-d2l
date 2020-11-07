@@ -41,3 +41,7 @@
 
 (defmacro ppln [expr]
   `(println (str ~expr)))
+
+(defn -main
+  [& args]
+  (println "clj-d2l"))

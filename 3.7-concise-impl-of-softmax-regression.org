@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/concise_softmax_reg.clj
 * Concise Implementation of Softmax Regression
 
 #+begin_src clojure :results silent :exports both

@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/softmax_from_scratch.clj
 * Implementation of Softmax Regression from Scratch
 
 #+begin_src clojure :results silent

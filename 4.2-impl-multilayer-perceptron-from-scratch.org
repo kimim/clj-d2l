@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/multilayer_perceptron_scratch.clj
 * Implementation of Multilayer Perceptron from Scratch
 
 #+begin_src clojure :results silent :exports both
