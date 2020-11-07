@@ -1,0 +1,45 @@
+* Calculus
+
+** Derivatives and Differentiation
+
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.calculus
+  (:require [clj-djl.ndarray :as nd]
+            [clj-d2l.core :as d2l]
+            [tablecloth.api :as ds]
+            [tech.ml.dataset.tensor :as tensor]
+            [clojure.java.io :as io]))
+#+end_src
+
+#+begin_src clojure :results output :exports both
+(defn f [x]
+  (- (* 3 (Math/pow x 2)) (* 4 x)))
+
+(defn numerical-lim [f x h]
+  (/ (- (f (+ x h)) (f x)) h))
+
+(->> (map #(/ 0.1 (Math/pow 10 %)) (range 5))
+     (map (fn [h] [h (numerical-lim f 1 h)]))
+     (map #(println "h = " (% 0) ", numerical limit = " (% 1))))
+#+end_src
+
+#+RESULTS:
+: h =  0.1 , numerical limit =  2.3000000000000043
+: h =  0.01 , numerical limit =  2.0299999999999763
+: h =  0.001 , numerical limit =  2.002999999999311
+: h =  1.0E-4 , numerical limit =  2.0002999999979565
+: h =  1.0E-5 , numerical limit =  2.0000300000155846
+
+
+#+begin_src clojure :results silent :exports both
+(let [x (range 0 3 0.1)
+      y1 (->> x (map f))
+      y2 (->> x (map #(- (* 2 %) 3)))]
+  (d2l/plot-lines
+   "figure/tangent_line.svg"
+   ["f(x)" "tangent line (x=1)"]
+   x
+   [y1 y2]))
+#+end_src
+
+[[./figure/tangent_line.svg]]
