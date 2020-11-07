@@ -1,6 +1,7 @@
+#!/usr/bin/emacs --script
 ;;; this script tangles all the clojure code to files
 
-
+(require 'org)
 (mapcar 'org-babel-tangle-file
         (file-expand-wildcards "*.org"))
 
