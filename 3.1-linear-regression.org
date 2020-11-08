@@ -23,7 +23,7 @@
 #+end_src
 
 #+RESULTS:
-: Elapsed:  2.1572E-4 sec
+: Elapsed:  3.21498E-4 sec
 
 #+begin_src clojure :results output :exports both
 (def c (nd/zeros manager [n]))
@@ -34,7 +34,7 @@
 #+end_src
 
 #+RESULTS:
-: Elapsed:  7.346650854 sec
+: Elapsed:  10.531492801 sec
 
 
 ** The Normal Distribution and Squared Loss

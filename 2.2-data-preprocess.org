@@ -19,11 +19,12 @@
                "4,NA,178100\n"
                "NA,NA,140000\n"]]
   (io/make-parents filename)
-  (map #(spit filename % :append true) records))
+  (dorun
+   (map #(spit filename % :append true) records)))
 
 (def data (ds/dataset "data/house_tiny.csv"))
 
-(d2l/pp data)
+(d2l/ps data)
 #+end_src
 
 #+RESULTS:
@@ -55,8 +56,8 @@
 (def ndm (nd/new-base-manager))
 (def X (nd/create ndm (get dataset 0)))
 (def y (nd/create ndm (get dataset 1)))
-(d2l/pp X)
-(d2l/pp y)
+(d2l/ps X)
+(d2l/ps y)
 #+end_src
 
 #+RESULTS:

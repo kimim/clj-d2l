@@ -67,11 +67,11 @@
 
 #+begin_src clojure :results output :exports both
 (def X (nd/create manager [[1 2 3] [4 5 6]]))
-(nd/pp (nd/sum X [0] true))
-(nd/pp (nd/sum X [1] true))
-(nd/pp (nd/sum X [0 1] true))
-(nd/pp (nd/sum X [0 1] false))
-(nd/pp (nd/sum X))
+(nd/ps (nd/sum X [0] true))
+(nd/ps (nd/sum X [1] true))
+(nd/ps (nd/sum X [0 1] true))
+(nd/ps (nd/sum X [0 1] false))
+(nd/ps (nd/sum X))
 #+end_src
 
 #+RESULTS:
@@ -105,8 +105,8 @@ ND: () cpu() int64
     (nd// Xexp partition)))
 
 (def X (nd/random-normal manager [2 5]))
-(nd/pp (softmax X))
-(nd/pp (nd/sum (softmax X) [1]))
+(nd/ps (softmax X))
+(nd/ps (nd/sum (softmax X) [1]))
 #+end_src
 
 #+RESULTS:
@@ -136,7 +136,7 @@ ND: () cpu() int64
 
 #+begin_src clojure :results output :exports both
 (def y-hat (nd/create manager [[0.1 0.3 0.6][0.3 0.2 0.5]]))
-(nd/pp (nd/get y-hat ":,{}" (nd/create manager [0 2])))
+(nd/ps (nd/get y-hat ":,{}" (nd/create manager [0 2])))
 #+end_src
 
 #+RESULTS:
@@ -152,7 +152,7 @@ ND: () cpu() int64
       (.log)
       (.neg)))
 
-(nd/pp (cross-entropy y-hat (nd/create manager [0 2])))
+(nd/ps (cross-entropy y-hat (nd/create manager [0 2])))
 #+end_src
 
 #+RESULTS:

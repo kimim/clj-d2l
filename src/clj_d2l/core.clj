@@ -36,10 +36,10 @@
                {} (zipmap titles ys)))
       (c/spit filename)))
 
-(defmacro pp [expr]
+(defmacro ps [expr]
   `(print (str ~expr)))
 
-(defmacro ppln [expr]
+(defmacro psl [expr]
   `(println (str ~expr)))
 
 (defn -main
