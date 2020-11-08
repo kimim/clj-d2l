@@ -19,9 +19,6 @@
   (:import [ai.djl.ndarray.types DataType]
            [ai.djl.basicdataset FashionMnist]
            [ai.djl.training.dataset Dataset$Usage]
-           [tech.tablesaw.api Table FloatColumn]
-           [tech.tablesaw.plotly.api ScatterPlot]
-           [tech.tablesaw.plotly Plot]
            [java.nio.file Paths]))
 #+end_src
 
