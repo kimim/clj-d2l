@@ -10,11 +10,13 @@
 (setq requires
      (reduce 'concat
              (mapcar (lambda (x)
-                       (format "[clj-d2l.%1$s :as %1$s]\n\t\t"
+                       (format "\t\t[clj-d2l.%1$s :as %1$s]\n"
                                (replace-regexp-in-string "_" "-" x)))
                      (mapcar 'file-name-base
                              (file-expand-wildcards "src/clj_d2l/*.clj")))))
-(setq temp-test (format "(ns clj-d2l.temp-test\n\t(:require %s))
+
+(setq temp-test (format "(ns clj-d2l.temp-test\n\t(:require [clojure.test :refer :all]
+%s))
 (deftest t-test
   (is (= 1 1)))" requires))
 
