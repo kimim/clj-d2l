@@ -140,7 +140,7 @@ stochastic gradient descent (SGD):
 (def lr 0.03)
 (def epochs 3)
 
-(map #(nd/attach-gradient %) [w b])
+(dorun (map #(nd/attach-gradient %) [w b]))
 
 (doseq [epoch (range epochs)]
   (doseq [batch (training/iter-seq (ds/get-data dataset ndm))]
