@@ -48,7 +48,7 @@
 (def W2 (nd/random-normal manager 0 0.01 [nhiddens noutputs] :float32 (nd/default-device)))
 (def b2 (nd/zeros manager [noutputs]))
 (def params [W1 b1 W2 b2])
-(map nd/attach-gradient params)
+(dorun (map nd/attach-gradient params))
 #+end_src
 
 ** Activation Function

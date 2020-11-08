@@ -22,11 +22,13 @@
 
 (defn plot-scatter [filename title x y]
   (-> (c/xy-chart
-     {title
-      {:x x
-       :y y
-       :render-style :scatter}})
-    (c/spit filename)))
+       {title
+        {:x x
+         :y y
+         :style {:marker-type :circle}}}
+       {:title title
+        :reder-style :scatter})
+      (c/spit filename)))
 
 
 (defn plot-line [filename title x y]
