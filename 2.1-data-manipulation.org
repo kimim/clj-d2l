@@ -292,8 +292,8 @@ ND: (2, 2) cpu() boolean
 (def X (-> (nd/arange ndm 0 12) (nd/reshape [3 4])))
 (def Y (nd/create ndm (int-array [2, 1, 4, 3, 1, 2, 3, 4, 4, 3, 2, 1]) [3 4]))
 (d2l/pp (nd/concat X Y))
-(d2l/pp (nd/concat X Y :axis 0))
-(d2l/pp (nd/concat X Y :axis 1))
+(d2l/pp (nd/concat X Y 0))
+(d2l/pp (nd/concat X Y 1))
 #+end_src
 
 #+RESULTS:
