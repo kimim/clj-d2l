@@ -41,7 +41,7 @@ Now we can show the data with plotly:
 #+begin_src clojure :results silent :exports both
 (let [x (nd/to-vec (nd/get features ":, 1"))
       y (nd/to-vec labels)]
-  (d2l/plot-line
+  (d2l/plot-scatter
    "figure/synthetic_data.svg"
    "data"
    x

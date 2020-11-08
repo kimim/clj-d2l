@@ -20,6 +20,16 @@
     ;; param = param - param.gradient * lr / batchSize
     (nd/-! param (nd// (nd/* (nd/get-gradient param) lr) batch-size))))
 
+(defn plot-scatter [filename title x y]
+  (-> (c/xy-chart
+     {title
+      {:x x
+       :y y
+       :style {:marker-type :none}
+       :render-style :scatter}})
+    (c/spit filename)))
+
+
 (defn plot-line [filename title x y]
   (-> (c/xy-chart
      {title
