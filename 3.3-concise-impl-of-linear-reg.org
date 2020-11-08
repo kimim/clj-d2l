@@ -19,9 +19,6 @@
             [clj-djl.training.listener :as listener]
             [clj-djl.metric :as metric])
   (:import [ai.djl.ndarray.types DataType]
-           [tech.tablesaw.api Table FloatColumn]
-           [tech.tablesaw.plotly.api ScatterPlot]
-           [tech.tablesaw.plotly Plot]
            [java.nio.file Paths]))
 #+end_src
 
