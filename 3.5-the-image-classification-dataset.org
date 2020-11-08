@@ -28,7 +28,7 @@
 
 ** Getting the Dataset
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (setq org-babel-clojure-sync-nrepl-timeout 1000)
 #+end_src
 
