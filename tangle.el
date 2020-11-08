@@ -2,6 +2,7 @@
 ;;; this script tangles all the clojure code to files
 
 (require 'org)
+(require 'cl)
 (mapcar 'org-babel-tangle-file
         (file-expand-wildcards "*.org"))
 
