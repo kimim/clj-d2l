@@ -25,7 +25,6 @@
      {title
       {:x x
        :y y
-       :style {:marker-type :none}
        :render-style :scatter}})
     (c/spit filename)))
 
