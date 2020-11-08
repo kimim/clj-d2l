@@ -27,7 +27,7 @@
          :y y
          :style {:marker-type :circle}}}
        {:title title
-        :reder-style :scatter})
+        :render-style :scatter})
       (c/spit filename)))
 
 
