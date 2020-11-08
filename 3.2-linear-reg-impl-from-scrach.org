@@ -7,11 +7,9 @@
             [clj-djl.device :as device]
             [clj-djl.engine :as engine]
             [clj-djl.training :as training]
-            [clj-djl.training.dataset :as ds])
-  (:import [ai.djl.ndarray.types DataType]
-           [tech.tablesaw.api Table FloatColumn]
-           [tech.tablesaw.plotly.api ScatterPlot]
-           [tech.tablesaw.plotly Plot]))
+            [clj-djl.training.dataset :as ds]
+            [clj-d2l.core :as d2l])
+  (:import [ai.djl.ndarray.types DataType]))
 #+end_src
 
 ** Generating the Dataset
@@ -34,21 +32,25 @@
 #+end_src
 
 #+RESULTS:
-: features(0):  [0.40681973 -1.4101993]
-: labels(0):  9.818751
+: features(0):  [0.2726572 0.046338152]
+: labels(0):  4.5826263
 
 
 Now we can show the data with plotly:
 
-#+begin_src clojure :results silent
-(def X (nd/to-array (nd/get features ":,1")))
-(def y (nd/to-array labels))
-(def data (-> (Table/create "data")
-              (.addColumns (into-array
-                            [(FloatColumn/create "X" X)
-                             (FloatColumn/create "y" y)]))))
-(Plot/show (ScatterPlot/create "Synthetic Data" data "X" "y"))
+#+begin_src clojure :results silent :exports both
+(let [x (nd/to-vec (nd/get features ":, 1"))
+      y (nd/to-vec labels)]
+  (d2l/plot-line
+   "figure/synthetic_data.svg"
+   "data"
+   x
+   y))
 #+end_src
+
+#+RESULTS:
+[[./figure/synthetic_data.svg]]
+
 
 ** Reading the Dataset
 
@@ -76,20 +78,20 @@ Now we can show the data with plotly:
 #+RESULTS:
 #+begin_example
 ND: (10, 2) cpu() float32
-[[ 0.4068, -1.4102],
- [ 0.329 ,  0.9445],
- [ 1.2594, -1.0093],
- [ 1.6118, -0.34  ],
- [ 1.5747, -1.4185],
- [ 0.3785,  1.8297],
- [-0.7906,  0.0745],
- [ 0.8816,  1.7102],
- [-1.543 , -0.6171],
- [-0.4345, -1.2346],
+[[ 0.2727,  0.0463],
+ [ 0.8032,  1.3645],
+ [ 0.0895,  0.6368],
+ [-0.435 , -1.8171],
+ [ 1.6563, -1.197 ],
+ [ 0.5207, -1.0564],
+ [ 0.1503,  1.0269],
+ [ 0.5365,  0.6632],
+ [-0.6452,  1.2165],
+ [ 2.0424,  0.8562],
 ]
 
-[9.808317 1.6467907 10.150299 8.579533 12.172226 -1.263792 2.365392 0.14853334 3.2121205 7.5286875]
-[9.818751 1.6490054 10.1547785 8.577532 12.174219 -1.258281 2.3434823 0.15108518 3.1960368 7.5158978]
+[4.5877643 1.1672001 2.213755 9.508151 11.582605 8.833304 1.0091412 3.0179806 -1.2264853 5.3737807]
+[4.5826263 1.178563 2.2149844 9.506688 11.571146 8.845152 1.0214792 3.0197468 -1.2324206 5.3641534]
 #+end_example
 
 ** Initializing Model Parameters
@@ -102,7 +104,7 @@ ND: (10, 2) cpu() float32
 #+end_src
 
 #+RESULTS:
-: [-0.017967535 -0.015705079]
+: [8.1814115E-4 -0.016517017]
 : [0.0]
 
 ** Defining the Model
@@ -156,9 +158,9 @@ stochastic gradient descent (SGD):
 #+end_src
 
 #+RESULTS:
-: epoch 1 , loss  0.036502816
-: epoch 2 , loss  1.3316181E-4
-: epoch 3 , loss  5.017259E-5
+: epoch 1 , loss  0.037740294
+: epoch 2 , loss  1.4411E-4
+: epoch 3 , loss  4.955114E-5
 
 #+begin_src clojure :results output :exports both
 (println (nd/to-vec w))
@@ -169,7 +171,7 @@ stochastic gradient descent (SGD):
 #+end_src
 
 #+RESULTS:
-: [2.0001454 -3.3996136]
+: [2.0000813 -3.3988967]
 : [2.0 -3.4]
-: Error in estimating w: [-1.4543533E-4 -3.8647652E-4]
-: Error in estimating w: 4.560470581056464E-4
+: Error in estimating w: [-8.1300735E-5 -0.0011034012]
+: Error in estimating w: 6.200790405275214E-4
