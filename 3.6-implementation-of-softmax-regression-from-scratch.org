@@ -15,7 +15,8 @@
             [clj-djl.training.optimizer :as optimizer]
             [clj-djl.training :as training]
             [clj-djl.training.listener :as listener]
-            [clj-djl.metric :as metric])
+            [clj-djl.metric :as metric]
+            [clj-d2l.core :as d2l])
   (:import [ai.djl.ndarray.types DataType]
            [ai.djl.basicdataset FashionMnist]
            [ai.djl.training.dataset Dataset$Usage]
@@ -67,11 +68,11 @@
 
 #+begin_src clojure :results output :exports both
 (def X (nd/create manager [[1 2 3] [4 5 6]]))
-(nd/ps (nd/sum X [0] true))
-(nd/ps (nd/sum X [1] true))
-(nd/ps (nd/sum X [0 1] true))
-(nd/ps (nd/sum X [0 1] false))
-(nd/ps (nd/sum X))
+(d2l/ps (nd/sum X [0] true))
+(d2l/ps (nd/sum X [1] true))
+(d2l/ps (nd/sum X [0 1] true))
+(d2l/ps (nd/sum X [0 1] false))
+(d2l/ps (nd/sum X))
 #+end_src
 
 #+RESULTS:
@@ -105,8 +106,8 @@ ND: () cpu() int64
     (nd// Xexp partition)))
 
 (def X (nd/random-normal manager [2 5]))
-(nd/ps (softmax X))
-(nd/ps (nd/sum (softmax X) [1]))
+(d2l/ps (softmax X))
+(d2l/ps (nd/sum (softmax X) [1]))
 #+end_src
 
 #+RESULTS:
@@ -136,7 +137,7 @@ ND: () cpu() int64
 
 #+begin_src clojure :results output :exports both
 (def y-hat (nd/create manager [[0.1 0.3 0.6][0.3 0.2 0.5]]))
-(nd/ps (nd/get y-hat ":,{}" (nd/create manager [0 2])))
+(d2l/ps (nd/get y-hat ":,{}" (nd/create manager [0 2])))
 #+end_src
 
 #+RESULTS:
@@ -152,7 +153,7 @@ ND: () cpu() int64
       (.log)
       (.neg)))
 
-(nd/ps (cross-entropy y-hat (nd/create manager [0 2])))
+(d2l/ps (cross-entropy y-hat (nd/create manager [0 2])))
 #+end_src
 
 #+RESULTS:
