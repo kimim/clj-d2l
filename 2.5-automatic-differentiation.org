@@ -1,0 +1,139 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/auto_diff.clj
+* Automatic Differentiation
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.auto-diff
+  (:require [clj-djl.ndarray :as nd]
+            [clj-djl.training :as t]))
+#+end_src
+
+
+** A Simple Example
+
+#+begin_src clojure :results value pp :exports both
+(def ndm (nd/new-base-manager))
+(def x (nd/arange ndm 4.))
+x
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x7d28afae "ND: (4) cpu() float32\n[0., 1., 2., 3.]\n"]
+
+#+begin_src clojure :results value pp :exports both
+(t/attach-gradient x)
+(t/get-gradient x)
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x53e1e259 "ND: (4) cpu() float32\n[0., 0., 0., 0.]\n"]
+
+#+begin_src clojure :results value pp :exports both
+(with-open [gc (t/gradient-collector)]
+  (let [y (nd/* (nd/dot x x) 2)]
+    (t/backward gc y)))
+(t/get-gradient x)
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x754db150 "ND: (4) cpu() float32\n[ 0.,  4.,  8., 12.]\n"]
+
+#+begin_src clojure :results value pp :exports both
+(nd/= (t/get-gradient x) (nd/* x 4))
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x3adaf2e9 "ND: (4) cpu() boolean\n[ true,  true,  true,  true]\n"]
+
+
+#+begin_src clojure :results value pp :exports both
+(with-open [gc (t/gradient-collector)]
+  (let [y (nd/sum x)]
+    (t/backward gc y)))
+
+(t/get-gradient x)
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x6b3d350d "ND: (4) cpu() float32\n[1., 1., 1., 1.]\n"]
+
+
+** Backward for Non-Scalar Variables
+
+#+begin_src clojure :results value pp :exports both
+(with-open [gc (t/gradient-collector)]
+  (let [y (nd/* x x)]
+    (t/backward gc y)))
+(t/get-gradient x)
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x2ec2f40b "ND: (4) cpu() float32\n[0., 2., 4., 6.]\n"]
+
+
+** Detaching Computation
+
+#+begin_src clojure :results value pp :exports both
+(with-open [gc (t/gradient-collector)]
+  (let [y (nd/* x x)
+        u (nd/create ndm [0. 1. 4. 9.]) ;; TODO: How to detach ndarray from current graph?
+        ;; u (.detach y)
+        z (nd/* u x)]
+    (t/backward gc z)))
+(t/get-gradient x)
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x5b7a4244 "ND: (4) cpu() float32\n[0., 1., 4., 9.]\n"]
+
+
+#+begin_src clojure :results value pp :exports both
+(with-open [gc (t/gradient-collector)]
+  (let [y (nd/* x x)
+        u (nd/create ndm [0. 1. 4. 9.])
+        ;;u (.duplicate y)
+        z (nd/* u x)]
+    (t/backward gc y)))
+(t/get-gradient x)
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x7cbfd153 "ND: (4) cpu() float32\n[0., 2., 4., 6.]\n"]
+
+#+begin_src clojure :results value pp :exports both
+(nd/* x 2)
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x6ecabb8f "ND: (4) cpu() float32\n[0., 2., 4., 6.]\n"]
+
+
+** Computing the Gradient of Python Control Flow
+
+#+begin_src clojure :results silent :exports both
+(defn f [a]
+  (loop [b (nd/* a 2)]
+    (if (nd/get-element (.lt (nd/norm b) 1000))
+      (recur (nd/* b 2))
+      (if (nd/get-element (.gt (nd/sum b) 0))
+        b
+        (nd/* b 100)))))
+#+end_src
+
+#+begin_src clojure :results output :exports both
+(def a (nd/random-normal ndm [10]))
+
+(t/attach-gradient a)
+
+(with-open [gc (t/gradient-collector)]
+  (let [d (f a)]
+    (t/backward gc d)
+    (println (nd// d a))
+    (println (t/get-gradient a))))
+#+end_src
+
+#+RESULTS:
+: #object[ai.djl.mxnet.engine.MxNDArray 0x39392209 ND: (10) cpu() float32
+: [51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200.]
+: ]
+: #object[ai.djl.mxnet.engine.MxNDArray 0x4bec23b9 ND: (10) cpu() float32
+: [51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200.]
+: ]
