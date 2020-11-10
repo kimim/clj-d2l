@@ -54,18 +54,24 @@
 
 #+begin_src clojure :results output :exports both
 (def ndm (nd/new-base-manager))
-(def X (nd/create ndm (get dataset 0)))
-(def y (nd/create ndm (get dataset 1)))
+(def X (nd/create ndm (map vec (ds/rows (get dataset 0)))))
+(def y (nd/create ndm (map vec (ds/rows (get dataset 1)))))
 (d2l/ps X)
 (d2l/ps y)
 #+end_src
 
 #+RESULTS:
-: ND: (4, 3) cpu() int32
-: [[ 3,  1,  0],
-:  [ 2,  0,  1],
-:  [ 4,  0,  1],
-:  [ 3,  0,  1],
-: ]
-: ND: (4) cpu() int32
-: [127500, 106000, 178100, 140000]
+#+begin_example
+ND: (4, 3) cpu() int32
+[[ 3,  1,  0],
+ [ 2,  0,  1],
+ [ 4,  0,  1],
+ [ 3,  0,  1],
+]
+ND: (4, 1) cpu() int32
+[[127500],
+ [106000],
+ [178100],
+ [140000],
+]
+#+end_example

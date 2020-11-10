@@ -7,7 +7,8 @@
                  ;;[clj-djl "0.1.2"]
                  [com.github.kimim/clj-djl "master-SNAPSHOT"]
                  [dm3/stopwatch "0.1.1"]
-                 [com.hypirion/clj-xchart "0.2.0"]]
+                 [com.hypirion/clj-xchart "0.2.0"]
+                 [scicloj/tablecloth "4.04"]]
   :repositories [["jitpack" "https://jitpack.io"]]
   :main ^:skip-aot clj-d2l.core
   :target-path "target/%s"
