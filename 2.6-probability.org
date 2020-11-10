@@ -1,0 +1,55 @@
+* Probability
+
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.probability
+  (:require [clj-djl.ndarray :as nd]
+            [clj-djl.training :as t]
+            [clojure.java.io :as io]
+            [clj-d2l.core :as d2l]))
+#+end_src
+
+** Basic Probability Theory
+
+#+begin_src clojure :results value pp :exports both
+(def ndm (nd/new-base-manager))
+(def fair-probs (nd/create ndm (repeat 6 (/ 1.0 6))))
+(nd/random-multinomial ndm 1 fair-probs)
+#+end_src
+
+#+RESULTS:
+: ND: (6) cpu() int64
+: [ 0,  0,  0,  0,  1,  0]
+
+#+begin_src clojure :results value pp :exports both
+(nd/random-multinomial ndm 10 fair-probs)
+#+end_src
+
+#+RESULTS:
+: ND: (6) cpu() int64
+: [ 2,  1,  2,  1,  3,  1]
+
+#+begin_src clojure :results value pp :exports both
+(def counts (nd/random-multinomial ndm 1000 fair-probs))
+(nd// counts 1000)
+#+end_src
+
+#+RESULTS:
+: ND: (6) cpu() float32
+: [0.182, 0.15 , 0.169, 0.172, 0.164, 0.163]
+
+#+begin_src clojure :results silent :exports both
+(def counts (nd/random-multinomial ndm 10 fair-probs [500]))
+(def cum-counts (nd/cumsum counts 0))
+(def estimates (nd// cum-counts (nd/sum cum-counts 1 true)))
+
+(let [x (range 0 500)
+      dies (range 0 6)
+      ys (mapv #(nd/to-vec (nd/get (nd/transpose estimates) %)) dies)]
+  (d2l/plot-lines
+   "figure/probability_dies.svg"
+   (conj (mapv #(str "P(die=" %) dies) "0.167")
+   x
+   (conj ys (repeat 500 0.167))))
+#+end_src
+
+[[./figure/probability_dies.svg]]
