@@ -1,0 +1,72 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/dropout.clj
+* Dropout
+
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.dropout
+  (:require [clojure.spec.alpha :as s]
+            [clj-djl.ndarray :as nd]
+            [clj-djl.training :as t]
+            [clj-djl.training.dataset :as ds]
+            [clj-djl.training.loss :as loss]
+            [clj-djl.training.optimizer :as optimizer]
+            [clj-djl.training.tracker :as tracker]
+            [clj-djl.training.listener :as listener]
+            [clj-djl.model :as m]
+            [clj-djl.nn :as nn]
+            [clj-djl.device :as dev]
+            [clj-d2l.core :as d2l]))
+#+end_src
+
+#+begin_src clojure :results silent :exports both
+(def ndm (nd/new-base-manager))
+#+end_src
+
+** Implementation from Scratch
+
+#+begin_src clojure :results silent :exports both
+(defn dropout-layer
+  ([^ai.djl.ndarray.NDArray X dropout]
+   {:pre [(s/valid? #(<= 0 % 1) dropout)]}
+   (condp = dropout
+     1 (nd/zeros-like X)
+     0 X
+     (-> (nd/random-uniform ndm 0 1 (nd/shape X))
+         (nd/> dropout)
+         (nd/to-type :float32 false)
+         (nd/* X)
+         (nd// (- 1.0 dropout))))))
+#+end_src
+
+#+begin_src clojure :results value pp :exports both
+(def X (-> (nd/arange ndm 16)
+           (nd/reshape 2 8)))
+X
+#+end_src
+
+#+RESULTS:
+: ND: (2, 8) cpu() int32
+: [[ 0,  1,  2,  3,  4,  5,  6,  7],
+:  [ 8,  9, 10, 11, 12, 13, 14, 15],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(dropout-layer X 0)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 8) cpu() int32
+: [[ 0,  1,  2,  3,  4,  5,  6,  7],
+:  [ 8,  9, 10, 11, 12, 13, 14, 15],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(dropout-layer X 1)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 8) cpu() int32
+: [[ 0,  0,  0,  0,  0,  0,  0,  0],
+:  [ 0,  0,  0,  0,  0,  0,  0,  0],
+: ]
+
+** Definint Model Parameters
