@@ -15,9 +15,7 @@ jobs:
 
     steps:
     - name: Set up Emacs
-      # You may pin to the exact commit or the version.
-      # uses: purcell/setup-emacs@8df1449990a2a3c64cd08f028a0f05a193191f49
-      uses: purcell/setup-emacs@v2.0
+      uses: purcell/setup-emacs@master
       with:
         version: 27.1
     - uses: actions/checkout@v2
