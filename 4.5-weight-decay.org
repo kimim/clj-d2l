@@ -24,9 +24,9 @@
 (def ntest 100)
 (def ninputs 200)
 (def batchsize 5)
+(def ndm (nd/new-base-manager))
 (def truew (-> (nd/ones ndm [ninputs 1]) (nd/* 0.01)))
 (def trueb 0.05) ;; create [0.05]?
-(def ndm (nd/new-base-manager))
 (def train-data (d2l/synthetic-data ndm truew trueb ntrain))
 (def test-data (d2l/synthetic-data ndm truew trueb ntest))
 (def train-ds (d2l/load-array train-data batchsize false))
