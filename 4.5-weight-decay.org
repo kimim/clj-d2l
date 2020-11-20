@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/weight_decay.clj
 * Weight Decay
 
 ** High-Dimensional Linear Regression
