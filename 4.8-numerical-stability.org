@@ -1,0 +1,62 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/numerical_stability.clj
+* Numerical Stability and Initialization
+** Vanishing and Exploding Gradients
+*** Vanishing Gradients
+
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.numerical-stability
+  (:require
+   [clojure.spec.alpha :as s]
+   [clj-djl.ndarray :as nd]
+   [clj-djl.training :as t]
+   [clj-djl.training.dataset :as ds]
+   [clj-djl.training.loss :as loss]
+   [clj-djl.training.optimizer :as optimizer]
+   [clj-djl.training.tracker :as tracker]
+   [clj-djl.training.listener :as listener]
+   [clj-djl.metric :as metric]
+   [clj-djl.model :as m]
+   [clj-djl.nn :as nn]
+   [clj-djl.device :as dev]
+   [clj-d2l.core :as d2l]))
+#+end_src
+
+#+begin_src clojure :results silent :exports both
+(def ndm (nd/new-base-manager))
+(def x (nd/arange ndm -8.0 8.0 0.1))
+(t/attach-gradient x)
+(with-open [gc (t/new-gradient-collector)]
+  (let [y (nn/sigmoid x)]
+    (t/backward gc y)
+    (d2l/plot-lines "figure/numerical_stability_1.svg"
+                    ["sigmoid" "gradient"]
+                    (nd/to-vec x)
+                    [(nd/to-vec y) (nd/to-vec (t/get-gradient x))])))
+#+end_src
+
+[[./figure/numerical_stability_1.svg]]
+
+#+begin_src clojure :results value pp :exports both
+(def M (nd/random-normal ndm [4 4]))
+M
+#+end_src
+
+#+RESULTS:
+: ND: (4, 4) cpu() float32
+: [[ 2.2122,  1.1631,  0.774 ,  0.4838],
+:  [ 1.0434,  0.2996,  1.1839,  0.153 ],
+:  [ 1.8917, -1.1688, -1.2347,  1.5581],
+:  [-1.771 , -0.5459, -0.4514, -2.3556],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(reduce nd/dot M (repeat 100 (nd/random-normal ndm [4 4])))
+#+end_src
+
+#+RESULTS:
+: ND: (4, 4) cpu() float32
+: [[ 1.67222664e+35, -4.89409641e+34, -1.12548765e+35,  2.06692015e+35],
+:  [ 6.10408971e+34, -3.42681288e+34, -2.03257140e+34,  3.55031523e+34],
+:  [ 1.76063675e+35, -1.20474492e+35, -3.12509124e+34,  4.97232383e+34],
+:  [-1.52685920e+35,  4.04474600e+34,  1.08129170e+35, -1.99047032e+35],
+: ]
