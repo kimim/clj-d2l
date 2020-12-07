@@ -5,9 +5,11 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.1"]
                  ;;[clj-djl "0.1.2"]
-                 [com.github.kimim/clj-djl "master-SNAPSHOT"]
+                 [clj-djl "0.1.3"]
                  [dm3/stopwatch "0.1.1"]
                  [com.hypirion/clj-xchart "0.2.0"]
+                 [techascent/tech.ml.dataset "5.00-beta-14"]
+                 [cnuernber/dtype-next "6.00-beta-9"]
                  [scicloj/tablecloth "4.04"]]
   :repositories [["jitpack" "https://jitpack.io"]]
   :main ^:skip-aot clj-d2l.core
