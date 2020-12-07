@@ -7,6 +7,7 @@
    [clojure.java.io :as io]
    [clj-djl.ndarray :as nd]
    [clj-djl.dataframe :as df]
+   [clj-djl.dataframe.column-filters :as cf]
    [clj-djl.dataframe.functional :as dfn]
    [clj-d2l.core :as d2l]))
 #+end_src
@@ -43,26 +44,21 @@ data
 ** Handling Missing Data
 
 #+begin_src clojure :results value pp :exports both
-(def dataset
-  (let [data (-> (df/replace-missing data ["NumRooms"] :down)
-                 (df/categorical->one-hot ["Alley"])
-                 (df/replace-missing :all :down))
-        inputs (df/select-columns data ["NumRooms" "Alley-" "Alley-Pave"])
-        outputs (df/select-columns data ["Price"])]
-    [inputs outputs]))
-dataset
+(def inputs (df/select-by-index data :all [0 1]))
+(def outputs (df/select-by-index data :all [2]))
+[inputs outputs]
 #+end_src
 
 #+RESULTS:
 #+begin_example
-[data/house_tiny.csv [4 3]:
+[data/house_tiny.csv [4 2]:
 
-| NumRooms | Alley- | Alley-Pave |
-|----------|--------|------------|
-|        2 |    0.0 |        1.0 |
-|        2 |    0.0 |        1.0 |
-|        4 |    0.0 |        1.0 |
-|        4 |    0.0 |        1.0 |
+| NumRooms | Alley |
+|----------|-------|
+|          |  Pave |
+|        2 |       |
+|        4 |       |
+|          |       |
  data/house_tiny.csv [4 1]:
 
 |  Price |
@@ -74,13 +70,46 @@ dataset
 ]
 #+end_example
 
+=replace-missing= should put mean value to row 0 and 3 of NumRooms!
+
+#+begin_src clojure :results value pp :exports both
+(def inputs2 (df/replace-missing inputs ["NumRooms"] :value dfn/mean))
+(def inputs2 (df/replace-missing inputs2 ["Alley"] :value "NaN"))
+inputs2
+#+end_src
+
+#+RESULTS:
+: data/house_tiny.csv [4 2]:
+:
+: |   NumRooms | Alley |
+: |------------|-------|
+: | -1.638E+04 |  Pave |
+: |          2 |   NaN |
+: |          4 |   NaN |
+: | -1.638E+04 |   NaN |
+
+#+begin_src clojure :results value pp :exports both
+(def inputs2 (df/categorical->one-hot inputs2 cf/categorical))
+inputs2
+#+end_src
+
+#+RESULTS:
+: data/house_tiny.csv [4 3]:
+:
+: |   NumRooms | Alley-NaN | Alley-Pave |
+: |------------|-----------|------------|
+: | -1.638E+04 |       0.0 |        1.0 |
+: |          2 |       1.0 |        0.0 |
+: |          4 |       1.0 |        0.0 |
+: | -1.638E+04 |       1.0 |        0.0 |
+
 
 ** Conversion to the Tensor Format
 
 #+begin_src clojure :results silent :exports both
 (def ndm (nd/new-base-manager))
-(def X (df/->ndarray ndm (dataset 0)))
-(def y (df/->ndarray ndm (dataset 1)))
+(def X (df/->ndarray ndm inputs2))
+(def y (df/->ndarray ndm outputs))
 #+end_src
 
 #+begin_src clojure :results value pp :exports both
@@ -88,11 +117,11 @@ X
 #+end_src
 
 #+RESULTS:
-: ND: (4, 3) cpu() int64
-: [[ 2,  0,  1],
-:  [ 2,  0,  1],
-:  [ 4,  0,  1],
-:  [ 4,  0,  1],
+: ND: (4, 3) cpu() float64
+: [[-1.63825000e+04,  0.00000000e+00,  1.00000000e+00],
+:  [ 2.00000000e+00,  1.00000000e+00,  0.00000000e+00],
+:  [ 4.00000000e+00,  1.00000000e+00,  0.00000000e+00],
+:  [-1.63825000e+04,  1.00000000e+00,  0.00000000e+00],
 : ]
 
 #+begin_src clojure :results value pp :exports both

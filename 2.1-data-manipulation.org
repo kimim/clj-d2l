@@ -3,13 +3,14 @@
 
 ** Getting Started
 
+To start, we should load =clj-djl.ndarray=:
+
 #+begin_src clojure :results silent
 (ns clj-d2l.data-manipulation
-  (:require [clj-djl.ndarray :as nd]
-            [clj-d2l.core :as d2l]))
+  (:require [clj-djl.ndarray :as nd]))
 #+end_src
 
-Create a vector from in range 0 - 11:
+Then create a =ndmanager=, which is used to manage ndarray memory:
 
 #+begin_src clojure :results value pp :exports both
 (def ndm (nd/new-base-manager))
@@ -17,8 +18,9 @@ ndm
 #+end_src
 
 #+RESULTS:
-: UID: 76d328f1-d98e-4973-80d3-95ac633a7e07 Parent UID: 083df343-8671-4a9d-b6dc-5747d8353799 isOpen: true Resource size: 0
+: UID: 4138e465-874b-484c-8933-6334cf893b3f Parent UID: 083df343-8671-4a9d-b6dc-5747d8353799 isOpen: true Resource size: 0
 
+Then create an ndarray containing the first 12 integers starting with 0.
 
 #+begin_src clojure :results value pp :exports both
 (def x (nd/arange ndm 0 12))
@@ -29,6 +31,7 @@ x
 : ND: (12) cpu() int32
 : [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
 
+Access ndarray's shape with =nd/shape=:
 
 #+begin_src clojure :results value pp :exports both
 (nd/shape x)
@@ -37,6 +40,7 @@ x
 #+RESULTS:
 : (12)
 
+The size is the same as shape for one dimentional ndarray:
 
 #+begin_src clojure :results value pp :exports both
 (nd/size x)
@@ -73,13 +77,6 @@ y
 :  [ 8,  9, 10, 11],
 : ]
 
-
-#+begin_src clojure :results value pp :exports both
-(nd/shape 2 3)
-#+end_src
-
-#+RESULTS:
-: (2, 3)
 
 #+begin_src clojure :results value pp :exports both
 (nd/create ndm (int-array [2 3]))
@@ -231,6 +228,18 @@ ND: (2, 2, 2, 2) cpu() float32
 : [[ 0.6863,  1.0763,  0.355 , -0.6141],
 :  [ 1.0732,  1.8308,  0.1202, -1.1468],
 :  [-0.9711,  0.0538, -0.7757, -2.5075],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/create ndm [[2 1 4 3][1 2 3 4][4 3 2 1]])
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int64
+: [[ 2,  1,  4,  3],
+:  [ 1,  2,  3,  4],
+:  [ 4,  3,  2,  1],
 : ]
 
 
