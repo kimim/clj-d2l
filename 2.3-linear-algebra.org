@@ -32,17 +32,18 @@
 : 9.
 
 **  Vectors
-#+begin_src clojure :results output :exports both
+
+#+begin_src clojure :results value pp :exports both
 (def x (nd/arange ndm 4))
-(d2l/ps x)
+x
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() int32
 : [ 0,  1,  2,  3]
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/get x 3))
+#+begin_src clojure :results value pp :exports both
+(nd/get x 3)
 #+end_src
 
 #+RESULTS:
@@ -52,51 +53,66 @@
 
 ** Length, Dimensionality, and Shape
 
-#+begin_src clojure :results output :exports both
-(d2l/psl (nd/size x))
-(d2l/ps (nd/get-shape x))
+#+begin_src clojure :results value pp :exports both
+(nd/size x)
 #+end_src
 
 #+RESULTS:
 : 4
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/get-shape x)
+#+end_src
+
+#+RESULTS:
 : (4)
 
 ** Matrices
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results value pp :exports both
 (def A (-> (nd/arange ndm 20.)
            (nd/reshape 5 4)))
-(d2l/ps A)
-(d2l/ps (nd/transpose A))
-(d2l/ps (nd/t A))
+A
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (5, 4) cpu() float32
-[[ 0.,  1.,  2.,  3.],
- [ 4.,  5.,  6.,  7.],
- [ 8.,  9., 10., 11.],
- [12., 13., 14., 15.],
- [16., 17., 18., 19.],
-]
-ND: (4, 5) cpu() float32
-[[ 0.,  4.,  8., 12., 16.],
- [ 1.,  5.,  9., 13., 17.],
- [ 2.,  6., 10., 14., 18.],
- [ 3.,  7., 11., 15., 19.],
-]
-ND: (4, 5) cpu() float32
-[[ 0.,  4.,  8., 12., 16.],
- [ 1.,  5.,  9., 13., 17.],
- [ 2.,  6., 10., 14., 18.],
- [ 3.,  7., 11., 15., 19.],
-]
-#+end_example
+: ND: (5, 4) cpu() float32
+: [[ 0.,  1.,  2.,  3.],
+:  [ 4.,  5.,  6.,  7.],
+:  [ 8.,  9., 10., 11.],
+:  [12., 13., 14., 15.],
+:  [16., 17., 18., 19.],
+: ]
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results value pp :exports both
+(nd/transpose A)
+#+end_src
+
+#+RESULTS:
+: ND: (4, 5) cpu() float32
+: [[ 0.,  4.,  8., 12., 16.],
+:  [ 1.,  5.,  9., 13., 17.],
+:  [ 2.,  6., 10., 14., 18.],
+:  [ 3.,  7., 11., 15., 19.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/t A)
+#+end_src
+
+#+RESULTS:
+: ND: (4, 5) cpu() float32
+: [[ 0.,  4.,  8., 12., 16.],
+:  [ 1.,  5.,  9., 13., 17.],
+:  [ 2.,  6., 10., 14., 18.],
+:  [ 3.,  7., 11., 15., 19.],
+: ]
+
+#+begin_src clojure :results value pp :exports both
 (def B (nd/create ndm [[1 2 3] [2 0 4] [3 4 5]]))
-(d2l/ps (nd/= B (nd/t B)))
+(nd/= B (nd/t B))
 #+end_src
 
 #+RESULTS:
@@ -108,10 +124,10 @@ ND: (4, 5) cpu() float32
 
 ** Tensors
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results value pp :exports both
 (def X (-> (nd/arange ndm 24.)
            (nd/reshape 2 3 4)))
-(d2l/ps X)
+X
 #+end_src
 
 #+RESULTS:
@@ -131,52 +147,61 @@ ND: (2, 3, 4) cpu() float32
 
 ** Basic Properties of Tensor Arithmetic
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results silent :exports both
 (def A (-> (nd/arange ndm 20.)
            (nd/reshape 5 4)))
 (def B (nd/create ndm (.toFloatArray A) [5 4]))
+#+end_src
 
-(d2l/ps A)
-(d2l/ps B)
+#+begin_src clojure :results value pp :exports both
+A
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (5, 4) cpu() float32
-[[ 0.,  1.,  2.,  3.],
- [ 4.,  5.,  6.,  7.],
- [ 8.,  9., 10., 11.],
- [12., 13., 14., 15.],
- [16., 17., 18., 19.],
-]
-ND: (5, 4) cpu() float32
-[[ 0.,  1.,  2.,  3.],
- [ 4.,  5.,  6.,  7.],
- [ 8.,  9., 10., 11.],
- [12., 13., 14., 15.],
- [16., 17., 18., 19.],
-]
-#+end_example
+: ND: (5, 4) cpu() float32
+: [[ 0.,  1.,  2.,  3.],
+:  [ 4.,  5.,  6.,  7.],
+:  [ 8.,  9., 10., 11.],
+:  [12., 13., 14., 15.],
+:  [16., 17., 18., 19.],
+: ]
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/* A B))
+#+begin_src clojure :results value pp :exports both
+B
+#+end_src
 
+#+RESULTS:
+: ND: (5, 4) cpu() float32
+: [[ 0.,  1.,  2.,  3.],
+:  [ 4.,  5.,  6.,  7.],
+:  [ 8.,  9., 10., 11.],
+:  [12., 13., 14., 15.],
+:  [16., 17., 18., 19.],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(nd/* A B)
+#+end_src
+
+#+RESULTS:
+: ND: (5, 4) cpu() float32
+: [[  0.,   1.,   4.,   9.],
+:  [ 16.,  25.,  36.,  49.],
+:  [ 64.,  81., 100., 121.],
+:  [144., 169., 196., 225.],
+:  [256., 289., 324., 361.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
 (def a 2)
-
 (def X (-> (nd/arange ndm 24.)
            (nd/reshape 2 3 4)))
-(d2l/ps X)
+X
 #+end_src
 
 #+RESULTS:
 #+begin_example
-ND: (5, 4) cpu() float32
-[[  0.,   1.,   4.,   9.],
- [ 16.,  25.,  36.,  49.],
- [ 64.,  81., 100., 121.],
- [144., 169., 196., 225.],
- [256., 289., 324., 361.],
-]
 ND: (2, 3, 4) cpu() float32
 [[[ 0.,  1.,  2.,  3.],
   [ 4.,  5.,  6.,  7.],
@@ -189,9 +214,9 @@ ND: (2, 3, 4) cpu() float32
 ]
 #+end_example
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/+ X 2))
-(d2l/ps (nd/get-shape (nd/* X 2)))
+
+#+begin_src clojure :results value pp :exports both
+(nd/+ X 2)
 #+end_src
 
 #+RESULTS:
@@ -206,175 +231,243 @@ ND: (2, 3, 4) cpu() float32
   [22., 23., 24., 25.],
  ],
 ]
-(2, 3, 4)
 #+end_example
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/get-shape (nd/* X 2))
+#+end_src
+
+#+RESULTS:
+: (2, 3, 4)
 
 
 ** Reduction
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results value pp :exports both
 (def x (nd/arange ndm 4))
-
-(d2l/ps x)
-(d2l/ps (nd/sum x))
+x
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() int32
 : [ 0,  1,  2,  3]
-: ND: () cpu() int32
-: 6
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/get-shape A))
-(d2l/ps (nd/sum A))
+#+begin_src clojure :results value pp :exports both
+(nd/sum x)
 #+end_src
 
 #+RESULTS:
-: (5, 4)ND: () cpu() float32
+: ND: () cpu() int32
+: 6
+
+#+begin_src clojure :results value pp :exports both
+(nd/get-shape A)
+#+end_src
+
+#+RESULTS:
+: (5, 4)
+
+#+begin_src clojure :results value pp :exports both
+(nd/sum A)
+#+end_src
+
+#+RESULTS:
+: ND: () cpu() float32
 : 190.
 
 
-#+begin_src clojure :results output :exports both
+
+#+begin_src clojure :results value pp :exports both
 (def A-sum-axis0 (nd/sum A [0]))
-(d2l/ps A-sum-axis0)
-(d2l/ps (nd/get-shape A-sum-axis0))
+A-sum-axis0
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() float32
 : [40., 45., 50., 55.]
+
+#+begin_src clojure :results value pp :exports both
+(nd/get-shape A-sum-axis0)
+#+end_src
+
+#+RESULTS:
 : (4)
 
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results value pp :exports both
 (def A-sum-axis1 (nd/sum A [1]))
-(d2l/ps A-sum-axis1)
-(d2l/ps (nd/get-shape A-sum-axis1))
+A-sum-axis1
 #+end_src
 
 #+RESULTS:
 : ND: (5) cpu() float32
 : [ 6., 22., 38., 54., 70.]
+
+#+begin_src clojure :results value pp :exports both
+(nd/get-shape A-sum-axis1)
+#+end_src
+
+#+RESULTS:
 : (5)
 
-#+begin_src clojure :results output :exports both
+
+#+begin_src clojure :results value pp :exports both
 (def A-sum-axis2 (nd/sum A [0 1]))
-(d2l/ps A-sum-axis2)
+A-sum-axis2
 #+end_src
 
 #+RESULTS:
 : ND: () cpu() float32
 : 190.
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/mean A))
-(d2l/ps (nd// (nd/sum A) (nd/size A)))
+#+begin_src clojure :results value pp :exports both
+(nd/mean A)
 #+end_src
 
 #+RESULTS:
 : ND: () cpu() float32
 : 9.5
+
+#+begin_src clojure :results value pp :exports both
+(nd// (nd/sum A) (nd/size A))
+#+end_src
+
+#+RESULTS:
 : ND: () cpu() float32
 : 9.5
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/mean A (int-array [0])))
-(d2l/ps (nd// (nd/sum A [0]) (nd/get (nd/get-shape A) 0)))
+#+begin_src clojure :results value pp :exports both
+(nd/mean A (int-array [0]))
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() float32
 : [ 8.,  9., 10., 11.]
+
+#+begin_src clojure :results value pp :exports both
+(nd// (nd/sum A [0]) (nd/get (nd/get-shape A) 0))
+#+end_src
+
+#+RESULTS:
 : ND: (4) cpu() float32
 : [ 8.,  9., 10., 11.]
+
 
 ** Non-Reduction Sum
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results value pp :exports both
 (def sum-A (nd/sum A [1] true))
-(d2l/ps sum-A)
-(d2l/ps (nd// A sum-A))
+sum-A
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (5, 1) cpu() float32
-[[ 6.],
- [22.],
- [38.],
- [54.],
- [70.],
-]
-ND: (5, 4) cpu() float32
-[[0.    , 0.1667, 0.3333, 0.5   ],
- [0.1818, 0.2273, 0.2727, 0.3182],
- [0.2105, 0.2368, 0.2632, 0.2895],
- [0.2222, 0.2407, 0.2593, 0.2778],
- [0.2286, 0.2429, 0.2571, 0.2714],
-]
-#+end_example
+: ND: (5, 1) cpu() float32
+: [[ 6.],
+:  [22.],
+:  [38.],
+:  [54.],
+:  [70.],
+: ]
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/cumsum A))
-(d2l/ps (nd/cumsum A 0))
-(d2l/ps (nd/cumsum A 1))
+#+begin_src clojure :results value pp :exports both
+(nd// A sum-A)
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (20) cpu() float32
-[  0.,   1.,   3.,   6.,  10.,  15.,  21.,  28.,  36.,  45.,  55.,  66.,  78.,  91., 105., 120., 136., 153., 171., 190.]
-ND: (5, 4) cpu() float32
-[[ 0.,  1.,  2.,  3.],
- [ 4.,  6.,  8., 10.],
- [12., 15., 18., 21.],
- [24., 28., 32., 36.],
- [40., 45., 50., 55.],
-]
-ND: (5, 4) cpu() float32
-[[ 0.,  1.,  3.,  6.],
- [ 4.,  9., 15., 22.],
- [ 8., 17., 27., 38.],
- [12., 25., 39., 54.],
- [16., 33., 51., 70.],
-]
-#+end_example
+: ND: (5, 4) cpu() float32
+: [[0.    , 0.1667, 0.3333, 0.5   ],
+:  [0.1818, 0.2273, 0.2727, 0.3182],
+:  [0.2105, 0.2368, 0.2632, 0.2895],
+:  [0.2222, 0.2407, 0.2593, 0.2778],
+:  [0.2286, 0.2429, 0.2571, 0.2714],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(nd/cumsum A)
+#+end_src
+
+#+RESULTS:
+: ND: (20) cpu() float32
+: [  0.,   1.,   3.,   6.,  10.,  15.,  21.,  28.,  36.,  45.,  55.,  66.,  78.,  91., 105., 120., 136., 153., 171., 190.]
+
+#+begin_src clojure :results value pp :exports both
+(nd/cumsum A 0)
+#+end_src
+
+#+RESULTS:
+: ND: (5, 4) cpu() float32
+: [[ 0.,  1.,  2.,  3.],
+:  [ 4.,  6.,  8., 10.],
+:  [12., 15., 18., 21.],
+:  [24., 28., 32., 36.],
+:  [40., 45., 50., 55.],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(nd/cumsum A 1)
+#+end_src
+
+#+RESULTS:
+: ND: (5, 4) cpu() float32
+: [[ 0.,  1.,  3.,  6.],
+:  [ 4.,  9., 15., 22.],
+:  [ 8., 17., 27., 38.],
+:  [12., 25., 39., 54.],
+:  [16., 33., 51., 70.],
+: ]
 
 
 ** Dot Products
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results value pp :exports both
 (def y (nd/ones ndm [4] :float32))
 (def x (nd/create ndm (float-array [0. 1. 2. 3.])))
-(d2l/ps (nd/dot x y))
-(d2l/ps (nd/sum (nd/* x y)))
+(nd/dot x y)
 #+end_src
 
 #+RESULTS:
 : ND: () cpu() float32
 : 6.
+
+#+begin_src clojure :results value pp :exports both
+(nd/sum (nd/* x y))
+#+end_src
+
+#+RESULTS:
 : ND: () cpu() float32
 : 6.
 
 
 ** Matrix-Vector Products
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/get-shape A))
-(d2l/ps (nd/get-shape x))
-(d2l/ps (nd/dot A x))
+#+begin_src clojure :results value pp :exports both
+(nd/get-shape A)
 #+end_src
 
 #+RESULTS:
-: (5, 4)(4)ND: (5) cpu() float32
+: (5, 4)
+
+#+begin_src clojure :results value pp :exports both
+(nd/get-shape x)
+#+end_src
+
+#+RESULTS:
+: (4)
+
+#+begin_src clojure :results value pp :exports both
+(nd/dot A x)
+#+end_src
+
+#+RESULTS:
+: ND: (5) cpu() float32
 : [ 14.,  38.,  62.,  86., 110.]
 
 ** Matrix-Matrix Multiplication
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results value pp :exports both
 (def B (nd/ones ndm [4 9] :float32))
-(d2l/ps (nd/dot A B))
+(nd/dot A B)
 #+end_src
 
 #+RESULTS:
