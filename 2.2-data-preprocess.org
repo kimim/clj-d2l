@@ -14,7 +14,7 @@
 
 ** Reading the Dataset
 
-#+begin_src clojure :results output pp :exports both
+#+begin_src clojure :results silent :exports both
 (let [filename "data/house_tiny.csv"
       records ["NumRooms,Alley,Price\n"  ;; Column names
                "NA,Pave,127500\n"        ;;Each row represents a data example
@@ -24,9 +24,10 @@
   (io/make-parents filename)
   (dorun
    (map #(spit filename % :append true) records)))
+#+end_src
 
+#+begin_src clojure :results value pp :exports both
 (def data (df/->dataframe "data/house_tiny.csv"))
-
 data
 #+end_src
 
@@ -81,12 +82,13 @@ inputs2
 #+RESULTS:
 : data/house_tiny.csv [4 2]:
 :
-: |   NumRooms | Alley |
-: |------------|-------|
-: | -1.638E+04 |  Pave |
-: |          2 |   NaN |
-: |          4 |   NaN |
-: | -1.638E+04 |   NaN |
+: | NumRooms | Alley |
+: |----------|-------|
+: |        3 |  Pave |
+: |        2 |   NaN |
+: |        4 |   NaN |
+: |        3 |   NaN |
+
 
 #+begin_src clojure :results value pp :exports both
 (def inputs2 (df/categorical->one-hot inputs2 cf/categorical))
@@ -96,12 +98,12 @@ inputs2
 #+RESULTS:
 : data/house_tiny.csv [4 3]:
 :
-: |   NumRooms | Alley-NaN | Alley-Pave |
-: |------------|-----------|------------|
-: | -1.638E+04 |       0.0 |        1.0 |
-: |          2 |       1.0 |        0.0 |
-: |          4 |       1.0 |        0.0 |
-: | -1.638E+04 |       1.0 |        0.0 |
+: | NumRooms | Alley-NaN | Alley-Pave |
+: |----------|-----------|------------|
+: |        3 |       0.0 |        1.0 |
+: |        2 |       1.0 |        0.0 |
+: |        4 |       1.0 |        0.0 |
+: |        3 |       1.0 |        0.0 |
 
 
 ** Conversion to the Tensor Format
