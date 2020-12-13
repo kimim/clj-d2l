@@ -71,11 +71,11 @@ data
 ]
 #+end_example
 
-=replace-missing= should put mean value to row 0 and 3 of NumRooms!
 
 #+begin_src clojure :results value pp :exports both
-(def inputs2 (df/replace-missing inputs ["NumRooms"] :value dfn/mean))
-(def inputs2 (df/replace-missing inputs2 ["Alley"] :value "NaN"))
+(def inputs2 (-> inputs
+                 (df/replace-missing cf/numeric dfn/mean)
+                 (df/replace-missing cf/categorical "NaN")))
 inputs2
 #+end_src
 
@@ -119,11 +119,11 @@ X
 #+end_src
 
 #+RESULTS:
-: ND: (4, 3) cpu() float64
-: [[-1.63825000e+04,  0.00000000e+00,  1.00000000e+00],
-:  [ 2.00000000e+00,  1.00000000e+00,  0.00000000e+00],
-:  [ 4.00000000e+00,  1.00000000e+00,  0.00000000e+00],
-:  [-1.63825000e+04,  1.00000000e+00,  0.00000000e+00],
+: ND: (4, 3) cpu() int32
+: [[ 3,  0,  1],
+:  [ 2,  1,  0],
+:  [ 4,  1,  0],
+:  [ 3,  1,  0],
 : ]
 
 #+begin_src clojure :results value pp :exports both
