@@ -14,15 +14,9 @@
             [clj-djl.training.tracker :as tracker]
             [clj-djl.training.optimizer :as optimizer]
             [clj-djl.training :as training]
-            [clj-djl.training.listener :as listener]
-            [clj-djl.metric :as metric])
-  (:import [ai.djl.ndarray.types DataType]
-           [ai.djl.basicdataset FashionMnist]
+            [clj-djl.training.listener :as listener])
+  (:import [ai.djl.basicdataset FashionMnist]
            [ai.djl.training.dataset Dataset$Usage]
-           [ai.djl.training.evaluator Accuracy]
-           [ai.djl.training.listener TrainingListener$Defaults]
-           [ai.djl.metric Metrics]
-           [ai.djl.training EasyTrain]
            [java.nio.file Paths]))
 #+end_src
 
@@ -49,18 +43,18 @@
 
 #+begin_src clojure :results silent :exports both
 (defn softmax [arrays]
-  (nd/new-ndlist (nd/log-softmax (nd/singleton-or-throw arrays) 1)))
+  (nd/ndlist (nd/log-softmax (nd/singleton-or-throw arrays) 1)))
 
 
-(def manager (nd/new-base-manager))
+(def manager (nd/base-manager))
 
-(def model (model/new-instance "softmax-regression"))
+(def model (model/instance "softmax-regression"))
 
 (def net (nn/sequential-block))
 
 (-> net
     (nn/add (nn/batch-flatten-block (* 28 28)))
-    (nn/add (-> (nn/new-linear-builder) (nn/set-units 10) (nn/build))))
+    (nn/add (-> (nn/linear-builder) (nn/set-units 10) (nn/build))))
 
 (model/set-block model net)
 #+end_src
@@ -83,12 +77,12 @@
 ** Instantiate Configuration and Trainer
 
 #+begin_src clojure :results silent :exports both
-(def config (-> (training/new-default-training-config loss)
-                (training/opt-optimizer sgd)
-                (training/add-evaluator (Accuracy.))
-                (training/add-training-listeners (TrainingListener$Defaults/logging))))
+(def config (training/training-config {:loss loss
+                                       :optimizer sgd
+                                       :accuracy (training/accuracy)
+                                       :listeners (listener/logging)}))
 
-(def trainer (model/new-trainer model config))
+(def trainer (model/trainer model config))
 #+end_src
 
 ** Initializing Trainer
@@ -100,16 +94,23 @@
 ** Metrics
 
 #+begin_src clojure :results silent :exports both
-(def metrics (Metrics.))
+(def metrics (training/metrics))
 (training/set-metrics trainer metrics)
 #+end_src
 
 
 ** Training
 
+#+begin_src emacs-lisp :tangle no
+(setq org-babel-clojure-sync-nrepl-timeout 1000)
+#+end_src
+
+#+RESULTS:
+: 1000
+
 #+begin_src clojure :results output :exports both
 (def num-epochs 5)
-(EasyTrain/fit trainer num-epochs mnist-train mnist-test)
+(training/fit trainer num-epochs mnist-train mnist-test)
 #+end_src
 
 #+RESULTS:
@@ -158,8 +159,8 @@ Validating:  100% |████████████████████�
 #+end_example
 
 #+begin_src clojure :results value :exports both
-(.getEvaluations (.getTrainingResult trainer))
+(training/get-training-result trainer)
 #+end_src
 
 #+RESULTS:
-| validate_Accuracy | 0.8224 | train_Accuracy | 0.83503336 | train_SoftmaxCrossEntropyLoss | 0.48581553 | validate_SoftmaxCrossEntropyLoss | 0.513945 | train_loss | 0.48581553 | validate_loss | 0.513945 |
+| :epoch | 10 | :train-loss | 0.44829798 | :validate-loss | 0.48035732 |
