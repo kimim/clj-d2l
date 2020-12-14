@@ -14,8 +14,7 @@
             [clj-djl.training.tracker :as tracker]
             [clj-djl.training.optimizer :as optimizer]
             [clj-djl.training :as training]
-            [clj-djl.training.listener :as listener]
-            [clj-djl.metric :as metric])
+            [clj-djl.training.listener :as listener])
   (:import [ai.djl.ndarray.types DataType]
            [ai.djl.basicdataset FashionMnist]
            [ai.djl.training.dataset Dataset$Usage]
@@ -48,8 +47,8 @@
                     (ds/build)
                     (ds/prepare)))
 
-(println "train dataset size: "(.size mnist-train))
-(println "test dataset size: " (.size mnist-test))
+(println "train dataset size: "(nd/size mnist-train))
+(println "test dataset size: " (nd/size mnist-test))
 #+end_src
 
 #+RESULTS:
