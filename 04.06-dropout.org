@@ -261,24 +261,24 @@ epoch  10 , training...validating...
                 (nn/add nn/relu)
                 (nn/add (nn/dropout {:rate dropout2}))
                 (nn/add (nn/linear-block {:units noutputs}))
-                (nn/set-initializer (nn/new-normal-initializer)))
+                (nn/set-initializer (nn/normal-initializer)))
         opt (optimizer/sgd {:tracker (tracker/fixed 0.5)})
         loss (loss/sotfmax-cross-entropy-loss)
         config (t/default-training-config {:loss loss :optimizer opt
                                            :evaluator (t/accuracy)
                                            :listeners (listener/logging)})]
-    (with-open [model (m/new-model {:name "mlp" :block net})
-                trainer (t/new-trainer model config)]
+    (with-open [model (m/model {:name "mlp" :block net})
+                trainer (t/trainer model config)]
       (t/initialize trainer (nd/shape [1 784]))
-      (t/set-metrics trainer (metric/new-metrics))
+      (t/set-metrics trainer (t/metrics))
       (t/fit trainer nepochs (dataset 0) (dataset 1))
       (let [metrics (t/get-metrics trainer)]
         (d2l/plot-lines output
                         ["train loss" "validate loss" "train accuracy"]
                         (range nepochs)
-                        [(map #(.getValue %) (.getMetric metrics "train_epoch_SoftmaxCrossEntropyLoss"))
-                         (map #(.getValue %) (.getMetric metrics "validate_epoch_SoftmaxCrossEntropyLoss"))
-                         (map #(.getValue %) (.getMetric metrics "validate_epoch_Accuracy"))])))))
+                        [(map :value (metrics "train_epoch_SoftmaxCrossEntropyLoss"))
+                         (map :value (metrics "validate_epoch_SoftmaxCrossEntropyLoss"))
+                         (map :value (metrics "validate_epoch_Accuracy"))])))))
 #+end_src
 
 #+begin_src clojure :results value pp :exports both
