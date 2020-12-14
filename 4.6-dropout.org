@@ -20,7 +20,7 @@
 
 
 #+begin_src clojure :results value pp :exports both
-(def ndm (nd/new-base-manager))
+(def ndm (nd/base-manager))
 (defn dropout-layer
   ([^ai.djl.ndarray.NDArray X dropout]
    {:pre [(s/valid? #(<= 0 % 1) dropout)]}
@@ -91,7 +91,7 @@ X
       (doseq [batch (t/iter-seq (ds/get-data train-ds ndm))]
         (let [X (-> batch ds/get-batch-data nd/head)
               y (-> batch ds/get-batch-labels nd/head)]
-          (with-open [gc (-> (t/new-gradient-collector))]
+          (with-open [gc (-> (t/gradient-collector))]
             (let [y-hat (net X true)
                   l (loss-fn y-hat y)
                   a (d2l/accuracy y-hat y)]
