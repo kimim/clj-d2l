@@ -14,14 +14,12 @@
             [clj-djl.training.tracker :as tracker]
             [clj-djl.training.optimizer :as optimizer]
             [clj-djl.training.listener :as listener]
-            [clj-djl.metric :as metric]
             [clj-djl.utils :as utils]
             [clj-d2l.core :as d2l]
             [com.hypirion.clj-xchart :as c])
   (:import [ai.djl.basicdataset FashionMnist]
            [ai.djl.training.listener TrainingListener$Defaults]
-           [ai.djl.nn Activation]
-           [ai.djl.metric Metrics]))
+           [ai.djl.nn Activation]))
 #+end_src
 
 
@@ -93,10 +91,10 @@
     (doseq [evaluator (t/get-evaluators trainer)]
       (swap! evaluator-metrics
              assoc (str "train_epoch_" (.getName evaluator))
-             (map #(.getValue %) (.getMetric metrics (str "train_epoch_" (.getName evaluator)))))
+             (map :value (metrics (str "train_epoch_" (.getName evaluator)))))
       (swap! evaluator-metrics
              assoc (str "validate_epoch_" (.getName evaluator))
-             (map #(.getValue %) (.getMetric metrics (str "validate_epoch_" (.getName evaluator))))))))
+             (map :value (metrics (str "validate_epoch_" (.getName evaluator))))))))
 #+end_src
 
 #+begin_src clojure :results silent :exports both

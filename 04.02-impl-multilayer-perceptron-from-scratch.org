@@ -14,7 +14,6 @@
             [clj-djl.training.tracker :as tracker]
             [clj-djl.training.optimizer :as optimizer]
             [clj-djl.training.listener :as listener]
-            [clj-djl.metric :as metric]
             [clj-d2l.core :as d2l]
             [com.hypirion.clj-xchart :as c])
   (:import [ai.djl.basicdataset FashionMnist]))
@@ -42,7 +41,7 @@
 (def ninputs 784)
 (def noutputs 10)
 (def nhiddens 256)
-(def manager (nd/new-base-manager))
+(def manager (nd/base-manager))
 (def W1 (nd/random-normal manager 0 0.01 [ninputs nhiddens] :float32 (nd/default-device)))
 (def b1 (nd/zeros manager [nhiddens]))
 (def W2 (nd/random-normal manager 0 0.01 [nhiddens noutputs] :float32 (nd/default-device)))
@@ -92,14 +91,14 @@
   (doseq [batch (ds/get-data-iterator mnist-train manager)]
     (let [X (nd/head (ds/get-batch-data batch))
           y (nd/head (ds/get-batch-labels batch))]
-      (with-open [gc (t/new-gradient-collector)
+      (with-open [gc (t/gradient-collector)
                   yhat (net X)
                   lossvalue (.evaluate loss (nd/ndlist [y]) (nd/ndlist [yhat]))
                   l (nd/* lossvalue batch-size)]
         (swap! epoch-loss + (nd/get-element(nd/sum l)))
         (swap! accuracy-val + (d2l/accuracy yhat y))
         (.backward gc l))
-      (.close batch)
+      (ds/close-batch batch)
       (d2l/sgd params lr batch-size)))
   (swap! train-loss conj (/ @epoch-loss (nd/size mnist-train)))
   (swap! train-accuracy conj (/ @accuracy-val (nd/size mnist-train)))
