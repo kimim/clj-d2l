@@ -4,8 +4,8 @@
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [clj-djl "0.1.3"]
-                 [clj-djl/dataframe "0.1.1"]
+                 [clj-djl "0.1.4"]
+                 [clj-djl/dataframe "0.1.2"]
                  [dm3/stopwatch "0.1.1"]
                  [com.hypirion/clj-xchart "0.2.0"]]
   :repositories [["jitpack" "https://jitpack.io"]]
