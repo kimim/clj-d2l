@@ -56,7 +56,7 @@
 (defn train [lambd]
   (let [nepochs 100
         lr 0.003
-        w (nd/random-normal ndm 0 1.0 [ninputs 1] :float)
+        w (nd/random-normal ndm 0 1.0 [ninputs 1] :float32)
         b (nd/zeros ndm [1])
         _ (dorun (map nd/attach-gradient [w b]))
         params (nd/ndlist w b)]
@@ -127,7 +127,7 @@
 (defn train-concise [wd]
   (let [nepochs 100
         lr 0.003
-        w (nd/random-normal ndm 0 1.0 [ninputs 1] :float)
+        w (nd/random-normal ndm 0 1.0 [ninputs 1] :float32)
         b (nd/zeros ndm [1])
         _ (dorun (map nd/attach-gradient [w b]))
         params (nd/ndlist w b)
