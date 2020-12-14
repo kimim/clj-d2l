@@ -14,7 +14,6 @@
    [clj-djl.training.optimizer :as optimizer]
    [clj-djl.training.tracker :as tracker]
    [clj-djl.training.listener :as listener]
-   [clj-djl.metric :as metric]
    [clj-djl.model :as m]
    [clj-djl.nn :as nn]
    [clj-djl.device :as dev]
@@ -22,10 +21,10 @@
 #+end_src
 
 #+begin_src clojure :results silent :exports both
-(def ndm (nd/new-base-manager))
+(def ndm (nd/base-manager))
 (def x (nd/arange ndm -8.0 8.0 0.1))
 (t/attach-gradient x)
-(with-open [gc (t/new-gradient-collector)]
+(with-open [gc (t/gradient-collector)]
   (let [y (nn/sigmoid x)]
     (t/backward gc y)
     (d2l/plot-lines "figure/numerical_stability_1.svg"

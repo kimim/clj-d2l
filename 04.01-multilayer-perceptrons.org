@@ -13,7 +13,6 @@
             [clj-djl.training.tracker :as tracker]
             [clj-djl.training.optimizer :as optimizer]
             [clj-djl.training.listener :as listener]
-            [clj-djl.metric :as metric]
             [com.hypirion.clj-xchart :as c]))
 #+end_src
 
@@ -49,7 +48,7 @@ ReLU(z) = max(z, 0)
 #+end_export
 
 #+begin_src clojure :results silent :exports both
-(def manager (nd/new-base-manager))
+(def manager (nd/base-manager))
 (def x (nd/arange manager -8.0 8.0 0.1))
 (nd/attach-gradient x)
 (def y (nn/relu x))
@@ -68,7 +67,7 @@ The derivative of the relu function is:
 #+begin_src clojure :results silent :exports both
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/relu x)]
-    (.backward gc y)))
+    (training/backward gc y)))
 
 (def res (nd/get-gradient x))
 (def X (nd/to-vec x))
@@ -107,7 +106,7 @@ The derivative of the sigmoid function is:
 #+begin_src clojure :results silent :exports both
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/sigmoid x)]
-    (.backward gc y)))
+    (training/backward gc y)))
 
 (def res (nd/get-gradient x))
 (def Y (nd/to-vec res))
@@ -146,7 +145,7 @@ The derivative of the Tanh function is:
 #+begin_src clojure :results silent :exports both
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/tanh x)]
-    (.backward gc y)))
+    (training/backward gc y)))
 
 (def res (nd/get-gradient x))
 (def Y (nd/to-vec res))

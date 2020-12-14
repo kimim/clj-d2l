@@ -16,8 +16,7 @@
             [clj-djl.training.tracker :as tracker]
             [clj-djl.training.optimizer :as optimizer]
             [clj-djl.training :as training]
-            [clj-djl.training.listener :as listener]
-            [clj-djl.metric :as metric])
+            [clj-djl.training.listener :as listener])
   (:import [ai.djl.ndarray.types DataType]
            [java.nio.file Paths]))
 #+end_src
@@ -103,7 +102,7 @@
 ** Metrics
 
 #+begin_src clojure :results silent :exports both
-(def metrics (metric/new-metrics))
+(def metrics (training/metrics))
 (training/set-metrics trainer metrics)
 #+end_src
 

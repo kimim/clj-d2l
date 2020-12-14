@@ -85,7 +85,7 @@
             trainer (m/new-trainer model config)]
   (-> trainer
       (t/initialize [(nd/shape [1 784])])
-      (t/set-metrics (Metrics.))
+      (t/set-metrics (t/metrics))
       (t/fit nepochs mnist-train mnist-test))
   (reset! evals (t/get-evaluators trainer))
   (reset! mets (t/get-metrics trainer))
