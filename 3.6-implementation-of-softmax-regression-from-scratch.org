@@ -15,7 +15,6 @@
             [clj-djl.training.optimizer :as optimizer]
             [clj-djl.training :as training]
             [clj-djl.training.listener :as listener]
-            [clj-djl.metric :as metric]
             [clj-d2l.core :as d2l])
   (:import [ai.djl.ndarray.types DataType]
            [ai.djl.basicdataset FashionMnist]
@@ -46,8 +45,8 @@
                     (ds/build)
                     (ds/prepare)))
 
-(println "train dataset size: "(.size mnist-train))
-(println "test dataset size: " (.size mnist-test))
+(println "train dataset size: "(nd/size mnist-train))
+(println "test dataset size: " (nd/size mnist-test))
 #+end_src
 
 #+RESULTS:
@@ -59,8 +58,8 @@
 #+begin_src clojure :results silent :exports both
 (def num-inputs 784)
 (def num-outputs 10)
-(def manager (nd/new-base-manager))
-(def W (nd/random-normal manager 0 0.01 [num-inputs num-outputs] DataType/FLOAT32 (device/default-device)))
+(def manager (nd/base-manager))
+(def W (nd/random-normal manager 0 0.01 [num-inputs num-outputs] :float32 (device/default-device)))
 (def b (nd/zeros manager [num-outputs] :float32))
 #+end_src
 
@@ -80,22 +79,17 @@
 ND: (1, 3) cpu() int64
 [[ 5,  7,  9],
 ]
-
 ND: (2, 1) cpu() int64
 [[ 6],
  [15],
 ]
-
 ND: (1, 1) cpu() int64
 [[21],
 ]
-
 ND: () cpu() int64
 21
-
 ND: () cpu() int64
 21
-
 #+end_example
 
 
@@ -112,13 +106,11 @@ ND: () cpu() int64
 
 #+RESULTS:
 : ND: (2, 5) cpu() float32
-: [[0.0751, 0.2678, 0.195 , 0.3406, 0.1216],
-:  [0.0554, 0.4219, 0.0528, 0.1088, 0.3611],
+: [[0.3466, 0.1384, 0.3952, 0.0768, 0.043 ],
+:  [0.2207, 0.1179, 0.022 , 0.2144, 0.4251],
 : ]
-:
 : ND: (2) cpu() float32
-: [1.    , 1.    ]
-:
+: [1., 1.]
 
 ** The Model
 
@@ -145,7 +137,6 @@ ND: () cpu() int64
 : [[0.1],
 :  [0.5],
 : ]
-:
 
 #+begin_src clojure :results output :exports both
 (defn cross-entropy [y-hat y]
@@ -161,7 +152,6 @@ ND: () cpu() int64
 : [[2.3026],
 :  [0.6931],
 : ]
-:
 
 ** Classification Accuracy
 
@@ -182,21 +172,21 @@ ND: () cpu() int64
 (defn evaluate-accuracy [net data-iter]
   (let [acc (atom [0 0])]
     (doseq [batch (training/iter-seq data-iter)]
-      (let [X (nd/head (.getData batch))
-            y (nd/head (.getLabels batch))]
+      (let [X (nd/head (ds/get-batch-data batch))
+            y (nd/head (ds/get-batch-labels batch))]
         (swap! acc update 0 + (accuracy (net X) y))
         (swap! acc update 1 + (nd/size y))
-        (.close batch)))
+        (ds/close-batch batch)))
     (reduce / @acc)))
 #+end_src
 
 
 #+begin_src clojure :results value :exports both
-(evaluate-accuracy net (.getData mnist-test manager))
+(evaluate-accuracy net (ds/get-data mnist-test manager))
 #+end_src
 
 #+RESULTS:
-: 0.0524
+: 0.0675
 
 
 ** Model Training
@@ -226,18 +216,18 @@ ND: () cpu() int64
         (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
           (let [y-hat (net X)
                 l (loss y-hat y)]
-            (.backward gc l)
+            (training/backward gc l)
             (accumulate acc (nd/get-element (nd/sum l)) (accuracy y-hat y) (nd/size y)))))
       (sgd [W b] lr batch-size)
-      (.close batch))
+      (ds/close-batch batch))
     [(/ (@acc 0) (@acc 2)) (/ (@acc 1) (@acc 2))]))
 #+end_src
 
 #+begin_src clojure :results silent :exports both
 (defn train-ch3 [net train-ds test-ds lr loss num-epochs updater]
   (doseq [i (range num-epochs)]
-    (let [train-metrics (train-epoch-ch3 net (.getData train-ds manager) lr loss updater)
-          accuracy (evaluate-accuracy net (.getData test-ds manager))
+    (let [train-metrics (train-epoch-ch3 net (ds/get-data train-ds manager) lr loss updater)
+          accuracy (evaluate-accuracy net (ds/get-data test-ds manager))
           train-accuracy (get train-metrics 1)
           train-loss (get train-metrics 0)]
       (println "Epoch " i ": Test Accuracy: " accuracy)
@@ -253,24 +243,24 @@ ND: () cpu() int64
 #+end_src
 
 #+RESULTS:
-: Epoch  0 : Test Accuracy:  0.8213
-: Train Accuracy:  0.8322333333333334
-: Train Loss:  0.5015458701451619
-: Epoch  1 : Test Accuracy:  0.8249
-: Train Accuracy:  0.83705
-: Train Loss:  0.48598715953826904
-: Epoch  2 : Test Accuracy:  0.8276
-: Train Accuracy:  0.8399166666666666
-: Train Loss:  0.47418531277974446
+: Epoch  0 : Test Accuracy:  0.7923
+: Train Accuracy:  0.74795
+: Train Loss:  0.7867562699635824
+: Epoch  1 : Test Accuracy:  0.8123
+: Train Accuracy:  0.81455
+: Train Loss:  0.5689848224639893
+: Epoch  2 : Test Accuracy:  0.8187
+: Train Accuracy:  0.8252166666666667
+: Train Loss:  0.5255329947153727
 
 
 ** Prediction
 
 #+begin_src clojure :results output :exports both
 (defn predict-ch3 [net dataset ndmanager]
-  (let [batch (.next (.getData dataset ndmanager))
+  (let [batch (.next (ds/get-data dataset ndmanager))
         X (nd/head (ds/get-batch-data batch))
-        y-hat (.argMax (net X) 1)
+        y-hat (nd/argmax (net X) 1)
         y (nd/head (ds/get-batch-labels batch))]
     [y-hat y]))
 
@@ -280,5 +270,5 @@ ND: () cpu() int64
 #+end_src
 
 #+RESULTS:
-: Prediction:    (0 3 1 9 0 3 8 4 8 6 4 5 9 3 3 5 3 9 3 1)
-: Actual label:  (6 3 1 9 0 3 8 2 8 4 4 5 9 3 3 5 4 9 3 1)
+: Prediction:    (3 8 0 9 2 3 4 0 3 3 0 7 9 6 8 1 6 2 3 2)
+: Actual label:  (0 8 0 9 2 4 4 6 3 6 3 5 9 6 8 1 3 2 0 2)
