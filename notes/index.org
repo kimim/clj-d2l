@@ -1,4 +1,4 @@
-#+TITLE: Index
+#+TITLE: Dive into Deep Learning with Clojure DJL
 
 This is the Clojure fork of famous Deep Learning AI book D2L.ai.
 
