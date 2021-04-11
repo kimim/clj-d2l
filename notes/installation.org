@@ -35,3 +35,10 @@ sudo ./linux-install-1.10.2.774.sh
 * Install Emacs
 
 Refer to my emacs configuration guide: http://kimi.im/kimim-emacs
+
+* Clone the orgmode files
+
+#+begin_src shell
+git clone https://github.com/kimim/clj-d2l
+cd clj-djl
+#+end_src
