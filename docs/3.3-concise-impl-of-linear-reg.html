@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-04-11 Sun 08:37 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href="sitemap.html"> UP </a>
+ |
+ <a accesskey="H" href="index.html"> HOME </a>
+</div><div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org8498ae8">1. Concise Implementation of Linear Regression</a>
+<ul>
+<li><a href="#org357ea09">1.1. Generating the Dataset</a></li>
+<li><a href="#orgc47afc2">1.2. Reading the Dataset</a></li>
+</ul>
+</li>
+<li><a href="#orge0b99f0">2. Defining the Model</a>
+<ul>
+<li><a href="#org4e30ed1">2.1. Defining the Loss Function</a></li>
+<li><a href="#org0919ccd">2.2. Defining the Optimization Algorithm</a></li>
+<li><a href="#org5fa582a">2.3. Instantiate Configuration and Trainer</a></li>
+<li><a href="#org596a915">2.4. Initializing Model Parameters</a></li>
+<li><a href="#org888d2cb">2.5. Metrics</a></li>
+<li><a href="#org9cc8ae0">2.6. Training</a></li>
+<li><a href="#org286a885">2.7. Saving Your Model</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8498ae8" class="outline-2">
+<h2 id="org8498ae8"><span class="section-number-2">1</span> Concise Implementation of Linear Regression</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org357ea09" class="outline-3">
+<h3 id="org357ea09"><span class="section-number-3">1.1</span> Generating the Dataset</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">ns</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">clj-d2l.linreg-easy</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:require</span> <span style="color: #b0b1a3;">[</span>clojure.java.io <span style="color: #00eeee;">:as</span> io<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.ndarray <span style="color: #00eeee;">:as</span> nd<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.device <span style="color: #00eeee;">:as</span> device<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.engine <span style="color: #00eeee;">:as</span> engine<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.training.dataset <span style="color: #00eeee;">:as</span> ds<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.model <span style="color: #00eeee;">:as</span> model<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.nn <span style="color: #00eeee;">:as</span> nn<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.training.loss <span style="color: #00eeee;">:as</span> loss<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> training<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.metric <span style="color: #00eeee;">:as</span> metric<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:import</span> <span style="color: #b0b1a3;">[</span>ai.djl.ndarray.types DataType<span style="color: #b0b1a3;">]</span>
+           <span style="color: #b0b1a3;">[</span>java.nio.file Paths<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">synthetic-data</span> <span style="color: #93a8c6;">[</span>ndm w b num<span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>X <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #aebed8;">[</span>num <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/size w<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
+        y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/+ <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/dot X w<span style="color: #aebed8;">)</span> b<span style="color: #97b098;">)</span>
+        noise <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 0.01 <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-shape y<span style="color: #aebed8;">)</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">DataType</span>/FLOAT32<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
+    <span style="color: #b0b1a3;">[</span>X <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/+ y noise<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">ndm</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">true-w</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #b0b1a3;">(</span>float-array <span style="color: #97b098;">[</span>2 -3.4<span style="color: #97b098;">]</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">true-b</span> 4.2<span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">dp</span> <span style="color: #93a8c6;">(</span>synthetic-data ndm true-w true-b 1000<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">features</span> <span style="color: #93a8c6;">(</span>get dp 0<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">labels</span> <span style="color: #93a8c6;">(</span>get dp 1<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span>println <span style="color: #32cd32;">"features(0): "</span><span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get features <span style="color: #97b098;">[</span>0<span style="color: #97b098;">]</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span>println <span style="color: #32cd32;">"labels(0): "</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-element labels <span style="color: #b0b1a3;">[</span>0<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+features(0):  [2.2122064 1.1630787]
+labels(0):  4.662078
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgc47afc2" class="outline-3">
+<h3 id="orgc47afc2"><span class="section-number-3">1.2</span> Reading the Dataset</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">batch-size</span> 10<span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">dataset</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/new-array-dataset-builder<span style="color: #b0b1a3;">)</span>
+                 <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/set-data features<span style="color: #b0b1a3;">)</span>
+                 <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/opt-labels labels<span style="color: #b0b1a3;">)</span>
+                 <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size <span style="color: #00eeee;">false</span><span style="color: #b0b1a3;">)</span>
+                 <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge0b99f0" class="outline-2">
+<h2 id="orge0b99f0"><span class="section-number-2">2</span> Defining the Model</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">model</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/new-instance <span style="color: #32cd32;">"lin-reg"</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">net</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/sequential-block<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">linear-block</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/new-linear-builder<span style="color: #b0b1a3;">)</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/opt-bias <span style="color: #00eeee;">true</span><span style="color: #b0b1a3;">)</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/set-units 1<span style="color: #b0b1a3;">)</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/build<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add net linear-block<span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/set-block model net<span style="color: #8c8c8c;">)</span>
+#_<span style="color: #8c8c8c;">(</span><span style="color: #3cb371;">def linear-block </span><span style="color: #93a8c6;">(</span><span style="color: #3cb371;">nn/linear </span><span style="color: #b0b1a3;">{</span><span style="color: #3cb371;">:opt-bias true</span>
+<span style="color: #3cb371;">                                :units 1</span><span style="color: #b0b1a3;">}</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org4e30ed1" class="outline-3">
+<h3 id="org4e30ed1"><span class="section-number-3">2.1</span> Defining the Loss Function</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">loss</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">loss</span>/l2-loss<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org0919ccd" class="outline-3">
+<h3 id="org0919ccd"><span class="section-number-3">2.2</span> Defining the Optimization Algorithm</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">lrt</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">tracker</span>/fixed 0.3<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">sgd</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">optimizer</span>/sgd<span style="color: #b0b1a3;">)</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">optimizer</span>/set-learning-rate-tracker lrt<span style="color: #b0b1a3;">)</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">optimizer</span>/build<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org5fa582a" class="outline-3">
+<h3 id="org5fa582a"><span class="section-number-3">2.3</span> Instantiate Configuration and Trainer</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">config</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/new-default-training-config loss<span style="color: #b0b1a3;">)</span>
+                <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/opt-optimizer sgd<span style="color: #b0b1a3;">)</span>
+                <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/add-training-listeners <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">listener</span>/logging<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">trainer</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/new-trainer model config<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org596a915" class="outline-3">
+<h3 id="org596a915"><span class="section-number-3">2.4</span> Initializing Model Parameters</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/initialize trainer <span style="color: #93a8c6;">[</span><span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/shape batch-size 2<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org888d2cb" class="outline-3">
+<h3 id="org888d2cb"><span class="section-number-3">2.5</span> Metrics</h3>
+<div class="outline-text-3" id="text-2-5">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">metrics</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">metric</span>/new-metrics<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/set-metrics trainer metrics<span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org9cc8ae0" class="outline-3">
+<h3 id="org9cc8ae0"><span class="section-number-3">2.6</span> Training</h3>
+<div class="outline-text-3" id="text-2-6">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">epochs</span> 3<span style="color: #8c8c8c;">)</span>
+
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #93a8c6;">[</span>epoch <span style="color: #b0b1a3;">(</span>range epochs<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #b0b1a3;">[</span>batch <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/iterate-dataset trainer dataset<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/train-batch trainer batch<span style="color: #b0b1a3;">)</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/step trainer<span style="color: #b0b1a3;">)</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/notify-listeners trainer <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">fn</span> <span style="color: #97b098;">[</span>listner<span style="color: #97b098;">]</span> <span style="color: #97b098;">(</span>.onEpoch listner trainer<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+
+Training:      1% |█                                       | L2Loss: _
+Training:      2% |█                                       | L2Loss: _
+Training:      3% |██                                      | L2Loss: _
+Training:      4% |██                                      | L2Loss: _
+Training:      5% |███                                     | L2Loss: 6.83
+Training:      6% |███                                     | L2Loss: 6.83
+Training:      7% |███                                     | L2Loss: 6.83
+Training:      8% |████                                    | L2Loss: 6.83
+Training:      9% |████                                    | L2Loss: 6.83
+Training:     10% |█████                                   | L2Loss: 3.45
+Training:     20% |█████████                               | L2Loss: 1.73
+Training:     30% |█████████████                           | L2Loss: 1.15
+Training:     40% |█████████████████                       | L2Loss: 0.86
+Training:     50% |█████████████████████                   | L2Loss: 0.69
+Training:     60% |█████████████████████████               | L2Loss: 0.58
+Training:     70% |█████████████████████████████           | L2Loss: 0.49
+Training:     80% |█████████████████████████████████       | L2Loss: 0.43
+Training:     90% |█████████████████████████████████████   | L2Loss: 0.38
+Training:    100% |████████████████████████████████████████| L2Loss: 0.35
+Training:      1% |█                                       | L2Loss: 0.35
+Training:      2% |█                                       | L2Loss: 0.35
+Training:      3% |██                                      | L2Loss: 0.35
+Training:      4% |██                                      | L2Loss: 0.35
+Training:      5% |███                                     | L2Loss: 4.90E-05
+Training:      6% |███                                     | L2Loss: 4.90E-05
+Training:      7% |███                                     | L2Loss: 4.90E-05
+Training:      8% |████                                    | L2Loss: 4.90E-05
+Training:      9% |████                                    | L2Loss: 4.90E-05
+Training:     10% |█████                                   | L2Loss: 4.47E-05
+Training:     20% |█████████                               | L2Loss: 5.39E-05
+Training:     30% |█████████████                           | L2Loss: 5.40E-05
+Training:     40% |█████████████████                       | L2Loss: 5.12E-05
+Training:     50% |█████████████████████                   | L2Loss: 5.70E-05
+Training:     60% |█████████████████████████               | L2Loss: 5.75E-05
+Training:     70% |█████████████████████████████           | L2Loss: 5.76E-05
+Training:     80% |█████████████████████████████████       | L2Loss: 5.71E-05
+Training:     90% |█████████████████████████████████████   | L2Loss: 5.61E-05
+Training:    100% |████████████████████████████████████████| L2Loss: 5.51E-05
+Training:      1% |█                                       | L2Loss: 5.51E-05
+Training:      2% |█                                       | L2Loss: 5.51E-05
+Training:      3% |██                                      | L2Loss: 5.51E-05
+Training:      4% |██                                      | L2Loss: 5.51E-05
+Training:      5% |███                                     | L2Loss: 4.90E-05
+Training:      6% |███                                     | L2Loss: 4.90E-05
+Training:      7% |███                                     | L2Loss: 4.90E-05
+Training:      8% |████                                    | L2Loss: 4.90E-05
+Training:      9% |████                                    | L2Loss: 4.90E-05
+Training:     10% |█████                                   | L2Loss: 4.47E-05
+Training:     20% |█████████                               | L2Loss: 5.39E-05
+Training:     30% |█████████████                           | L2Loss: 5.40E-05
+Training:     50% |█████████████████████                   | L2Loss: 5.70E-05
+Training:     60% |█████████████████████████               | L2Loss: 5.75E-05
+Training:     70% |█████████████████████████████           | L2Loss: 5.76E-05
+Training:     80% |█████████████████████████████████       | L2Loss: 5.71E-05
+Training:     90% |█████████████████████████████████████   | L2Loss: 5.61E-05
+Training:    100% |████████████████████████████████████████| L2Loss: 5.51E-05
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 1 finished.
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Train: L2Loss: 0.35
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 2 finished.
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Train: L2Loss: 5.51E-05
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 3 finished.
+[nREPL-session-1668919d-4e1e-4463-b305-8ea719072cc6] INFO ai.djl.training.listener.LoggingTrainingListener - Train: L2Loss: 5.51E-05
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">params</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> model <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/get-block<span style="color: #b0b1a3;">)</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/get-parameters<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">w</span> <span style="color: #93a8c6;">(</span>.getArray <span style="color: #b0b1a3;">(</span>.valueAt params 0<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">b</span> <span style="color: #93a8c6;">(</span>.getArray <span style="color: #b0b1a3;">(</span>.valueAt params 1<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">w-error</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/- true-w <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/reshape w <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-shape true-w<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span>println <span style="color: #32cd32;">"Error in estimating w:"</span> <span style="color: #93a8c6;">(</span>vec w-error<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span>println <span style="color: #32cd32;">"Error in estimating w:"</span> <span style="color: #93a8c6;">(</span>- true-b <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-element b<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+Error in estimating w: [0.0013849735 -0.0010635853]
+Error in estimating w: 1.0366439819353701E-4
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org286a885" class="outline-3">
+<h3 id="org286a885"><span class="section-number-3">2.7</span> Saving Your Model</h3>
+<div class="outline-text-3" id="text-2-7">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">save-model</span> <span style="color: #93a8c6;">[</span>model path epoch name<span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>nio-path <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">java.nio.file.Paths</span>/get path <span style="color: #aebed8;">(</span>into-array <span style="color: #b0b0b3;">[</span><span style="color: #32cd32;">""</span><span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">io</span>/make-parents path<span style="color: #b0b1a3;">)</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/set-property model <span style="color: #32cd32;">"Epoch"</span> epoch<span style="color: #b0b1a3;">)</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/save model nio-path name<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+
+<span style="color: #8c8c8c;">(</span>save-model model <span style="color: #32cd32;">"models/lin-reg"</span> <span style="color: #32cd32;">"3"</span> <span style="color: #32cd32;">"lin-reg"</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span>println <span style="color: #93a8c6;">(</span>str model<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+Model (
+	Name: lin-reg
+	Model location: /home/kimim/workspace/clj-d2l/models/lin-reg
+	Data Type: float32
+	Epoch: 3
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2021-04-11 Sun 08:37</p>
+</div>
+</body>
+</html>

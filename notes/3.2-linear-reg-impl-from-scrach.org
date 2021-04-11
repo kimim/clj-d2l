@@ -42,14 +42,14 @@ Now we can show the data with plotly:
 (let [x (nd/to-vec (nd/get features ":, 1"))
       y (nd/to-vec labels)]
   (d2l/plot-scatter
-   "figure/synthetic_data.svg"
+   "../figure/synthetic_data.svg"
    "data"
    x
    y))
 #+end_src
 
 #+RESULTS:
-[[./figure/synthetic_data.svg]]
+[[../figure/synthetic_data.svg]]
 
 
 ** Reading the Dataset

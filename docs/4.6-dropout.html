@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-04-11 Sun 08:37 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href="sitemap.html"> UP </a>
+ |
+ <a accesskey="H" href="index.html"> HOME </a>
+</div><div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org998329a">1. Dropout</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org998329a" class="outline-2">
+<h2 id="org998329a"><span class="section-number-2">1</span> Dropout</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">ns</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">clj-d2l.dropout</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:require</span>
+   <span style="color: #b0b1a3;">[</span>clojure.spec.alpha <span style="color: #00eeee;">:as</span> s<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.ndarray <span style="color: #00eeee;">:as</span> nd<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> t<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.training.dataset <span style="color: #00eeee;">:as</span> ds<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.training.loss <span style="color: #00eeee;">:as</span> loss<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.model <span style="color: #00eeee;">:as</span> m<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.nn <span style="color: #00eeee;">:as</span> nn<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-djl.device <span style="color: #00eeee;">:as</span> dev<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">[</span>clj-d2l.core <span style="color: #00eeee;">:as</span> d2l<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">ndm</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">dropout-layer</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #b0b1a3;">[</span><span style="color: #ffffff; background-color: #262626;">^</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ai.djl.ndarray.NDArray</span> X dropout<span style="color: #b0b1a3;">]</span>
+   <span style="color: #b0b1a3;">{</span><span style="color: #00eeee;">:pre</span> <span style="color: #97b098;">[</span><span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">s</span>/valid? #<span style="color: #b0b0b3;">(</span>&lt;= 0 <span style="color: #ffffff;">%</span> 1<span style="color: #b0b0b3;">)</span> dropout<span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span><span style="color: #b0b1a3;">}</span>
+   <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">condp</span> = dropout
+     1 <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/zeros-like X<span style="color: #97b098;">)</span>
+     0 X
+     <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-uniform ndm 0 1 <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/shape X<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+         <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/&gt; dropout<span style="color: #aebed8;">)</span>
+         <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-type <span style="color: #00eeee;">:float32</span> <span style="color: #00eeee;">false</span><span style="color: #aebed8;">)</span>
+         <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* X<span style="color: #aebed8;">)</span>
+         <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>// <span style="color: #b0b0b3;">(</span>- 1.0 dropout<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">X</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 16<span style="color: #b0b1a3;">)</span>
+           <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/reshape 2 8<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+X
+</pre>
+</div>
+
+<pre class="example">
+ND: (2, 8) cpu() int32
+[[ 0,  1,  2,  3,  4,  5,  6,  7],
+ [ 8,  9, 10, 11, 12, 13, 14, 15],
+]
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>dropout-layer X 0<span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (2, 8) cpu() int32
+[[ 0,  1,  2,  3,  4,  5,  6,  7],
+ [ 8,  9, 10, 11, 12, 13, 14, 15],
+]
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>dropout-layer X 1<span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (2, 8) cpu() int32
+[[ 0,  0,  0,  0,  0,  0,  0,  0],
+ [ 0,  0,  0,  0,  0,  0,  0,  0],
+]
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>dropout-layer X 0.5<span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (2, 8) cpu() float32
+[[ 0.,  2.,  4.,  6.,  0.,  0., 12.,  0.],
+ [16., 18., 20., 22., 24.,  0., 28., 30.],
+]
+</pre>
+
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">train</span> <span style="color: #93a8c6;">[</span>ndm net train-ds test-ds nepochs loss-fn updater-fn<span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>results <span style="color: #97b098;">(</span>atom <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:epoch</span> <span style="color: #b0b0b3;">[]</span>
+                       <span style="color: #00eeee;">:train-loss</span> <span style="color: #b0b0b3;">[]</span>
+                       <span style="color: #00eeee;">:train-accuracy</span> <span style="color: #b0b0b3;">[]</span>
+                       <span style="color: #00eeee;">:test-loss</span> <span style="color: #b0b0b3;">[]</span>
+                       <span style="color: #00eeee;">:test-accuracy</span> <span style="color: #b0b0b3;">[]</span><span style="color: #aebed8;">}</span><span style="color: #97b098;">)</span>
+        acc <span style="color: #97b098;">(</span>atom <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:size</span> 0
+                   <span style="color: #00eeee;">:loss</span> 0
+                   <span style="color: #00eeee;">:accuracy</span> 0<span style="color: #aebed8;">}</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #97b098;">[</span>i <span style="color: #aebed8;">(</span>range <span style="color: #b0b0b3;">(</span>inc nepochs<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span>
+      <span style="color: #97b098;">(</span>print <span style="color: #32cd32;">"epoch "</span> i <span style="color: #32cd32;">", training..."</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span>swap! results assoc-in <span style="color: #aebed8;">[</span><span style="color: #00eeee;">:epoch</span> i<span style="color: #aebed8;">]</span> i<span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #aebed8;">[</span>batch <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/iter-seq <span style="color: #90a890;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-data train-ds ndm<span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">]</span>
+        <span style="color: #aebed8;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b0b3;">[</span>X <span style="color: #90a890;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> batch <span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #90a890;">)</span>
+              y <span style="color: #90a890;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> batch <span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #90a890;">)</span><span style="color: #b0b0b3;">]</span>
+          <span style="color: #b0b0b3;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #90a890;">[</span>gc <span style="color: #a2b6da;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #9cb6ad;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/new-gradient-collector<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span><span style="color: #90a890;">]</span>
+            <span style="color: #90a890;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #a2b6da;">[</span>y-hat <span style="color: #9cb6ad;">(</span>net X <span style="color: #00eeee;">true</span><span style="color: #9cb6ad;">)</span>
+                  l <span style="color: #9cb6ad;">(</span>loss-fn y-hat y<span style="color: #9cb6ad;">)</span>
+                  a <span style="color: #9cb6ad;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/accuracy y-hat y<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">]</span>
+              <span style="color: #a2b6da;">(</span>.backward gc l<span style="color: #a2b6da;">)</span>
+              <span style="color: #a2b6da;">(</span>swap! acc update <span style="color: #00eeee;">:size</span> + <span style="color: #9cb6ad;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/size y<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span>
+              <span style="color: #a2b6da;">(</span>swap! acc update <span style="color: #00eeee;">:loss</span> + <span style="color: #9cb6ad;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #8c8c8c;">)</span><span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span>
+              <span style="color: #a2b6da;">(</span>swap! acc update <span style="color: #00eeee;">:accuracy</span> +  a<span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+        <span style="color: #aebed8;">(</span>updater-fn<span style="color: #aebed8;">)</span>
+        <span style="color: #aebed8;">(</span>.close batch<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+
+      <span style="color: #97b098;">(</span>swap! results assoc-in <span style="color: #aebed8;">[</span><span style="color: #00eeee;">:train-loss</span> i<span style="color: #aebed8;">]</span> <span style="color: #aebed8;">(</span>/ <span style="color: #b0b0b3;">(</span>@acc <span style="color: #00eeee;">:loss</span><span style="color: #b0b0b3;">)</span> <span style="color: #b0b0b3;">(</span>@acc <span style="color: #00eeee;">:size</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span>swap! results assoc-in <span style="color: #aebed8;">[</span><span style="color: #00eeee;">:train-accuracy</span> i<span style="color: #aebed8;">]</span> <span style="color: #aebed8;">(</span>/ <span style="color: #b0b0b3;">(</span>@acc <span style="color: #00eeee;">:accuracy</span><span style="color: #b0b0b3;">)</span> <span style="color: #b0b0b3;">(</span>@acc <span style="color: #00eeee;">:size</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span>reset! acc <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:size</span> 0 <span style="color: #00eeee;">:loss</span> 0 <span style="color: #00eeee;">:accuracy</span> 0<span style="color: #aebed8;">}</span><span style="color: #97b098;">)</span>
+
+      <span style="color: #97b098;">(</span>println <span style="color: #32cd32;">"validating..."</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #aebed8;">[</span>batch <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/iter-seq <span style="color: #90a890;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-data test-ds ndm<span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">]</span>
+        <span style="color: #aebed8;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b0b3;">[</span>X <span style="color: #90a890;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> batch <span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #90a890;">)</span>
+              y <span style="color: #90a890;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> batch <span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #90a890;">)</span><span style="color: #b0b0b3;">]</span>
+          <span style="color: #b0b0b3;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #90a890;">[</span>y-hat <span style="color: #a2b6da;">(</span>net X <span style="color: #00eeee;">false</span><span style="color: #a2b6da;">)</span>
+                l <span style="color: #a2b6da;">(</span>loss-fn y-hat y<span style="color: #a2b6da;">)</span>
+                a <span style="color: #a2b6da;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/accuracy y-hat y<span style="color: #a2b6da;">)</span><span style="color: #90a890;">]</span>
+            <span style="color: #90a890;">(</span>swap! acc update <span style="color: #00eeee;">:size</span> + <span style="color: #a2b6da;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/size y<span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span>
+            <span style="color: #90a890;">(</span>swap! acc update <span style="color: #00eeee;">:loss</span> + <span style="color: #a2b6da;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #9cb6ad;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #9cb6ad;">)</span><span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span>
+            <span style="color: #90a890;">(</span>swap! acc update <span style="color: #00eeee;">:accuracy</span> +  a<span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span>swap! results assoc-in <span style="color: #aebed8;">[</span><span style="color: #00eeee;">:test-loss</span> i<span style="color: #aebed8;">]</span> <span style="color: #aebed8;">(</span>/ <span style="color: #b0b0b3;">(</span>@acc <span style="color: #00eeee;">:loss</span><span style="color: #b0b0b3;">)</span> <span style="color: #b0b0b3;">(</span>@acc <span style="color: #00eeee;">:size</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span>swap! results assoc-in <span style="color: #aebed8;">[</span><span style="color: #00eeee;">:test-accuracy</span> i<span style="color: #aebed8;">]</span> <span style="color: #aebed8;">(</span>/ <span style="color: #b0b0b3;">(</span>@acc <span style="color: #00eeee;">:accuracy</span><span style="color: #b0b0b3;">)</span> <span style="color: #b0b0b3;">(</span>@acc <span style="color: #00eeee;">:size</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span>
+    @results<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">softmax</span> <span style="color: #93a8c6;">[</span>ndarray<span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>Xexp <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/exp ndarray<span style="color: #97b098;">)</span>
+        partition <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/sum Xexp <span style="color: #aebed8;">[</span>1<span style="color: #aebed8;">]</span> <span style="color: #00eeee;">true</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>// Xexp partition<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">softmax-cross-entropy</span> <span style="color: #93a8c6;">[</span>y-hat y<span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span>softmax y-hat<span style="color: #b0b1a3;">)</span>
+      <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get <span style="color: #32cd32;">":, {}"</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-type y <span style="color: #00eeee;">:int32</span> <span style="color: #00eeee;">false</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span>
+      <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/log<span style="color: #b0b1a3;">)</span>
+      <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/-<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">make-net</span> <span style="color: #93a8c6;">[</span>ninputs W1 b1 W2 b2 W3 b3 dropout1 dropout2<span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">fn</span> <span style="color: #b0b1a3;">[</span>X training?<span style="color: #b0b1a3;">]</span>
+      <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> X
+          <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/reshape <span style="color: #aebed8;">[</span>-1 ninputs<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
+          <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/dot W1<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/+ b1<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/relu<span style="color: #97b098;">)</span>
+          <span style="color: #97b098;">(</span><span style="color: #aebed8;">(</span><span style="color: #ff55ff; font-weight: bold;">fn</span> <span style="color: #b0b0b3;">[</span>layer<span style="color: #b0b0b3;">]</span>
+             <span style="color: #b0b0b3;">(</span><span style="color: #ff55ff; font-weight: bold;">if</span> training?
+               <span style="color: #90a890;">(</span>dropout-layer layer dropout1<span style="color: #90a890;">)</span>
+               layer<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+          <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/dot W2<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/+ b2<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/relu<span style="color: #97b098;">)</span>
+          <span style="color: #97b098;">(</span><span style="color: #aebed8;">(</span><span style="color: #ff55ff; font-weight: bold;">fn</span> <span style="color: #b0b0b3;">[</span>layer<span style="color: #b0b0b3;">]</span>
+             <span style="color: #b0b0b3;">(</span><span style="color: #ff55ff; font-weight: bold;">if</span> training?
+               <span style="color: #90a890;">(</span>dropout-layer layer dropout2<span style="color: #90a890;">)</span>
+               layer<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+          <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/dot W3<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/+ b3<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">do-train</span> <span style="color: #93a8c6;">[</span>nepochs lr dropout1 dropout2 output<span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>batchsize 256
+        <span style="color: #97b098;">[</span>ninputs noutputs nhiddens1 nhiddens2<span style="color: #97b098;">]</span> <span style="color: #97b098;">[</span>784 10 256 256<span style="color: #97b098;">]</span>
+        W1 <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 0.01 <span style="color: #aebed8;">[</span>ninputs nhiddens1<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
+        b1 <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm nhiddens1<span style="color: #97b098;">)</span>
+        W2 <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 0.01 <span style="color: #aebed8;">[</span>nhiddens1 nhiddens2<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
+        b2 <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm nhiddens2<span style="color: #97b098;">)</span>
+        W3 <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 0.01 <span style="color: #aebed8;">[</span>nhiddens2 noutputs<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
+        b3 <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm noutputs<span style="color: #97b098;">)</span>
+        params <span style="color: #97b098;">[</span>W1 b1 W2 b2 W3 b3<span style="color: #97b098;">]</span>
+        _ <span style="color: #97b098;">(</span>run! <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient params<span style="color: #97b098;">)</span>
+        dataset <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/load-data-fashion-mnist batchsize<span style="color: #97b098;">)</span>
+        results <span style="color: #97b098;">(</span>train ndm <span style="color: #aebed8;">(</span>make-net ninputs W1 b1 W2 b2 W3 b3 dropout1 dropout2<span style="color: #aebed8;">)</span>
+                       <span style="color: #aebed8;">(</span>dataset 0<span style="color: #aebed8;">)</span> <span style="color: #aebed8;">(</span>dataset 1<span style="color: #aebed8;">)</span>
+                       nepochs softmax-cross-entropy #<span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/sgd params lr batchsize<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines output
+                    <span style="color: #97b098;">[</span><span style="color: #32cd32;">"train loss"</span> <span style="color: #32cd32;">"train acc"</span> <span style="color: #32cd32;">"test acc"</span><span style="color: #97b098;">]</span>
+                    <span style="color: #97b098;">(</span>results <span style="color: #00eeee;">:epoch</span><span style="color: #97b098;">)</span>
+                    <span style="color: #97b098;">[</span><span style="color: #aebed8;">(</span>results <span style="color: #00eeee;">:train-loss</span><span style="color: #aebed8;">)</span> <span style="color: #aebed8;">(</span>results <span style="color: #00eeee;">:train-accuracy</span><span style="color: #aebed8;">)</span> <span style="color: #aebed8;">(</span>results <span style="color: #00eeee;">:test-accuracy</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">setq</span> org-babel-clojure-sync-nrepl-timeout 1000<span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+1000
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train 10 0.4 0.5 0.5 <span style="color: #32cd32;">"figure/dropout_11.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+epoch  0 , training...validating...
+epoch  1 , training...validating...
+epoch  2 , training...validating...
+epoch  3 , training...validating...
+epoch  4 , training...validating...
+epoch  5 , training...validating...
+epoch  6 , training...validating...
+epoch  7 , training...validating...
+epoch  8 , training...validating...
+epoch  9 , training...validating...
+epoch  10 , training...validating...
+</pre>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_11.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train 1 0.4 0.1 0.5 <span style="color: #32cd32;">"figure/dropout_12.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+epoch  0 , training...validating...
+epoch  1 , training...validating...
+</pre>
+
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_12.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train 10 0.4 0.5 0.1 <span style="color: #32cd32;">"figure/dropout_13.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_13.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train 10 0.4 0.1 0.1 <span style="color: #32cd32;">"figure/dropout_14.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_14.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train 10 0.1 0.5 0.5 <span style="color: #32cd32;">"figure/dropout_21.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_21.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train 10 0.1 0.1 0.5 <span style="color: #32cd32;">"figure/dropout_22.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_22.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train 10 0.1 0.5 0.1 <span style="color: #32cd32;">"figure/dropout_23.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_23.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train 10 0.1 0.1 0.1 <span style="color: #32cd32;">"figure/dropout_24.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_24.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">do-train-concise</span> <span style="color: #93a8c6;">[</span>nepochs lr dropout1 dropout2 output<span style="color: #93a8c6;">]</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>batchsize 256
+        <span style="color: #97b098;">[</span>ninputs noutputs nhiddens1 nhiddens2<span style="color: #97b098;">]</span> <span style="color: #97b098;">[</span>784 10 256 256<span style="color: #97b098;">]</span>
+        dataset <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/load-data-fashion-mnist batchsize<span style="color: #97b098;">)</span>
+        net <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/sequential-block<span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/batch-flatten-block ninputs<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/linear-block <span style="color: #90a890;">{</span><span style="color: #00eeee;">:units</span> nhiddens1<span style="color: #90a890;">}</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/relu<span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/dropout <span style="color: #90a890;">{</span><span style="color: #00eeee;">:rate</span> dropout1<span style="color: #90a890;">}</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/linear-block <span style="color: #90a890;">{</span><span style="color: #00eeee;">:units</span> nhiddens2<span style="color: #90a890;">}</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/relu<span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/dropout <span style="color: #90a890;">{</span><span style="color: #00eeee;">:rate</span> dropout2<span style="color: #90a890;">}</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/linear-block <span style="color: #90a890;">{</span><span style="color: #00eeee;">:units</span> noutputs<span style="color: #90a890;">}</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+                <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/set-initializer <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/new-normal-initializer<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+        opt <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">optimizer</span>/sgd <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:tracker</span> <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">tracker</span>/fixed 0.5<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">}</span><span style="color: #97b098;">)</span>
+        loss <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">loss</span>/sotfmax-cross-entropy-loss<span style="color: #97b098;">)</span>
+        config <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/<span style="color: #ff55ff; font-weight: bold;">default-training-config</span> <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:loss</span> loss <span style="color: #00eeee;">:optimizer</span> opt
+                                           <span style="color: #00eeee;">:evaluator</span> <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/accuracy<span style="color: #b0b0b3;">)</span>
+                                           <span style="color: #00eeee;">:listeners</span> <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">listener</span>/logging<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">}</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
+    <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #97b098;">[</span>model <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">m</span>/new-model <span style="color: #b0b0b3;">{</span><span style="color: #00eeee;">:name</span> <span style="color: #32cd32;">"mlp"</span> <span style="color: #00eeee;">:block</span> net<span style="color: #b0b0b3;">}</span><span style="color: #aebed8;">)</span>
+                trainer <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/new-trainer model config<span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span>
+      <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/initialize trainer <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #b0b0b3;">[</span>1 784<span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/set-metrics trainer <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">metric</span>/new-metrics<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/fit trainer nepochs <span style="color: #aebed8;">(</span>dataset 0<span style="color: #aebed8;">)</span> <span style="color: #aebed8;">(</span>dataset 1<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+      <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #aebed8;">[</span>metrics <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-metrics trainer<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">]</span>
+        <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines output
+                        <span style="color: #b0b0b3;">[</span><span style="color: #32cd32;">"train loss"</span> <span style="color: #32cd32;">"validate loss"</span> <span style="color: #32cd32;">"train accuracy"</span><span style="color: #b0b0b3;">]</span>
+                        <span style="color: #b0b0b3;">(</span>range nepochs<span style="color: #b0b0b3;">)</span>
+                        <span style="color: #b0b0b3;">[</span><span style="color: #90a890;">(</span>map #<span style="color: #a2b6da;">(</span>.getValue <span style="color: #ffffff;">%</span><span style="color: #a2b6da;">)</span> <span style="color: #a2b6da;">(</span>.getMetric metrics <span style="color: #32cd32;">"train_epoch_SoftmaxCrossEntropyLoss"</span><span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span>
+                         <span style="color: #90a890;">(</span>map #<span style="color: #a2b6da;">(</span>.getValue <span style="color: #ffffff;">%</span><span style="color: #a2b6da;">)</span> <span style="color: #a2b6da;">(</span>.getMetric metrics <span style="color: #32cd32;">"validate_epoch_SoftmaxCrossEntropyLoss"</span><span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span>
+                         <span style="color: #90a890;">(</span>map #<span style="color: #a2b6da;">(</span>.getValue <span style="color: #ffffff;">%</span><span style="color: #a2b6da;">)</span> <span style="color: #a2b6da;">(</span>.getMetric metrics <span style="color: #32cd32;">"validate_epoch_Accuracy"</span><span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>do-train-concise 10 0.1 0.1 0.5 <span style="color: #32cd32;">"figure/dropout_41.svg"</span><span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+Training:    100% |████████████████████████████████████████| Accuracy: 0.55, SoftmaxCrossEntropyLoss: 1.17
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.78, SoftmaxCrossEntropyLoss: 0.58
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.82, SoftmaxCrossEntropyLoss: 0.49
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.84, SoftmaxCrossEntropyLoss: 0.45
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.85, SoftmaxCrossEntropyLoss: 0.41
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.86, SoftmaxCrossEntropyLoss: 0.39
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.86, SoftmaxCrossEntropyLoss: 0.37
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.87, SoftmaxCrossEntropyLoss: 0.36
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.87, SoftmaxCrossEntropyLoss: 0.34
+
+Validating:  100% |████████████████████████████████████████|
+
+Training:    100% |████████████████████████████████████████| Accuracy: 0.87, SoftmaxCrossEntropyLoss: 0.34
+
+Validating:  100% |████████████████████████████████████████|
+
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Training on: cpu().
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Load MXNet Engine Version 1.7.0 in 0.029 ms.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 1 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.55, SoftmaxCrossEntropyLoss: 1.17
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.76, SoftmaxCrossEntropyLoss: 0.67
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 2 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.78, SoftmaxCrossEntropyLoss: 0.58
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.79, SoftmaxCrossEntropyLoss: 0.54
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 3 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.82, SoftmaxCrossEntropyLoss: 0.49
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.75, SoftmaxCrossEntropyLoss: 0.73
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 4 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.84, SoftmaxCrossEntropyLoss: 0.45
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.82, SoftmaxCrossEntropyLoss: 0.49
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 5 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.85, SoftmaxCrossEntropyLoss: 0.41
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.84, SoftmaxCrossEntropyLoss: 0.44
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 6 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.86, SoftmaxCrossEntropyLoss: 0.39
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.85, SoftmaxCrossEntropyLoss: 0.40
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 7 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.86, SoftmaxCrossEntropyLoss: 0.37
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.78, SoftmaxCrossEntropyLoss: 0.59
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 8 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.87, SoftmaxCrossEntropyLoss: 0.36
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.84, SoftmaxCrossEntropyLoss: 0.45
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 9 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.87, SoftmaxCrossEntropyLoss: 0.34
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.86, SoftmaxCrossEntropyLoss: 0.39
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Epoch 10 finished.
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Train: Accuracy: 0.87, SoftmaxCrossEntropyLoss: 0.34
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - Validate: Accuracy: 0.84, SoftmaxCrossEntropyLoss: 0.40
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - forward P50: 0.645 ms, P90: 0.987 ms
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - training-metrics P50: 0.016 ms, P90: 0.025 ms
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - backward P50: 0.859 ms, P90: 1.741 ms
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - step P50: 1.172 ms, P90: 1.552 ms
+[nREPL-session-c4c3b9d9-6684-4cfd-bbcb-c3cd6ed5fa99] INFO ai.djl.training.listener.LoggingTrainingListener - epoch P50: 31.315 s, P90: 103.561 s
+</pre>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figure/dropout_41.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2021-04-11 Sun 08:37</p>
+</div>
+</body>
+</html>

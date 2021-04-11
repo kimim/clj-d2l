@@ -35,10 +35,10 @@
       y1 (->> x (map f))
       y2 (->> x (map #(- (* 2 %) 3)))]
   (d2l/plot-lines
-   "figure/tangent_line.svg"
+   "../figure/tangent_line.svg"
    ["f(x)" "tangent line (x=1)"]
    x
    [y1 y2]))
 #+end_src
 
-[[./figure/tangent_line.svg]]
+[[../figure/tangent_line.svg]]
