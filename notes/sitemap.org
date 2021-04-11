@@ -20,4 +20,5 @@
 - [[file:4.5-weight-decay.org][4.5-weight-decay]]
 - [[file:4.6-dropout.org][4.6-dropout]]
 - [[file:4.8-numerical-stability.org][4.8-numerical-stability]]
+- [[file:theindex.org][Index]]
 - [[file:index.org][Index]]

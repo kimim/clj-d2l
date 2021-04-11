@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:48 -->
+<!-- 2021-04-11 Sun 09:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -261,23 +261,23 @@ for the JavaScript code in this tag.
 <h2 id="orgabc56b6"><span class="section-number-2">1</span> The Image Classification Dataset</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">ns</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">clj-d2l.image-classification</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:require</span> <span style="color: #b0b1a3;">[</span>clojure.java.io <span style="color: #00eeee;">:as</span> io<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.ndarray <span style="color: #00eeee;">:as</span> nd<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.device <span style="color: #00eeee;">:as</span> device<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.engine <span style="color: #00eeee;">:as</span> engine<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.dataset <span style="color: #00eeee;">:as</span> ds<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.model <span style="color: #00eeee;">:as</span> model<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.nn <span style="color: #00eeee;">:as</span> nn<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.loss <span style="color: #00eeee;">:as</span> loss<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> training<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:import</span> <span style="color: #b0b1a3;">[</span>ai.djl.ndarray.types DataType<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.basicdataset FashionMnist<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.training.dataset Dataset$Usage<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>java.nio.file Paths<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.image-classification</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clojure.java.io <span style="color: #110099;">:as</span> io<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.device <span style="color: #110099;">:as</span> device<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.engine <span style="color: #110099;">:as</span> engine<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.dataset <span style="color: #110099;">:as</span> ds<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.model <span style="color: #110099;">:as</span> model<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.nn <span style="color: #110099;">:as</span> nn<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.loss <span style="color: #110099;">:as</span> loss<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.tracker <span style="color: #110099;">:as</span> tracker<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.optimizer <span style="color: #110099;">:as</span> optimizer<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training <span style="color: #110099;">:as</span> training<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.listener <span style="color: #110099;">:as</span> listener<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:import</span> <span style="color: #909183;">[</span>ai.djl.ndarray.types DataType<span style="color: #909183;">]</span>
+           <span style="color: #909183;">[</span>ai.djl.basicdataset FashionMnist<span style="color: #909183;">]</span>
+           <span style="color: #909183;">[</span>ai.djl.training.dataset Dataset$Usage<span style="color: #909183;">]</span>
+           <span style="color: #909183;">[</span>java.nio.file Paths<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -287,7 +287,7 @@ for the JavaScript code in this tag.
 <h3 id="orgc7f20bb"><span class="section-number-3">1.1</span> Getting the Dataset</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
-<pre class="src src-emacs-lisp"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">setq</span> org-babel-clojure-sync-nrepl-timeout 1000<span style="color: #8c8c8c;">)</span>
+<pre class="src src-emacs-lisp"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">setq</span> org-babel-clojure-sync-nrepl-timeout 1000<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -297,23 +297,23 @@ for the JavaScript code in this tag.
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">batch-size</span> 256<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">random-shuffle</span> <span style="color: #00eeee;">true</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">batch-size</span> 256<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">random-shuffle</span> <span style="color: #110099;">true</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">mnist-train</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #b0b1a3;">)</span>
-                     <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #ffffff; font-style: italic; text-decoration: underline;">Dataset$Usage</span>/TRAIN<span style="color: #b0b1a3;">)</span>
-                     <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size random-shuffle<span style="color: #b0b1a3;">)</span>
-                     <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #b0b1a3;">)</span>
-                     <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">mnist-train</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #909183;">)</span>
+                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #000000; font-style: italic; text-decoration: underline;">Dataset$Usage</span>/TRAIN<span style="color: #909183;">)</span>
+                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size random-shuffle<span style="color: #909183;">)</span>
+                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #909183;">)</span>
+                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">mnist-test</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #b0b1a3;">)</span>
-                    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #ffffff; font-style: italic; text-decoration: underline;">Dataset$Usage</span>/TEST<span style="color: #b0b1a3;">)</span>
-                    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size random-shuffle<span style="color: #b0b1a3;">)</span>
-                    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #b0b1a3;">)</span>
-                    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">mnist-test</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #909183;">)</span>
+                    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #000000; font-style: italic; text-decoration: underline;">Dataset$Usage</span>/TEST<span style="color: #909183;">)</span>
+                    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size random-shuffle<span style="color: #909183;">)</span>
+                    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #909183;">)</span>
+                    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span>println <span style="color: #32cd32;">"train dataset size: "</span><span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span>println <span style="color: #32cd32;">"test dataset size: "</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/size mnist-test<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"train dataset size: "</span><span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"test dataset size: "</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-test<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -326,7 +326,7 @@ test dataset size:  10000
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:48</p>
+<p class="date">Created: 2021-04-11 Sun 09:03</p>
 </div>
 </body>
 </html>

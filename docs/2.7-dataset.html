@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:37 -->
+<!-- 2021-04-11 Sun 09:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -250,11 +250,11 @@ for the JavaScript code in this tag.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>require '<span style="color: #93a8c6;">[</span>tablecloth.api <span style="color: #00eeee;">:as</span> api<span style="color: #93a8c6;">]</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">DS</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">api</span>/dataset <span style="color: #b0b1a3;">{</span><span style="color: #00eeee;">:V1</span> <span style="color: #97b098;">(</span>take 9 <span style="color: #aebed8;">(</span>cycle <span style="color: #b0b0b3;">[</span>1 2<span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
-                      <span style="color: #00eeee;">:V2</span> <span style="color: #97b098;">(</span>range 1 10<span style="color: #97b098;">)</span>
-                      <span style="color: #00eeee;">:V3</span> <span style="color: #97b098;">(</span>take 9 <span style="color: #aebed8;">(</span>cycle <span style="color: #b0b0b3;">[</span>0.5 1.0 1.5<span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
-                      <span style="color: #00eeee;">:V4</span> <span style="color: #97b098;">(</span>take 9 <span style="color: #aebed8;">(</span>cycle <span style="color: #b0b0b3;">[</span><span style="color: #32cd32;">"A"</span> <span style="color: #32cd32;">"B"</span> <span style="color: #32cd32;">"C"</span><span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">}</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span>require '<span style="color: #7388d6;">[</span>tablecloth.api <span style="color: #110099;">:as</span> api<span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">DS</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">api</span>/dataset <span style="color: #909183;">{</span><span style="color: #110099;">:V1</span> <span style="color: #709870;">(</span>take 9 <span style="color: #907373;">(</span>cycle <span style="color: #6276ba;">[</span>1 2<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+                      <span style="color: #110099;">:V2</span> <span style="color: #709870;">(</span>range 1 10<span style="color: #709870;">)</span>
+                      <span style="color: #110099;">:V3</span> <span style="color: #709870;">(</span>take 9 <span style="color: #907373;">(</span>cycle <span style="color: #6276ba;">[</span>0.5 1.0 1.5<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+                      <span style="color: #110099;">:V4</span> <span style="color: #709870;">(</span>take 9 <span style="color: #907373;">(</span>cycle <span style="color: #6276ba;">[</span><span style="color: #2A00FF;">"A"</span> <span style="color: #2A00FF;">"B"</span> <span style="color: #2A00FF;">"C"</span><span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">}</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 DS
 </pre>
 </div>
@@ -277,7 +277,7 @@ _unnamed [9 4]:
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">api</span>/dataset<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">api</span>/dataset<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -287,7 +287,7 @@ _unnamed [0 0]
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">api</span>/dataset 999<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">api</span>/dataset 999<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -301,8 +301,8 @@ _unnamed [1 1]:
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">api</span>/dataset 999 <span style="color: #93a8c6;">{</span><span style="color: #00eeee;">:single-value-column-name</span> <span style="color: #32cd32;">"value"</span>
-                  <span style="color: #00eeee;">:dataset-name</span> <span style="color: #32cd32;">"Single value"</span><span style="color: #93a8c6;">}</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">api</span>/dataset 999 <span style="color: #7388d6;">{</span><span style="color: #110099;">:single-value-column-name</span> <span style="color: #2A00FF;">"value"</span>
+                  <span style="color: #110099;">:dataset-name</span> <span style="color: #2A00FF;">"Single value"</span><span style="color: #7388d6;">}</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -316,7 +316,7 @@ Single value [1 1]:
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">api</span>/dataset <span style="color: #93a8c6;">[</span><span style="color: #b0b1a3;">[</span><span style="color: #00eeee;">:A</span> 33<span style="color: #b0b1a3;">]</span> <span style="color: #b0b1a3;">[</span><span style="color: #00eeee;">:B</span> 5<span style="color: #b0b1a3;">]</span> <span style="color: #b0b1a3;">[</span><span style="color: #00eeee;">:C</span> <span style="color: #00eeee;">:a</span><span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">]</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">api</span>/dataset <span style="color: #7388d6;">[</span><span style="color: #909183;">[</span><span style="color: #110099;">:A</span> 33<span style="color: #909183;">]</span> <span style="color: #909183;">[</span><span style="color: #110099;">:B</span> 5<span style="color: #909183;">]</span> <span style="color: #909183;">[</span><span style="color: #110099;">:C</span> <span style="color: #110099;">:a</span><span style="color: #909183;">]</span><span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -330,7 +330,7 @@ _unnamed [1 3]:
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">api</span>/dataset <span style="color: #93a8c6;">[</span><span style="color: #b0b1a3;">[</span><span style="color: #00eeee;">:A</span> <span style="color: #97b098;">[</span>1 2 3 4 5 6<span style="color: #97b098;">]</span><span style="color: #b0b1a3;">]</span> <span style="color: #b0b1a3;">[</span><span style="color: #00eeee;">:B</span> <span style="color: #32cd32;">"X"</span><span style="color: #b0b1a3;">]</span> <span style="color: #b0b1a3;">[</span><span style="color: #00eeee;">:C</span> <span style="color: #00eeee;">:a</span><span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">]</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">api</span>/dataset <span style="color: #7388d6;">[</span><span style="color: #909183;">[</span><span style="color: #110099;">:A</span> <span style="color: #709870;">[</span>1 2 3 4 5 6<span style="color: #709870;">]</span><span style="color: #909183;">]</span> <span style="color: #909183;">[</span><span style="color: #110099;">:B</span> <span style="color: #2A00FF;">"X"</span><span style="color: #909183;">]</span> <span style="color: #909183;">[</span><span style="color: #110099;">:C</span> <span style="color: #110099;">:a</span><span style="color: #909183;">]</span><span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -348,7 +348,7 @@ _unnamed [6 3]:
 </pre>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">api</span>/dataset <span style="color: #93a8c6;">{</span><span style="color: #00eeee;">:A</span> <span style="color: #b0b1a3;">[</span>1 2 3<span style="color: #b0b1a3;">]</span> <span style="color: #00eeee;">:B</span> <span style="color: #32cd32;">"X"</span><span style="color: #93a8c6;">}</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">api</span>/dataset <span style="color: #7388d6;">{</span><span style="color: #110099;">:A</span> <span style="color: #909183;">[</span>1 2 3<span style="color: #909183;">]</span> <span style="color: #110099;">:B</span> <span style="color: #2A00FF;">"X"</span><span style="color: #7388d6;">}</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -363,7 +363,7 @@ _unnamed [3 2]:
 </pre>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:37</p>
+<p class="date">Created: 2021-04-11 Sun 09:03</p>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:48 -->
+<!-- 2021-04-11 Sun 09:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -264,9 +264,9 @@ for the JavaScript code in this tag.
 <h2 id="org9fc3a77"><span class="section-number-2">1</span> Automatic Differentiation</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">ns</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">clj-d2l.auto-diff</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:require</span> <span style="color: #b0b1a3;">[</span>clj-djl.ndarray <span style="color: #00eeee;">:as</span> nd<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> t<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.auto-diff</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training <span style="color: #110099;">:as</span> t<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -276,8 +276,8 @@ for the JavaScript code in this tag.
 <h3 id="org1d1ccf2"><span class="section-number-3">1.1</span> A Simple Example</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">ndm</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">x</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 4.<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">x</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 4.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 x
 </pre>
 </div>
@@ -289,8 +289,8 @@ ND: (4) cpu() float32
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/attach-gradient x<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/attach-gradient x<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -301,10 +301,10 @@ ND: (4) cpu() float32
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/dot x x<span style="color: #aebed8;">)</span> 2<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/dot x x<span style="color: #907373;">)</span> 2<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -315,7 +315,7 @@ ND: (4) cpu() float32
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/= <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #93a8c6;">)</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* x 4<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/= <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #7388d6;">)</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x 4<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -327,11 +327,11 @@ ND: (4) cpu() boolean
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/sum x<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -347,10 +347,10 @@ ND: (4) cpu() float32
 <h3 id="org91244a8"><span class="section-number-3">1.2</span> Backward for Non-Scalar Variables</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -366,13 +366,13 @@ ND: (4) cpu() float32
 <h3 id="org50bc1d1"><span class="section-number-3">1.3</span> Detaching Computation</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #97b098;">)</span>
-        u <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #aebed8;">[</span>0. 1. 4. 9.<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span> <span style="color: #3cb371;">;; </span><span style="color: #3cb371;">TODO: How to detach ndarray from current graph?</span>
-        <span style="color: #3cb371;">;; </span><span style="color: #3cb371;">u (.detach y)</span>
-        z <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* u x<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/backward gc z<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #709870;">)</span>
+        u <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #907373;">[</span>0. 1. 4. 9.<span style="color: #907373;">]</span><span style="color: #709870;">)</span> <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">TODO: How to detach ndarray from current graph?</span>
+        <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">u (.detach y)</span>
+        z <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* u x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc z<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -384,13 +384,13 @@ ND: (4) cpu() float32
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #97b098;">)</span>
-        u <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #aebed8;">[</span>0. 1. 4. 9.<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
-        <span style="color: #3cb371;">;;</span><span style="color: #3cb371;">u (.duplicate y)</span>
-        z <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* u x<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #709870;">)</span>
+        u <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #907373;">[</span>0. 1. 4. 9.<span style="color: #907373;">]</span><span style="color: #709870;">)</span>
+        <span style="color: #3F7F5F;">;;</span><span style="color: #3F7F5F;">u (.duplicate y)</span>
+        z <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* u x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -401,7 +401,7 @@ ND: (4) cpu() float32
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* x 2<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x 2<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -417,26 +417,26 @@ ND: (4) cpu() float32
 <h3 id="org30b5243"><span class="section-number-3">1.4</span> Computing the Gradient of Python Control Flow</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">f</span> <span style="color: #93a8c6;">[</span>a<span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">loop</span> <span style="color: #b0b1a3;">[</span>b <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* a 2<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">if</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #aebed8;">(</span>.lt <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/norm b<span style="color: #b0b0b3;">)</span> 1000<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
-      <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">recur</span> <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* b 2<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
-      <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">if</span> <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #b0b0b3;">(</span>.gt <span style="color: #90a890;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/sum b<span style="color: #90a890;">)</span> 0<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">f</span> <span style="color: #7388d6;">[</span>a<span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">loop</span> <span style="color: #909183;">[</span>b <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* a 2<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #907373;">(</span>.lt <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/norm b<span style="color: #6276ba;">)</span> 1000<span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">recur</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* b 2<span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #6276ba;">(</span>.gt <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum b<span style="color: #858580;">)</span> 0<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
         b
-        <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* b 100<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+        <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* b 100<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">a</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #b0b1a3;">[</span>10<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">a</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #909183;">[</span>10<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/attach-gradient a<span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/attach-gradient a<span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>d <span style="color: #97b098;">(</span>f a<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/backward gc d<span style="color: #b0b1a3;">)</span>
-    <span style="color: #b0b1a3;">(</span>println <span style="color: #97b098;">(</span>str <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>// d a<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span>
-    <span style="color: #b0b1a3;">(</span>println <span style="color: #97b098;">(</span>str <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient a<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>d <span style="color: #709870;">(</span>f a<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc d<span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span>println <span style="color: #709870;">(</span>str <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>// d a<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span>println <span style="color: #709870;">(</span>str <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient a<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -453,7 +453,7 @@ ND: (10) cpu() float32
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:48</p>
+<p class="date">Created: 2021-04-11 Sun 09:03</p>
 </div>
 </body>
 </html>

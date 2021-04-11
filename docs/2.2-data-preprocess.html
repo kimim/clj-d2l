@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:37 -->
+<!-- 2021-04-11 Sun 09:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -263,11 +263,11 @@ for the JavaScript code in this tag.
 <h2 id="org979d33c"><span class="section-number-2">1</span> Data Preprocessing</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">ns</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">clj-d2l.data-preprocess</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:require</span> <span style="color: #b0b1a3;">[</span>clj-djl.ndarray <span style="color: #00eeee;">:as</span> nd<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-d2l.core <span style="color: #00eeee;">:as</span> d2l<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>tablecloth.api <span style="color: #00eeee;">:as</span> ds<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clojure.java.io <span style="color: #00eeee;">:as</span> io<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.data-preprocess</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-d2l.core <span style="color: #110099;">:as</span> d2l<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>tablecloth.api <span style="color: #110099;">:as</span> ds<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clojure.java.io <span style="color: #110099;">:as</span> io<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -276,19 +276,19 @@ for the JavaScript code in this tag.
 <h3 id="org85bb302"><span class="section-number-3">1.1</span> Reading the Dataset</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #93a8c6;">[</span>filename <span style="color: #32cd32;">"data/house_tiny.csv"</span>
-      records <span style="color: #b0b1a3;">[</span><span style="color: #32cd32;">"NumRooms,Alley,Price</span><span style="color: #32cd32; font-weight: bold;">\n</span><span style="color: #32cd32;">"</span>  <span style="color: #3cb371;">;; </span><span style="color: #3cb371;">Column names</span>
-               <span style="color: #32cd32;">"NA,Pave,127500</span><span style="color: #32cd32; font-weight: bold;">\n</span><span style="color: #32cd32;">"</span>        <span style="color: #3cb371;">;;</span><span style="color: #3cb371;">Each row represents a data example</span>
-               <span style="color: #32cd32;">"2,NA,106000</span><span style="color: #32cd32; font-weight: bold;">\n</span><span style="color: #32cd32;">"</span>
-               <span style="color: #32cd32;">"4,NA,178100</span><span style="color: #32cd32; font-weight: bold;">\n</span><span style="color: #32cd32;">"</span>
-               <span style="color: #32cd32;">"NA,NA,140000</span><span style="color: #32cd32; font-weight: bold;">\n</span><span style="color: #32cd32;">"</span><span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">io</span>/make-parents filename<span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">dorun</span>
-   <span style="color: #b0b1a3;">(</span>map #<span style="color: #97b098;">(</span>spit filename <span style="color: #ffffff;">%</span> <span style="color: #00eeee;">:append</span> <span style="color: #00eeee;">true</span><span style="color: #97b098;">)</span> records<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>filename <span style="color: #2A00FF;">"data/house_tiny.csv"</span>
+      records <span style="color: #909183;">[</span><span style="color: #2A00FF;">"NumRooms,Alley,Price</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>  <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">Column names</span>
+               <span style="color: #2A00FF;">"NA,Pave,127500</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>        <span style="color: #3F7F5F;">;;</span><span style="color: #3F7F5F;">Each row represents a data example</span>
+               <span style="color: #2A00FF;">"2,NA,106000</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>
+               <span style="color: #2A00FF;">"4,NA,178100</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>
+               <span style="color: #2A00FF;">"NA,NA,140000</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span><span style="color: #909183;">]</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">io</span>/make-parents filename<span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span>
+   <span style="color: #909183;">(</span>map #<span style="color: #709870;">(</span>spit filename <span style="color: #000000;">%</span> <span style="color: #110099;">:append</span> <span style="color: #110099;">true</span><span style="color: #709870;">)</span> records<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">data</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/dataset <span style="color: #32cd32;">"data/house_tiny.csv"</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">data</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/dataset <span style="color: #2A00FF;">"data/house_tiny.csv"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/ps data<span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps data<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -310,13 +310,13 @@ data/house_tiny.csv [4 3]:
 <h3 id="orgf374de8"><span class="section-number-3">1.2</span> Handling Missing Data</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">dataset</span>
- <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>data <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/replace-missing data <span style="color: #32cd32;">"NumRooms"</span> <span style="color: #00eeee;">:value</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">tech.v2.datatype.functional</span>/mean<span style="color: #97b098;">)</span>
-       data <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/add-or-replace-columns data <span style="color: #aebed8;">{</span><span style="color: #32cd32;">"Alley_nil"</span> <span style="color: #b0b0b3;">(</span>map #<span style="color: #90a890;">(</span><span style="color: #ff55ff; font-weight: bold;">if</span> <span style="color: #a2b6da;">(</span>nil? <span style="color: #ffffff;">%</span><span style="color: #a2b6da;">)</span> 1 0<span style="color: #90a890;">)(</span>data <span style="color: #32cd32;">"Alley"</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span>
-                                             <span style="color: #32cd32;">"Alley"</span> <span style="color: #b0b0b3;">(</span>map #<span style="color: #90a890;">(</span><span style="color: #ff55ff; font-weight: bold;">if</span> <span style="color: #a2b6da;">(</span>nil? <span style="color: #ffffff;">%</span><span style="color: #a2b6da;">)</span> 0 1<span style="color: #90a890;">)</span> <span style="color: #90a890;">(</span>data <span style="color: #32cd32;">"Alley"</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">}</span><span style="color: #97b098;">)</span>
-       inputs <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #aebed8;">[</span><span style="color: #32cd32;">"NumRooms"</span> <span style="color: #32cd32;">"Alley"</span> <span style="color: #32cd32;">"Alley_nil"</span><span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
-       outputs <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #32cd32;">"Price"</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>inputs outputs<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">dataset</span>
+ <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/replace-missing data <span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #110099;">:value</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">tech.v2.datatype.functional</span>/mean<span style="color: #709870;">)</span>
+       data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/add-or-replace-columns data <span style="color: #907373;">{</span><span style="color: #2A00FF;">"Alley_nil"</span> <span style="color: #6276ba;">(</span>map #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span>nil? <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 1 0<span style="color: #858580;">)(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
+                                             <span style="color: #2A00FF;">"Alley"</span> <span style="color: #6276ba;">(</span>map #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span>nil? <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 0 1<span style="color: #858580;">)</span> <span style="color: #858580;">(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">}</span><span style="color: #709870;">)</span>
+       inputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #907373;">[</span><span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #2A00FF;">"Alley"</span> <span style="color: #2A00FF;">"Alley_nil"</span><span style="color: #907373;">]</span><span style="color: #709870;">)</span>
+       outputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #2A00FF;">"Price"</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>inputs outputs<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -326,11 +326,11 @@ data/house_tiny.csv [4 3]:
 <h3 id="org134b95e"><span class="section-number-3">1.3</span> Conversion to the Tensor Format</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">ndm</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">X</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #b0b1a3;">(</span>map vec <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #aebed8;">(</span>get dataset 0<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #b0b1a3;">(</span>map vec <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #aebed8;">(</span>get dataset 1<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/ps X<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/ps y<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>map vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span>get dataset 0<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>map vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span>get dataset 1<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps X<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -353,7 +353,7 @@ ND: (4, 1) cpu() int32
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:37</p>
+<p class="date">Created: 2021-04-11 Sun 09:03</p>
 </div>
 </body>
 </html>

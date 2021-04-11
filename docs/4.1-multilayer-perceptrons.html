@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:48 -->
+<!-- 2021-04-11 Sun 09:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -274,29 +274,29 @@ for the JavaScript code in this tag.
 <h2 id="org12cfae9"><span class="section-number-2">1</span> Multilayer Perceptrons</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">ns</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">clj-d2l.multilayer-perceptrons</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:require</span> <span style="color: #b0b1a3;">[</span>clojure.java.io <span style="color: #00eeee;">:as</span> io<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.ndarray <span style="color: #00eeee;">:as</span> nd<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.engine <span style="color: #00eeee;">:as</span> engine<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.model <span style="color: #00eeee;">:as</span> model<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.nn <span style="color: #00eeee;">:as</span> nn<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> training<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.loss <span style="color: #00eeee;">:as</span> loss<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>com.hypirion.clj-xchart <span style="color: #00eeee;">:as</span> c<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.multilayer-perceptrons</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clojure.java.io <span style="color: #110099;">:as</span> io<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.engine <span style="color: #110099;">:as</span> engine<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.model <span style="color: #110099;">:as</span> model<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.nn <span style="color: #110099;">:as</span> nn<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training <span style="color: #110099;">:as</span> training<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.loss <span style="color: #110099;">:as</span> loss<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.tracker <span style="color: #110099;">:as</span> tracker<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.optimizer <span style="color: #110099;">:as</span> optimizer<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.listener <span style="color: #110099;">:as</span> listener<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>com.hypirion.clj-xchart <span style="color: #110099;">:as</span> c<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">plot</span> <span style="color: #93a8c6;">[</span>filename title x y<span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">c</span>/xy-chart
-     <span style="color: #97b098;">{</span>title
-      <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:x</span> x
-       <span style="color: #00eeee;">:y</span> y
-       <span style="color: #00eeee;">:style</span> <span style="color: #b0b0b3;">{</span><span style="color: #00eeee;">:marker-type</span> <span style="color: #00eeee;">:none</span><span style="color: #b0b0b3;">}</span><span style="color: #aebed8;">}</span><span style="color: #97b098;">}</span><span style="color: #b0b1a3;">)</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">c</span>/spit filename<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">plot</span> <span style="color: #7388d6;">[</span>filename title x y<span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/xy-chart
+     <span style="color: #709870;">{</span>title
+      <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
+       <span style="color: #110099;">:y</span> y
+       <span style="color: #110099;">:style</span> <span style="color: #6276ba;">{</span><span style="color: #110099;">:marker-type</span> <span style="color: #110099;">:none</span><span style="color: #6276ba;">}</span><span style="color: #907373;">}</span><span style="color: #709870;">}</span><span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/spit filename<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -331,15 +331,15 @@ rectified linear unit:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">manager</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">x</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/arange manager -8.0 8.0 0.1<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient x<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/relu x<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">manager</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">x</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange manager -8.0 8.0 0.1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient x<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/relu x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">X</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec x<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">Y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span>plot <span style="color: #32cd32;">"figure/relu.svg"</span> <span style="color: #32cd32;">"ReLU"</span> X Y<span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span>plot <span style="color: #2A00FF;">"figure/relu.svg"</span> <span style="color: #2A00FF;">"ReLU"</span> X Y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -355,15 +355,15 @@ The derivative of the relu function is:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">engine</span>/get-instance<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">engine</span>/new-gradient-collector<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/relu x<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/backward gc y<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">engine</span>/get-instance<span style="color: #709870;">)</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">engine</span>/new-gradient-collector<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/relu x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">res</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-gradient x<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">X</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec x<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">Y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec res<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">res</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-gradient x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec res<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span>plot <span style="color: #32cd32;">"figure/grad_relu.svg"</span> <span style="color: #32cd32;">"grad of ReLU"</span> X Y<span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span>plot <span style="color: #2A00FF;">"figure/grad_relu.svg"</span> <span style="color: #2A00FF;">"grad of ReLU"</span> X Y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -381,9 +381,9 @@ Sorry, your browser does not support SVG.</object>
 <h3 id="org14c81bd"><span class="section-number-3">1.3</span> Sigmoid Function</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/sigmoid x<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">Y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span>plot <span style="color: #32cd32;">"figure/sigmoid.svg"</span> <span style="color: #32cd32;">"Sigmoid"</span> X Y<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/sigmoid x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>plot <span style="color: #2A00FF;">"figure/sigmoid.svg"</span> <span style="color: #2A00FF;">"Sigmoid"</span> X Y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -399,13 +399,13 @@ The derivative of the sigmoid function is:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">engine</span>/get-instance<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">engine</span>/new-gradient-collector<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/sigmoid x<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/backward gc y<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">engine</span>/get-instance<span style="color: #709870;">)</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">engine</span>/new-gradient-collector<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/sigmoid x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">res</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-gradient x<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">Y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec res<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span>plot <span style="color: #32cd32;">"figure/grad_sigmoid.svg"</span> <span style="color: #32cd32;">"grad of Sigmoid"</span> X Y<span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">res</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-gradient x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec res<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>plot <span style="color: #2A00FF;">"figure/grad_sigmoid.svg"</span> <span style="color: #2A00FF;">"grad of Sigmoid"</span> X Y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -422,9 +422,9 @@ Sorry, your browser does not support SVG.</object>
 <h3 id="orgae940e5"><span class="section-number-3">1.4</span> Tanh Function</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/tanh x<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">Y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span>plot <span style="color: #32cd32;">"figure/tanh.svg"</span> <span style="color: #32cd32;">"Tanh"</span> X Y<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/tanh x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>plot <span style="color: #2A00FF;">"figure/tanh.svg"</span> <span style="color: #2A00FF;">"Tanh"</span> X Y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -441,13 +441,13 @@ The derivative of the Tanh function is:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">engine</span>/get-instance<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">engine</span>/new-gradient-collector<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/tanh x<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/backward gc y<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">engine</span>/get-instance<span style="color: #709870;">)</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">engine</span>/new-gradient-collector<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/tanh x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">res</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-gradient x<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">Y</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec res<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span>plot <span style="color: #32cd32;">"figure/grad_tanh.svg"</span> <span style="color: #32cd32;">"grad of Tanh"</span> X Y<span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">res</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-gradient x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec res<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>plot <span style="color: #2A00FF;">"figure/grad_tanh.svg"</span> <span style="color: #2A00FF;">"grad of Tanh"</span> X Y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -462,7 +462,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:48</p>
+<p class="date">Created: 2021-04-11 Sun 09:03</p>
 </div>
 </body>
 </html>

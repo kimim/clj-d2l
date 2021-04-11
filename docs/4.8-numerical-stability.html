@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:48 -->
+<!-- 2021-04-11 Sun 09:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -273,34 +273,34 @@ for the JavaScript code in this tag.
 <h4 id="org67d76e3"><span class="section-number-4">1.1.1</span> Vanishing Gradients</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">ns</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">clj-d2l.numerical-stability</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:require</span>
-   <span style="color: #b0b1a3;">[</span>clojure.spec.alpha <span style="color: #00eeee;">:as</span> s<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.ndarray <span style="color: #00eeee;">:as</span> nd<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> t<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.training.dataset <span style="color: #00eeee;">:as</span> ds<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.training.loss <span style="color: #00eeee;">:as</span> loss<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.model <span style="color: #00eeee;">:as</span> m<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.nn <span style="color: #00eeee;">:as</span> nn<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-djl.device <span style="color: #00eeee;">:as</span> dev<span style="color: #b0b1a3;">]</span>
-   <span style="color: #b0b1a3;">[</span>clj-d2l.core <span style="color: #00eeee;">:as</span> d2l<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.numerical-stability</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span>
+   <span style="color: #909183;">[</span>clojure.spec.alpha <span style="color: #110099;">:as</span> s<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.training <span style="color: #110099;">:as</span> t<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.training.dataset <span style="color: #110099;">:as</span> ds<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.training.loss <span style="color: #110099;">:as</span> loss<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.training.optimizer <span style="color: #110099;">:as</span> optimizer<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.training.tracker <span style="color: #110099;">:as</span> tracker<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.training.listener <span style="color: #110099;">:as</span> listener<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.model <span style="color: #110099;">:as</span> m<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.nn <span style="color: #110099;">:as</span> nn<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-djl.device <span style="color: #110099;">:as</span> dev<span style="color: #909183;">]</span>
+   <span style="color: #909183;">[</span>clj-d2l.core <span style="color: #110099;">:as</span> d2l<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">ndm</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">x</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/arange ndm -8.0 8.0 0.1<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/attach-gradient x<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #93a8c6;">[</span>gc <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>y <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/sigmoid x<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #b0b1a3;">)</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines <span style="color: #32cd32;">"figure/numerical_stability_1.svg"</span>
-                    <span style="color: #97b098;">[</span><span style="color: #32cd32;">"sigmoid"</span> <span style="color: #32cd32;">"gradient"</span><span style="color: #97b098;">]</span>
-                    <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec x<span style="color: #97b098;">)</span>
-                    <span style="color: #97b098;">[</span><span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #aebed8;">)</span> <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">x</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm -8.0 8.0 0.1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/attach-gradient x<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/sigmoid x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines <span style="color: #2A00FF;">"figure/numerical_stability_1.svg"</span>
+                    <span style="color: #709870;">[</span><span style="color: #2A00FF;">"sigmoid"</span> <span style="color: #2A00FF;">"gradient"</span><span style="color: #709870;">]</span>
+                    <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec x<span style="color: #709870;">)</span>
+                    <span style="color: #709870;">[</span><span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #907373;">)</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -312,7 +312,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">M</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #b0b1a3;">[</span>4 4<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">M</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #909183;">[</span>4 4<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 M
 </pre>
 </div>
@@ -328,7 +328,7 @@ ND: (4, 4) cpu() float32
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>reduce <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/dot M <span style="color: #93a8c6;">(</span>repeatedly 100 #<span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #97b098;">[</span>4 4<span style="color: #97b098;">]</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span>reduce <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/dot M <span style="color: #7388d6;">(</span>repeatedly 100 #<span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #709870;">[</span>4 4<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -346,7 +346,7 @@ ND: (4, 4) cpu() float32
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:48</p>
+<p class="date">Created: 2021-04-11 Sun 09:03</p>
 </div>
 </body>
 </html>

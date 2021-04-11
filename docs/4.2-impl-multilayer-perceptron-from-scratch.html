@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:48 -->
+<!-- 2021-04-11 Sun 09:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -265,37 +265,37 @@ for the JavaScript code in this tag.
 <h2 id="org78efa46"><span class="section-number-2">1</span> Implementation of Multilayer Perceptron from Scratch</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">ns</span> <span style="color: #ffffff; font-style: italic; text-decoration: underline;">clj-d2l.multilayer-perceptron-scratch</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:require</span> <span style="color: #b0b1a3;">[</span>clojure.java.io <span style="color: #00eeee;">:as</span> io<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.ndarray <span style="color: #00eeee;">:as</span> nd<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.nn <span style="color: #00eeee;">:as</span> nn<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.model <span style="color: #00eeee;">:as</span> m<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> t<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.dataset <span style="color: #00eeee;">:as</span> ds<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.engine <span style="color: #00eeee;">:as</span> engine<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.loss <span style="color: #00eeee;">:as</span> loss<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-d2l.core <span style="color: #00eeee;">:as</span> d2l<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>com.hypirion.clj-xchart <span style="color: #00eeee;">:as</span> c<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:import</span> <span style="color: #b0b1a3;">[</span>ai.djl.basicdataset FashionMnist<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.multilayer-perceptron-scratch</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clojure.java.io <span style="color: #110099;">:as</span> io<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.nn <span style="color: #110099;">:as</span> nn<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.model <span style="color: #110099;">:as</span> m<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training <span style="color: #110099;">:as</span> t<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.dataset <span style="color: #110099;">:as</span> ds<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.engine <span style="color: #110099;">:as</span> engine<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.loss <span style="color: #110099;">:as</span> loss<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.tracker <span style="color: #110099;">:as</span> tracker<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.optimizer <span style="color: #110099;">:as</span> optimizer<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.training.listener <span style="color: #110099;">:as</span> listener<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-d2l.core <span style="color: #110099;">:as</span> d2l<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>com.hypirion.clj-xchart <span style="color: #110099;">:as</span> c<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:import</span> <span style="color: #909183;">[</span>ai.djl.basicdataset FashionMnist<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">batch-size</span> 256<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">mnist-train</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #b0b1a3;">)</span>
-                     <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #00eeee;">:train</span><span style="color: #b0b1a3;">)</span>
-                     <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size <span style="color: #00eeee;">true</span><span style="color: #b0b1a3;">)</span>
-                     <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #b0b1a3;">)</span>
-                     <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">batch-size</span> 256<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">mnist-train</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #909183;">)</span>
+                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #110099;">:train</span><span style="color: #909183;">)</span>
+                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size <span style="color: #110099;">true</span><span style="color: #909183;">)</span>
+                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #909183;">)</span>
+                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">mnist-test</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #b0b1a3;">)</span>
-                    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #00eeee;">:test</span><span style="color: #b0b1a3;">)</span>
-                    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size <span style="color: #00eeee;">true</span><span style="color: #b0b1a3;">)</span>
-                    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #b0b1a3;">)</span>
-                    <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">mnist-test</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #909183;">)</span>
+                    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #110099;">:test</span><span style="color: #909183;">)</span>
+                    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/set-sampling batch-size <span style="color: #110099;">true</span><span style="color: #909183;">)</span>
+                    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #909183;">)</span>
+                    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -305,16 +305,16 @@ for the JavaScript code in this tag.
 <h3 id="org3bd91a2"><span class="section-number-3">1.1</span> Initializing Model Parameters</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">ninputs</span> 784<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">noutputs</span> 10<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">nhiddens</span> 256<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">manager</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">W1</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal manager 0 0.01 <span style="color: #b0b1a3;">[</span>ninputs nhiddens<span style="color: #b0b1a3;">]</span> <span style="color: #00eeee;">:float32</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #ff55ff; font-weight: bold;">default-device</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">b1</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/zeros manager <span style="color: #b0b1a3;">[</span>nhiddens<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">W2</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal manager 0 0.01 <span style="color: #b0b1a3;">[</span>nhiddens noutputs<span style="color: #b0b1a3;">]</span> <span style="color: #00eeee;">:float32</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #ff55ff; font-weight: bold;">default-device</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">b2</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/zeros manager <span style="color: #b0b1a3;">[</span>noutputs<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">params</span> <span style="color: #93a8c6;">[</span>W1 b1 W2 b2<span style="color: #93a8c6;">]</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">dorun</span> <span style="color: #93a8c6;">(</span>map <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient params<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ninputs</span> 784<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">noutputs</span> 10<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">nhiddens</span> 256<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">manager</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">W1</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal manager 0 0.01 <span style="color: #909183;">[</span>ninputs nhiddens<span style="color: #909183;">]</span> <span style="color: #110099;">:float32</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">default-device</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">b1</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros manager <span style="color: #909183;">[</span>nhiddens<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">W2</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal manager 0 0.01 <span style="color: #909183;">[</span>nhiddens noutputs<span style="color: #909183;">]</span> <span style="color: #110099;">:float32</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">default-device</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">b2</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros manager <span style="color: #909183;">[</span>noutputs<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">params</span> <span style="color: #7388d6;">[</span>W1 b1 W2 b2<span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #7388d6;">(</span>map <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient params<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -324,8 +324,8 @@ for the JavaScript code in this tag.
 <h3 id="org3f6ab3c"><span class="section-number-3">1.2</span> Activation Function</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">relu</span> <span style="color: #93a8c6;">[</span>X<span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span>.maximum X 0.<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">relu</span> <span style="color: #7388d6;">[</span>X<span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span>.maximum X 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -335,10 +335,10 @@ for the JavaScript code in this tag.
 <h3 id="orgf2c3fe8"><span class="section-number-3">1.3</span> The model</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">net</span> <span style="color: #93a8c6;">[</span>X<span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>X <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/reshape X <span style="color: #aebed8;">[</span>-1 ninputs<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
-        H <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> X <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/dot W1<span style="color: #aebed8;">)</span> <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/+ b1<span style="color: #aebed8;">)</span> relu<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> H <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/dot W2<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/+ b2<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">net</span> <span style="color: #7388d6;">[</span>X<span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>X <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/reshape X <span style="color: #907373;">[</span>-1 ninputs<span style="color: #907373;">]</span><span style="color: #709870;">)</span>
+        H <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> X <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/dot W1<span style="color: #907373;">)</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ b1<span style="color: #907373;">)</span> relu<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> H <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/dot W2<span style="color: #709870;">)</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ b2<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -349,7 +349,7 @@ for the JavaScript code in this tag.
 <h3 id="org0f79478"><span class="section-number-3">1.4</span> The Loss Function</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">loss</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">loss</span>/sotfmax-cross-entropy-loss<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">loss</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">loss</span>/sotfmax-cross-entropy-loss<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -360,43 +360,43 @@ for the JavaScript code in this tag.
 <h3 id="org508aad3"><span class="section-number-3">1.5</span> Training</h3>
 <div class="outline-text-3" id="text-1-5">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">nepochs</span> 10<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">lr</span> 0.5<span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">nepochs</span> 10<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">lr</span> 0.5<span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">epoch-loss</span> <span style="color: #93a8c6;">(</span>atom 0.<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">accuracy-val</span> <span style="color: #93a8c6;">(</span>atom 0.<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">train-loss</span> <span style="color: #93a8c6;">(</span>atom <span style="color: #b0b1a3;">[]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">train-accuracy</span> <span style="color: #93a8c6;">(</span>atom <span style="color: #b0b1a3;">[]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">test-accuracy</span> <span style="color: #93a8c6;">(</span>atom <span style="color: #b0b1a3;">[]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">epoch-loss</span> <span style="color: #7388d6;">(</span>atom 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">accuracy-val</span> <span style="color: #7388d6;">(</span>atom 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-loss</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-accuracy</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">test-accuracy</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #93a8c6;">[</span>epoch <span style="color: #b0b1a3;">(</span>range 1 <span style="color: #97b098;">(</span>+ nepochs 1<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span>print <span style="color: #32cd32;">"Running epoch "</span> epoch <span style="color: #32cd32;">"......"</span><span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #b0b1a3;">[</span>batch <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-data-iterator mnist-train manager<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #97b098;">[</span>X <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
-          y <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span>
-      <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">with-open</span> <span style="color: #aebed8;">[</span>gc <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #b0b0b3;">)</span>
-                  yhat <span style="color: #b0b0b3;">(</span>net X<span style="color: #b0b0b3;">)</span>
-                  lossvalue <span style="color: #b0b0b3;">(</span>.evaluate loss <span style="color: #90a890;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/ndlist <span style="color: #a2b6da;">[</span>y<span style="color: #a2b6da;">]</span><span style="color: #90a890;">)</span> <span style="color: #90a890;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/ndlist <span style="color: #a2b6da;">[</span>yhat<span style="color: #a2b6da;">]</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span>
-                  l <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/* lossvalue batch-size<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">]</span>
-        <span style="color: #aebed8;">(</span>swap! epoch-loss + <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/get-element<span style="color: #90a890;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
-        <span style="color: #aebed8;">(</span>swap! accuracy-val + <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/accuracy yhat y<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
-        <span style="color: #aebed8;">(</span>.backward gc l<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
-      <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #97b098;">)</span>
-      <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/sgd params lr batch-size<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span>swap! train-loss conj <span style="color: #b0b1a3;">(</span>/ @epoch-loss <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span>swap! train-accuracy conj <span style="color: #b0b1a3;">(</span>/ @accuracy-val <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #7388d6;">[</span>epoch <span style="color: #909183;">(</span>range 1 <span style="color: #709870;">(</span>+ nepochs 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span>print <span style="color: #2A00FF;">"Running epoch "</span> epoch <span style="color: #2A00FF;">"......"</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>batch <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data-iterator mnist-train manager<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #709870;">[</span>X <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+          y <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">]</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #907373;">[</span>gc <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #6276ba;">)</span>
+                  yhat <span style="color: #6276ba;">(</span>net X<span style="color: #6276ba;">)</span>
+                  lossvalue <span style="color: #6276ba;">(</span>.evaluate loss <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ndlist <span style="color: #80a880;">[</span>y<span style="color: #80a880;">]</span><span style="color: #858580;">)</span> <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ndlist <span style="color: #80a880;">[</span>yhat<span style="color: #80a880;">]</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
+                  l <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* lossvalue batch-size<span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
+        <span style="color: #907373;">(</span>swap! epoch-loss + <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element<span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+        <span style="color: #907373;">(</span>swap! accuracy-val + <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/accuracy yhat y<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+        <span style="color: #907373;">(</span>.backward gc l<span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/sgd params lr batch-size<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span>swap! train-loss conj <span style="color: #909183;">(</span>/ @epoch-loss <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span>swap! train-accuracy conj <span style="color: #909183;">(</span>/ @accuracy-val <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
 
-  <span style="color: #93a8c6;">(</span>reset! epoch-loss 0.<span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span>reset! accuracy-val 0.<span style="color: #93a8c6;">)</span>
+  <span style="color: #7388d6;">(</span>reset! epoch-loss 0.<span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span>reset! accuracy-val 0.<span style="color: #7388d6;">)</span>
 
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #b0b1a3;">[</span>batch <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-data-iterator mnist-test manager<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
-    <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #97b098;">[</span>X <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
-          y <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #b0b0b3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
-          yhat <span style="color: #aebed8;">(</span>net X<span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span>
-      <span style="color: #97b098;">(</span>swap! accuracy-val + <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">d2l</span>/accuracy yhat y<span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span>swap! test-accuracy conj <span style="color: #b0b1a3;">(</span>/ @accuracy-val <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/size mnist-test<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span>reset! accuracy-val 0.<span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span>println <span style="color: #32cd32;">"Finished epoch "</span> epoch<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>batch <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data-iterator mnist-test manager<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #709870;">[</span>X <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+          y <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+          yhat <span style="color: #907373;">(</span>net X<span style="color: #907373;">)</span><span style="color: #709870;">]</span>
+      <span style="color: #709870;">(</span>swap! accuracy-val + <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/accuracy yhat y<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span>swap! test-accuracy conj <span style="color: #909183;">(</span>/ @accuracy-val <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-test<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span>reset! accuracy-val 0.<span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span>println <span style="color: #2A00FF;">"Finished epoch "</span> epoch<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -415,21 +415,21 @@ Running epoch  10 ......Finished epoch  10
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #93a8c6;">[</span>x <span style="color: #b0b1a3;">(</span>range 1 <span style="color: #97b098;">(</span>+ nepochs 1<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">c</span>/xy-chart
-       <span style="color: #97b098;">{</span><span style="color: #32cd32;">"test acc"</span>
-        <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:x</span> x
-         <span style="color: #00eeee;">:y</span> @test-accuracy
-         <span style="color: #00eeee;">:style</span> <span style="color: #b0b0b3;">{</span><span style="color: #00eeee;">:marker-type</span> <span style="color: #00eeee;">:none</span><span style="color: #b0b0b3;">}</span><span style="color: #aebed8;">}</span>
-        <span style="color: #32cd32;">"train acc"</span>
-        <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:x</span> x
-         <span style="color: #00eeee;">:y</span> @train-accuracy
-         <span style="color: #00eeee;">:style</span> <span style="color: #b0b0b3;">{</span><span style="color: #00eeee;">:marker-type</span> <span style="color: #00eeee;">:none</span><span style="color: #b0b0b3;">}</span><span style="color: #aebed8;">}</span>
-        <span style="color: #32cd32;">"train loss"</span>
-        <span style="color: #aebed8;">{</span><span style="color: #00eeee;">:x</span> x
-         <span style="color: #00eeee;">:y</span> @train-loss
-         <span style="color: #00eeee;">:style</span> <span style="color: #b0b0b3;">{</span><span style="color: #00eeee;">:marker-type</span> <span style="color: #00eeee;">:none</span><span style="color: #b0b0b3;">}</span><span style="color: #aebed8;">}</span><span style="color: #97b098;">}</span><span style="color: #b0b1a3;">)</span>
-      <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">c</span>/spit <span style="color: #32cd32;">"figure/mlp-scratch.svg"</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span>range 1 <span style="color: #709870;">(</span>+ nepochs 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/xy-chart
+       <span style="color: #709870;">{</span><span style="color: #2A00FF;">"test acc"</span>
+        <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
+         <span style="color: #110099;">:y</span> @test-accuracy
+         <span style="color: #110099;">:style</span> <span style="color: #6276ba;">{</span><span style="color: #110099;">:marker-type</span> <span style="color: #110099;">:none</span><span style="color: #6276ba;">}</span><span style="color: #907373;">}</span>
+        <span style="color: #2A00FF;">"train acc"</span>
+        <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
+         <span style="color: #110099;">:y</span> @train-accuracy
+         <span style="color: #110099;">:style</span> <span style="color: #6276ba;">{</span><span style="color: #110099;">:marker-type</span> <span style="color: #110099;">:none</span><span style="color: #6276ba;">}</span><span style="color: #907373;">}</span>
+        <span style="color: #2A00FF;">"train loss"</span>
+        <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
+         <span style="color: #110099;">:y</span> @train-loss
+         <span style="color: #110099;">:style</span> <span style="color: #6276ba;">{</span><span style="color: #110099;">:marker-type</span> <span style="color: #110099;">:none</span><span style="color: #6276ba;">}</span><span style="color: #907373;">}</span><span style="color: #709870;">}</span><span style="color: #909183;">)</span>
+      <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/spit <span style="color: #2A00FF;">"figure/mlp-scratch.svg"</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -444,7 +444,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:48</p>
+<p class="date">Created: 2021-04-11 Sun 09:03</p>
 </div>
 </body>
 </html>
