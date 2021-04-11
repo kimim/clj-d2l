@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:37 -->
+<!-- 2021-04-11 Sun 08:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -342,7 +342,7 @@ for the JavaScript code in this tag.
 <pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">train</span> <span style="color: #93a8c6;">[</span>lambd<span style="color: #93a8c6;">]</span>
   <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>nepochs 100
         lr 0.003
-        w <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1.0 <span style="color: #aebed8;">[</span>ninputs 1<span style="color: #aebed8;">]</span> <span style="color: #00eeee;">:float</span><span style="color: #97b098;">)</span>
+        w <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1.0 <span style="color: #aebed8;">[</span>ninputs 1<span style="color: #aebed8;">]</span> <span style="color: #00eeee;">:float32</span><span style="color: #97b098;">)</span>
         b <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #aebed8;">[</span>1<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
         _ <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">dorun</span> <span style="color: #aebed8;">(</span>map <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient <span style="color: #b0b0b3;">[</span>w b<span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
         params <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/ndlist w b<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">]</span>
@@ -436,7 +436,7 @@ Sorry, your browser does not support SVG.</object>
 <pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">train-concise</span> <span style="color: #93a8c6;">[</span>wd<span style="color: #93a8c6;">]</span>
   <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">let</span> <span style="color: #b0b1a3;">[</span>nepochs 100
         lr 0.003
-        w <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1.0 <span style="color: #aebed8;">[</span>ninputs 1<span style="color: #aebed8;">]</span> <span style="color: #00eeee;">:float</span><span style="color: #97b098;">)</span>
+        w <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1.0 <span style="color: #aebed8;">[</span>ninputs 1<span style="color: #aebed8;">]</span> <span style="color: #00eeee;">:float32</span><span style="color: #97b098;">)</span>
         b <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #aebed8;">[</span>1<span style="color: #aebed8;">]</span><span style="color: #97b098;">)</span>
         _ <span style="color: #97b098;">(</span><span style="color: #ff55ff; font-weight: bold;">dorun</span> <span style="color: #aebed8;">(</span>map <span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient <span style="color: #b0b0b3;">[</span>w b<span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
         params <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/ndlist w b<span style="color: #97b098;">)</span>
@@ -539,7 +539,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:37</p>
+<p class="date">Created: 2021-04-11 Sun 08:48</p>
 </div>
 </body>
 </html>

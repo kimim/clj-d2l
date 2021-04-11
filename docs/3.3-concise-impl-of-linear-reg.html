@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:37 -->
+<!-- 2021-04-11 Sun 08:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -289,8 +289,7 @@ for the JavaScript code in this tag.
             <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> training<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.metric <span style="color: #00eeee;">:as</span> metric<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>
   <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:import</span> <span style="color: #b0b1a3;">[</span>ai.djl.ndarray.types DataType<span style="color: #b0b1a3;">]</span>
            <span style="color: #b0b1a3;">[</span>java.nio.file Paths<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 </pre>
@@ -406,7 +405,7 @@ labels(0):  4.662078
 <h3 id="org888d2cb"><span class="section-number-3">2.5</span> Metrics</h3>
 <div class="outline-text-3" id="text-2-5">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">metrics</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">metric</span>/new-metrics<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">metrics</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/metrics<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 <span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/set-metrics trainer metrics<span style="color: #8c8c8c;">)</span>
 </pre>
 </div>
@@ -540,7 +539,7 @@ Model (
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:37</p>
+<p class="date">Created: 2021-04-11 Sun 08:48</p>
 </div>
 </body>
 </html>

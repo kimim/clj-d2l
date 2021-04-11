@@ -1,4 +1,4 @@
-#+TITLE: My Sitemap
+#+TITLE: Index
 
 - [[file:2.1-data-manipulation.org][2.1-data-manipulation]]
 - [[file:2.2-data-preprocess.org][2.2-data-preprocess]]
@@ -20,4 +20,3 @@
 - [[file:4.5-weight-decay.org][4.5-weight-decay]]
 - [[file:4.6-dropout.org][4.6-dropout]]
 - [[file:4.8-numerical-stability.org][4.8-numerical-stability]]
-- [[file:index.org][Index]]

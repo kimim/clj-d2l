@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:37 -->
+<!-- 2021-04-11 Sun 08:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -273,14 +273,12 @@ for the JavaScript code in this tag.
             <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.metric <span style="color: #00eeee;">:as</span> metric<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>clj-djl.utils <span style="color: #00eeee;">:as</span> utils<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>clj-d2l.core <span style="color: #00eeee;">:as</span> d2l<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>com.hypirion.clj-xchart <span style="color: #00eeee;">:as</span> c<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>
   <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:import</span> <span style="color: #b0b1a3;">[</span>ai.djl.basicdataset FashionMnist<span style="color: #b0b1a3;">]</span>
            <span style="color: #b0b1a3;">[</span>ai.djl.training.listener TrainingListener$Defaults<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.nn Activation<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.metric Metrics<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+           <span style="color: #b0b1a3;">[</span>ai.djl.nn Activation<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 </pre>
 </div>
 </div>
@@ -348,7 +346,7 @@ for the JavaScript code in this tag.
             trainer <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">m</span>/new-trainer model config<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">]</span>
   <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> trainer
       <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/initialize <span style="color: #97b098;">[</span><span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #b0b0b3;">[</span>1 784<span style="color: #b0b0b3;">]</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span><span style="color: #b0b1a3;">)</span>
-      <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/set-metrics <span style="color: #97b098;">(</span>Metrics.<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span>
+      <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/set-metrics <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/metrics<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span>
       <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/fit nepochs mnist-train mnist-test<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
   <span style="color: #93a8c6;">(</span>reset! evals <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-evaluators trainer<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
   <span style="color: #93a8c6;">(</span>reset! mets <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-metrics trainer<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
@@ -356,10 +354,10 @@ for the JavaScript code in this tag.
     <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">doseq</span> <span style="color: #97b098;">[</span>evaluator <span style="color: #aebed8;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">t</span>/get-evaluators trainer<span style="color: #aebed8;">)</span><span style="color: #97b098;">]</span>
       <span style="color: #97b098;">(</span>swap! evaluator-metrics
              assoc <span style="color: #aebed8;">(</span>str <span style="color: #32cd32;">"train_epoch_"</span> <span style="color: #b0b0b3;">(</span>.getName evaluator<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
-             <span style="color: #aebed8;">(</span>map #<span style="color: #b0b0b3;">(</span>.getValue <span style="color: #ffffff;">%</span><span style="color: #b0b0b3;">)</span> <span style="color: #b0b0b3;">(</span>.getMetric metrics <span style="color: #90a890;">(</span>str <span style="color: #32cd32;">"train_epoch_"</span> <span style="color: #a2b6da;">(</span>.getName evaluator<span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
+             <span style="color: #aebed8;">(</span>map <span style="color: #00eeee;">:value</span> <span style="color: #b0b0b3;">(</span>metrics <span style="color: #90a890;">(</span>str <span style="color: #32cd32;">"train_epoch_"</span> <span style="color: #a2b6da;">(</span>.getName evaluator<span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span>
       <span style="color: #97b098;">(</span>swap! evaluator-metrics
              assoc <span style="color: #aebed8;">(</span>str <span style="color: #32cd32;">"validate_epoch_"</span> <span style="color: #b0b0b3;">(</span>.getName evaluator<span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span>
-             <span style="color: #aebed8;">(</span>map #<span style="color: #b0b0b3;">(</span>.getValue <span style="color: #ffffff;">%</span><span style="color: #b0b0b3;">)</span> <span style="color: #b0b0b3;">(</span>.getMetric metrics <span style="color: #90a890;">(</span>str <span style="color: #32cd32;">"validate_epoch_"</span> <span style="color: #a2b6da;">(</span>.getName evaluator<span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+             <span style="color: #aebed8;">(</span>map <span style="color: #00eeee;">:value</span> <span style="color: #b0b0b3;">(</span>metrics <span style="color: #90a890;">(</span>str <span style="color: #32cd32;">"validate_epoch_"</span> <span style="color: #a2b6da;">(</span>.getName evaluator<span style="color: #a2b6da;">)</span><span style="color: #90a890;">)</span><span style="color: #b0b0b3;">)</span><span style="color: #aebed8;">)</span><span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 </pre>
 </div>
 
@@ -393,7 +391,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:37</p>
+<p class="date">Created: 2021-04-11 Sun 08:48</p>
 </div>
 </body>
 </html>

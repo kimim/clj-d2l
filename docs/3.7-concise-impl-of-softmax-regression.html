@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 08:37 -->
+<!-- 2021-04-11 Sun 08:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -279,15 +279,9 @@ for the JavaScript code in this tag.
             <span style="color: #b0b1a3;">[</span>clj-djl.training.tracker <span style="color: #00eeee;">:as</span> tracker<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>clj-djl.training.optimizer <span style="color: #00eeee;">:as</span> optimizer<span style="color: #b0b1a3;">]</span>
             <span style="color: #b0b1a3;">[</span>clj-djl.training <span style="color: #00eeee;">:as</span> training<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span>
-            <span style="color: #b0b1a3;">[</span>clj-djl.metric <span style="color: #00eeee;">:as</span> metric<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:import</span> <span style="color: #b0b1a3;">[</span>ai.djl.ndarray.types DataType<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.basicdataset FashionMnist<span style="color: #b0b1a3;">]</span>
+            <span style="color: #b0b1a3;">[</span>clj-djl.training.listener <span style="color: #00eeee;">:as</span> listener<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #00eeee;">:import</span> <span style="color: #b0b1a3;">[</span>ai.djl.basicdataset FashionMnist<span style="color: #b0b1a3;">]</span>
            <span style="color: #b0b1a3;">[</span>ai.djl.training.dataset Dataset$Usage<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.training.evaluator Accuracy<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.training.listener TrainingListener$Defaults<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.metric Metrics<span style="color: #b0b1a3;">]</span>
-           <span style="color: #b0b1a3;">[</span>ai.djl.training EasyTrain<span style="color: #b0b1a3;">]</span>
            <span style="color: #b0b1a3;">[</span>java.nio.file Paths<span style="color: #b0b1a3;">]</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 </pre>
 </div>
@@ -318,18 +312,18 @@ for the JavaScript code in this tag.
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">defn</span> <span style="color: #00bfff; font-weight: bold;">softmax</span> <span style="color: #93a8c6;">[</span>arrays<span style="color: #93a8c6;">]</span>
-  <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/new-ndlist <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/log-softmax <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/singleton-or-throw arrays<span style="color: #97b098;">)</span> 1<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+  <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/ndlist <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/log-softmax <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/singleton-or-throw arrays<span style="color: #97b098;">)</span> 1<span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">manager</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">manager</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">model</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/new-instance <span style="color: #32cd32;">"softmax-regression"</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">model</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/instance <span style="color: #32cd32;">"softmax-regression"</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 
 <span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">net</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/sequential-block<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 
 <span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> net
     <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/batch-flatten-block <span style="color: #97b098;">(</span>* 28 28<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span>
-    <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/new-linear-builder<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/set-units 10<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/build<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+    <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #b0b1a3;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/linear-builder<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/set-units 10<span style="color: #97b098;">)</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">nn</span>/build<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 
 <span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/set-block model net<span style="color: #8c8c8c;">)</span>
 </pre>
@@ -364,12 +358,12 @@ for the JavaScript code in this tag.
 <h3 id="org7f70d78"><span class="section-number-3">1.4</span> Instantiate Configuration and Trainer</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">config</span> <span style="color: #93a8c6;">(</span><span style="color: #ff55ff; font-weight: bold;">-&gt;</span> <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/new-default-training-config loss<span style="color: #b0b1a3;">)</span>
-                <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/opt-optimizer sgd<span style="color: #b0b1a3;">)</span>
-                <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/add-evaluator <span style="color: #97b098;">(</span>Accuracy.<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span>
-                <span style="color: #b0b1a3;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/add-training-listeners <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">TrainingListener$Defaults</span>/logging<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">)</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">config</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/training-config <span style="color: #b0b1a3;">{</span><span style="color: #00eeee;">:loss</span> loss
+                                       <span style="color: #00eeee;">:optimizer</span> sgd
+                                       <span style="color: #00eeee;">:accuracy</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/accuracy<span style="color: #97b098;">)</span>
+                                       <span style="color: #00eeee;">:listeners</span> <span style="color: #97b098;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">listener</span>/logging<span style="color: #97b098;">)</span><span style="color: #b0b1a3;">}</span><span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 
-<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">trainer</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/new-trainer model config<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">trainer</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">model</span>/trainer model config<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 </pre>
 </div>
 </div>
@@ -389,7 +383,7 @@ for the JavaScript code in this tag.
 <h3 id="orgaedb838"><span class="section-number-3">1.6</span> Metrics</h3>
 <div class="outline-text-3" id="text-1-6">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">metrics</span> <span style="color: #93a8c6;">(</span>Metrics.<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">metrics</span> <span style="color: #93a8c6;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/metrics<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
 <span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/set-metrics trainer metrics<span style="color: #8c8c8c;">)</span>
 </pre>
 </div>
@@ -401,8 +395,18 @@ for the JavaScript code in this tag.
 <h3 id="org3b78fa8"><span class="section-number-3">1.7</span> Training</h3>
 <div class="outline-text-3" id="text-1-7">
 <div class="org-src-container">
+<pre class="src src-emacs-lisp"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">setq</span> org-babel-clojure-sync-nrepl-timeout 1000<span style="color: #8c8c8c;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+1000
+</pre>
+
+
+<div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ff55ff; font-weight: bold;">def</span> <span style="color: #ffffff;">num-epochs</span> 5<span style="color: #8c8c8c;">)</span>
-<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">EasyTrain</span>/fit trainer num-epochs mnist-train mnist-test<span style="color: #8c8c8c;">)</span>
+<span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/fit trainer num-epochs mnist-train mnist-test<span style="color: #8c8c8c;">)</span>
 </pre>
 </div>
 
@@ -451,7 +455,7 @@ Validating:  100% |████████████████████�
 </pre>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span>.getEvaluations <span style="color: #93a8c6;">(</span>.getTrainingResult trainer<span style="color: #93a8c6;">)</span><span style="color: #8c8c8c;">)</span>
+<pre class="src src-clojure"><span style="color: #8c8c8c;">(</span><span style="color: #ffffff; font-style: italic; text-decoration: underline;">training</span>/get-training-result trainer<span style="color: #8c8c8c;">)</span>
 </pre>
 </div>
 
@@ -470,33 +474,15 @@ Validating:  100% |████████████████████�
 <col  class="org-left" />
 
 <col  class="org-right" />
-
-<col  class="org-left" />
-
-<col  class="org-right" />
-
-<col  class="org-left" />
-
-<col  class="org-right" />
-
-<col  class="org-left" />
-
-<col  class="org-right" />
 </colgroup>
 <tbody>
 <tr>
-<td class="org-left">validate_Accuracy</td>
-<td class="org-right">0.8224</td>
-<td class="org-left">train_Accuracy</td>
-<td class="org-right">0.83503336</td>
-<td class="org-left">train_SoftmaxCrossEntropyLoss</td>
-<td class="org-right">0.48581553</td>
-<td class="org-left">validate_SoftmaxCrossEntropyLoss</td>
-<td class="org-right">0.513945</td>
-<td class="org-left">train_loss</td>
-<td class="org-right">0.48581553</td>
-<td class="org-left">validate_loss</td>
-<td class="org-right">0.513945</td>
+<td class="org-left">:epoch</td>
+<td class="org-right">10</td>
+<td class="org-left">:train-loss</td>
+<td class="org-right">0.44829798</td>
+<td class="org-left">:validate-loss</td>
+<td class="org-right">0.48035732</td>
 </tr>
 </tbody>
 </table>
@@ -505,7 +491,7 @@ Validating:  100% |████████████████████�
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 08:37</p>
+<p class="date">Created: 2021-04-11 Sun 08:48</p>
 </div>
 </body>
 </html>
