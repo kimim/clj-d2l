@@ -6,7 +6,7 @@
 <!-- 2021-04-11 Sun 10:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My Sitemap</title>
+<title>Installation</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -245,32 +245,75 @@ for the JavaScript code in this tag.
  |
  <a accesskey="H" href="index.html"> HOME </a>
 </div><div id="content">
-<h1 class="title">My Sitemap</h1>
-<ul class="org-ul">
-<li><a href="2.1-data-manipulation.html">2.1-data-manipulation</a></li>
-<li><a href="2.2-data-preprocess.html">2.2-data-preprocess</a></li>
-<li><a href="2.3-linear-algebra.html">2.3-linear-algebra</a></li>
-<li><a href="2.4-calculus.html">2.4-calculus</a></li>
-<li><a href="2.5-automatic-differentiation.html">2.5-automatic-differentiation</a></li>
-<li><a href="2.6-probability.html">2.6-probability</a></li>
-<li><a href="2.7-dataset.html">2.7-dataset</a></li>
-<li><a href="3.1-linear-regression.html">3.1-linear-regression</a></li>
-<li><a href="3.2-linear-reg-impl-from-scrach.html">3.2-linear-reg-impl-from-scrach</a></li>
-<li><a href="3.3-concise-impl-of-linear-reg.html">3.3-concise-impl-of-linear-reg</a></li>
-<li><a href="3.5-the-image-classification-dataset.html">3.5-the-image-classification-dataset</a></li>
-<li><a href="3.6-implementation-of-softmax-regression-from-scratch.html">3.6-implementation-of-softmax-regression-from-scratch</a></li>
-<li><a href="3.7-concise-impl-of-softmax-regression.html">3.7-concise-impl-of-softmax-regression</a></li>
-<li><a href="4.1-multilayer-perceptrons.html">4.1-multilayer-perceptrons</a></li>
-<li><a href="4.2-impl-multilayer-perceptron-from-scratch.html">4.2-impl-multilayer-perceptron-from-scratch</a></li>
-<li><a href="4.3-concise-impl-multilayer-perceptron.html">4.3-concise-impl-multilayer-perceptron</a></li>
-<li><a href="4.4-underfitting-overfitting.html">4.4-underfitting-overfitting</a></li>
-<li><a href="4.5-weight-decay.html">4.5-weight-decay</a></li>
-<li><a href="4.6-dropout.html">4.6-dropout</a></li>
-<li><a href="4.8-numerical-stability.html">4.8-numerical-stability</a></li>
-<li><a href="theindex.html">Index</a></li>
-<li><a href="index.html">Index</a></li>
-<li><a href="installation.html">Installation</a></li>
+<h1 class="title">Installation</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org470c448">1. Installing JDK 11</a></li>
+<li><a href="#org66e2332">2. Install Clojure</a></li>
+<li><a href="#org7e8ad55">3. Install Emacs</a></li>
 </ul>
+</div>
+</div>
+<p>
+In order to get you up and running for hands-on learning experience, we need to
+set you up with an environment for running Clojure, clj-djl, lein, the relevant
+libraries, and the code needed to run the book itself.
+</p>
+
+<div id="outline-container-org470c448" class="outline-2">
+<h2 id="org470c448"><span class="section-number-2">1</span> Installing JDK 11</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+JDK 11 (or above) are required to run the examples provided in this folder.
+</p>
+
+<p>
+To confirm the java path is configured properly, run:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">java --list-modules | grep <span style="color: #2A00FF;">"jdk.jshell"</span>
+&gt; jdk.jshell@11.0.9
+</pre>
+</div>
+
+<p>
+Otherwise, you can navigate to
+<a href="https://github.com/graalvm/graalvm-ce-builds/releases">https://github.com/graalvm/graalvm-ce-builds/releases</a> and download the latest OS
+specific version of JDK. For example, Windows 64bit user can download this file:
+<code>graalvm-ce-java11-windows-amd64-21.0.0.2.zip</code>, and extract it to some where, such
+as <code>C:\JDK</code>, then add <code>C:\JDK\graalvm-ce-java11-21.0.0.2\bin</code> to system PATH
+environment.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org66e2332" class="outline-2">
+<h2 id="org66e2332"><span class="section-number-2">2</span> Install Clojure</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+clj command line tool will help you install clojure.jar automatically.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">curl -O https://download.clojure.org/install/linux-install-1.10.2.774.sh
+chmod +x linux-install-1.10.2.774.sh
+sudo ./linux-install-1.10.2.774.sh
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7e8ad55" class="outline-2">
+<h2 id="org7e8ad55"><span class="section-number-2">3</span> Install Emacs</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Refer to my emacs configuration guide: <a href="http://kimi.im/kimim-emacs">http://kimi.im/kimim-emacs</a>
+</p>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Created: 2021-04-11 Sun 10:59</p>
