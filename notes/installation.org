@@ -1,0 +1,37 @@
+#+TITLE: Installation
+
+In order to get you up and running for hands-on learning experience, we need to
+set you up with an environment for running Clojure, clj-djl, lein, the relevant
+libraries, and the code needed to run the book itself.
+
+* Installing JDK 11
+
+JDK 11 (or above) are required to run the examples provided in this folder.
+
+To confirm the java path is configured properly, run:
+
+#+begin_src shell
+java --list-modules | grep "jdk.jshell"
+> jdk.jshell@11.0.9
+#+end_src
+
+Otherwise, you can navigate to
+https://github.com/graalvm/graalvm-ce-builds/releases and download the latest OS
+specific version of JDK. For example, Windows 64bit user can download this file:
+=graalvm-ce-java11-windows-amd64-21.0.0.2.zip=, and extract it to some where, such
+as =C:\JDK=, then add =C:\JDK\graalvm-ce-java11-21.0.0.2\bin= to system PATH
+environment.
+
+* Install Clojure
+
+clj command line tool will help you install clojure.jar automatically.
+
+#+begin_src shell
+curl -O https://download.clojure.org/install/linux-install-1.10.2.774.sh
+chmod +x linux-install-1.10.2.774.sh
+sudo ./linux-install-1.10.2.774.sh
+#+end_src
+
+* Install Emacs
+
+Refer to my emacs configuration guide: http://kimi.im/kimim-emacs

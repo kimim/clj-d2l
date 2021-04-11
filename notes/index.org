@@ -2,6 +2,7 @@
 
 This is the Clojure fork of famous Deep Learning AI book D2L.ai.
 
+- [[file:installation.org][Installation]]
 - [[file:2.1-data-manipulation.org][2.1-data-manipulation]]
 - [[file:2.2-data-preprocess.org][2.2-data-preprocess]]
 - [[file:2.3-linear-algebra.org][2.3-linear-algebra]]
