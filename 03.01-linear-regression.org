@@ -1,0 +1,40 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/vec4speed.clj
+* Linear Regression
+
+** Vectorization for Speed
+
+#+begin_src clojure :results silent
+(ns clj-d2l.vec4speed
+  (:require [clj-djl.ndarray :as nd]
+            [stopwatch.core :as stopwatch]))
+#+end_src
+
+#+begin_src clojure :results silent
+(def n 10000)
+(def manager (nd/new-base-manager))
+(def a (nd/ones manager [n]))
+(def b (nd/ones manager [n]))
+#+end_src
+
+#+begin_src clojure :results output :exports both
+(let [elapsed (stopwatch/start)]
+  (nd/+ a b)
+  (println "Elapsed: " (/ (elapsed) 1e9) "sec"))
+#+end_src
+
+#+RESULTS:
+: Elapsed:  3.21498E-4 sec
+
+#+begin_src clojure :results output :exports both
+(def c (nd/zeros manager [n]))
+(let [elapsed (stopwatch/start)]
+  (doseq [i (range n)]
+    (nd/set c [i] (+ (nd/get-element a [i]) (nd/get-element b [i]))))
+  (println "Elapsed: " (/ (elapsed) 1e9) "sec"))
+#+end_src
+
+#+RESULTS:
+: Elapsed:  10.531492801 sec
+
+
+** The Normal Distribution and Squared Loss

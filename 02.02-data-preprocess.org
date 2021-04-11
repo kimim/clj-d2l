@@ -1,0 +1,139 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/data_preprocess.clj
+* Data Preprocessing
+
+#+begin_src clojure :results silent
+(ns clj-d2l.data-preprocess
+  (:require
+   [clojure.java.io :as io]
+   [clj-djl.ndarray :as nd]
+   [clj-djl.dataframe :as df]
+   [clj-djl.dataframe.column-filters :as cf]
+   [clj-djl.dataframe.functional :as dfn]
+   [clj-d2l.core :as d2l]))
+#+end_src
+
+** Reading the Dataset
+
+#+begin_src clojure :results silent :exports both
+(let [filename "data/house_tiny.csv"
+      records ["NumRooms,Alley,Price\n"  ;; Column names
+               "NA,Pave,127500\n"        ;;Each row represents a data example
+               "2,NA,106000\n"
+               "4,NA,178100\n"
+               "NA,NA,140000\n"]]
+  (io/make-parents filename)
+  (dorun
+   (map #(spit filename % :append true) records)))
+#+end_src
+
+#+begin_src clojure :results value pp :exports both
+(def data (df/->dataframe "data/house_tiny.csv"))
+data
+#+end_src
+
+#+RESULTS:
+: data/house_tiny.csv [4 3]:
+:
+: | NumRooms | Alley |  Price |
+: |----------|-------|--------|
+: |          |  Pave | 127500 |
+: |        2 |       | 106000 |
+: |        4 |       | 178100 |
+: |          |       | 140000 |
+
+
+** Handling Missing Data
+
+#+begin_src clojure :results value pp :exports both
+(def inputs (df/select-by-index data :all [0 1]))
+(def outputs (df/select-by-index data :all [2]))
+[inputs outputs]
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[data/house_tiny.csv [4 2]:
+
+| NumRooms | Alley |
+|----------|-------|
+|          |  Pave |
+|        2 |       |
+|        4 |       |
+|          |       |
+ data/house_tiny.csv [4 1]:
+
+|  Price |
+|--------|
+| 127500 |
+| 106000 |
+| 178100 |
+| 140000 |
+]
+#+end_example
+
+
+#+begin_src clojure :results value pp :exports both
+(def inputs2 (-> inputs
+                 (df/replace-missing cf/numeric dfn/mean)
+                 (df/replace-missing cf/categorical "NaN")))
+inputs2
+#+end_src
+
+#+RESULTS:
+: data/house_tiny.csv [4 2]:
+:
+: | NumRooms | Alley |
+: |----------|-------|
+: |        3 |  Pave |
+: |        2 |   NaN |
+: |        4 |   NaN |
+: |        3 |   NaN |
+
+
+#+begin_src clojure :results value pp :exports both
+(def inputs2 (df/categorical->one-hot inputs2 cf/categorical))
+inputs2
+#+end_src
+
+#+RESULTS:
+: data/house_tiny.csv [4 3]:
+:
+: | NumRooms | Alley-NaN | Alley-Pave |
+: |----------|-----------|------------|
+: |        3 |       0.0 |        1.0 |
+: |        2 |       1.0 |        0.0 |
+: |        4 |       1.0 |        0.0 |
+: |        3 |       1.0 |        0.0 |
+
+
+** Conversion to the Tensor Format
+
+#+begin_src clojure :results silent :exports both
+(def ndm (nd/new-base-manager))
+(def X (df/->ndarray ndm inputs2))
+(def y (df/->ndarray ndm outputs))
+#+end_src
+
+#+begin_src clojure :results value pp :exports both
+X
+#+end_src
+
+#+RESULTS:
+: ND: (4, 3) cpu() int32
+: [[ 3,  0,  1],
+:  [ 2,  1,  0],
+:  [ 4,  1,  0],
+:  [ 3,  1,  0],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+y
+#+end_src
+
+#+RESULTS:
+: ND: (4, 1) cpu() int64
+: [[127500],
+:  [106000],
+:  [178100],
+:  [140000],
+: ]

@@ -1,0 +1,212 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/house_prices.clj
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.house-prices
+  (:require
+   [clojure.spec.alpha :as s]
+   [clj-djl.ndarray :as nd]
+   [clj-djl.training :as t]
+   [clj-djl.training.dataset :as ds]
+   [clj-djl.training.loss :as loss]
+   [clj-djl.training.optimizer :as optimizer]
+   [clj-djl.training.tracker :as tracker]
+   [clj-djl.training.listener :as listener]
+   [clj-djl.model :as m]
+   [clj-djl.nn :as nn]
+   [clj-djl.device :as dev]
+   [clj-djl.dataframe :as df]
+   [clj-djl.dataframe.column-filters :as cf]
+   [clj-djl.dataframe.functional :as dfn]
+   [clj-d2l.core :as d2l]))
+#+end_src
+
+#+begin_src clojure :results silent :exports both
+(def train-data (df/->dataframe "http://d2l-data.s3-accelerate.amazonaws.com/kaggle_house_pred_train.csv"))
+(def test-data (df/->dataframe "http://d2l-data.s3-accelerate.amazonaws.com/kaggle_house_pred_test.csv"))
+#+end_src
+
+#+begin_src clojure :results value pp :exports both
+(df/shape train-data)
+#+end_src
+
+#+RESULTS:
+: [1460 81]
+
+#+begin_src clojure :results value pp :exports both
+(df/shape test-data)
+#+end_src
+
+#+RESULTS:
+: [1459 80]
+
+#+begin_src clojure :results value pp :exports both
+(vec (df/column-names train-data))
+#+end_src
+
+#+RESULTS:
+: ["Id" "MSSubClass" "MSZoning" "LotFrontage" "LotArea" "Street" "Alley" "LotShape" "LandContour" "Utilities" "LotConfig" "LandSlope" "Neighborhood" "Condition1" "Condition2" "BldgType" "HouseStyle" "OverallQual" "OverallCond" "YearBuilt" "YearRemodAdd" "RoofStyle" "RoofMatl" "Exterior1st" "Exterior2nd" "MasVnrType" "MasVnrArea" "ExterQual" "ExterCond" "Foundation" "BsmtQual" "BsmtCond" "BsmtExposure" "BsmtFinType1" "BsmtFinSF1" "BsmtFinType2" "BsmtFinSF2" "BsmtUnfSF" "TotalBsmtSF" "Heating" "HeatingQC" "CentralAir" "Electrical" "1stFlrSF" "2ndFlrSF" "LowQualFinSF" "GrLivArea" "BsmtFullBath" "BsmtHalfBath" "FullBath" "HalfBath" "BedroomAbvGr" "KitchenAbvGr" "KitchenQual" "TotRmsAbvGrd" "Functional" "Fireplaces" "FireplaceQu" "GarageType" "GarageYrBlt" "GarageFinish" "GarageCars" "GarageArea" "GarageQual" "GarageCond" "PavedDrive" "WoodDeckSF" "OpenPorchSF" "EnclosedPorch" "3SsnPorch" "ScreenPorch" "PoolArea" "PoolQC" "Fence" "MiscFeature" "MiscVal" "MoSold" "YrSold" "SaleType" "SaleCondition" "SalePrice"]
+
+#+begin_src clojure :results value pp :exports both
+(vec (df/column-names test-data))
+#+end_src
+
+#+RESULTS:
+: ["Id" "MSSubClass" "MSZoning" "LotFrontage" "LotArea" "Street" "Alley" "LotShape" "LandContour" "Utilities" "LotConfig" "LandSlope" "Neighborhood" "Condition1" "Condition2" "BldgType" "HouseStyle" "OverallQual" "OverallCond" "YearBuilt" "YearRemodAdd" "RoofStyle" "RoofMatl" "Exterior1st" "Exterior2nd" "MasVnrType" "MasVnrArea" "ExterQual" "ExterCond" "Foundation" "BsmtQual" "BsmtCond" "BsmtExposure" "BsmtFinType1" "BsmtFinSF1" "BsmtFinType2" "BsmtFinSF2" "BsmtUnfSF" "TotalBsmtSF" "Heating" "HeatingQC" "CentralAir" "Electrical" "1stFlrSF" "2ndFlrSF" "LowQualFinSF" "GrLivArea" "BsmtFullBath" "BsmtHalfBath" "FullBath" "HalfBath" "BedroomAbvGr" "KitchenAbvGr" "KitchenQual" "TotRmsAbvGrd" "Functional" "Fireplaces" "FireplaceQu" "GarageType" "GarageYrBlt" "GarageFinish" "GarageCars" "GarageArea" "GarageQual" "GarageCond" "PavedDrive" "WoodDeckSF" "OpenPorchSF" "EnclosedPorch" "3SsnPorch" "ScreenPorch" "PoolArea" "PoolQC" "Fence" "MiscFeature" "MiscVal" "MoSold" "YrSold" "SaleType" "SaleCondition"]
+
+#+begin_src clojure :results value pp :exports both
+(df/select-by-index train-data (range 4) [0 1 2 3 -3 -2 -1])
+#+end_src
+
+#+RESULTS:
+: http://d2l-data.s3-accelerate.amazonaws.com/kaggle_house_pred_train.csv [4 7]:
+:
+: | Id | MSSubClass | MSZoning | LotFrontage | SaleType | SaleCondition | SalePrice |
+: |----|------------|----------|-------------|----------|---------------|-----------|
+: |  1 |         60 |       RL |          65 |       WD |        Normal |    208500 |
+: |  2 |         20 |       RL |          80 |       WD |        Normal |    181500 |
+: |  3 |         60 |       RL |          68 |       WD |        Normal |    223500 |
+: |  4 |         70 |       RL |          60 |       WD |       Abnorml |    140000 |
+
+#+begin_src clojure :results silent :exports both
+(def all-features (-> train-data
+                      (df/drop-columns ["SalePrice"])
+                      (df/concat test-data)
+                      (df/drop-columns ["Id"])
+                      (df/replace-missing cf/numeric 0)
+                      (df/replace-missing cf/categorical "None")
+                      (df/update-columns cf/numeric
+                                         #(dfn// (dfn/- % (dfn/mean %))
+                                                 (dfn/standard-deviation %)))
+                      (df/categorical->one-hot cf/categorical)))
+#+end_src
+
+#+begin_src clojure :results value pp :exports both
+(df/shape all-features)
+#+end_src
+
+#+RESULTS:
+: [2919 310]
+
+
+#+begin_src clojure :results value pp :exports both
+(def n-train ((df/shape train-data) 0))
+(def n-test ((df/shape test-data) 0))
+[n-train n-test]
+#+end_src
+
+#+RESULTS:
+: [1460 1459]
+
+#+begin_src clojure :results silent :exports bot
+(def train-features (df/head all-features n-train))
+(def test-features (df/tail all-features n-test))
+#+end_src
+
+#+begin_src clojure :results value pp :exports both
+[(df/shape train-features)
+ (df/shape test-features)]
+#+end_src
+
+#+RESULTS:
+: [[1460 310] [1459 310]]
+
+#+begin_src clojure :results silent :exports both
+(def train-labels (-> (df/select-columns train-data ["SalePrice"])
+                      (df/update-columns cf/numeric
+                                         #(dfn// % (dfn/mean %)))))
+#+end_src
+
+#+begin_src clojure :results value pp :exports both
+(vec (df/brief train-labels))
+#+end_src
+
+#+RESULTS:
+: [{:min 34900.0, :n-missing 0, :col-name "SalePrice", :mean 180921.19589041095, :datatype :int32, :skew 1.8828757597682129, :standard-deviation 79442.5028828866, :quartile-3 214000.0, :n-valid 1460, :quartile-1 129925.0, :median 163000.0, :max 755000.0}]
+
+#+begin_src clojure :results silent :exports both
+(def ndm (nd/new-base-manager))
+#+end_src
+
+now lets convert them to ndarray
+
+#+begin_src clojure :results value pp :exports both
+(def label-nd (df/->ndarray ndm train-labels))
+(nd/get label-nd "0:5")
+#+end_src
+
+#+RESULTS:
+: ND: (5, 1) cpu() float64
+: [[1.0425],
+:  [0.9075],
+:  [1.1175],
+:  [0.7   ],
+:  [1.25  ],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(def train-nd (df/->ndarray ndm train-features))
+(nd/get train-nd "0:3, 0:3")
+#+end_src
+
+#+RESULTS:
+: ND: (3, 3) cpu() float64
+: [[-0.443 ,  0.7812,  0.8967],
+:  [ 0.4774,  0.7812, -0.3955],
+:  [-0.2979,  0.7812,  0.8488],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(def test-nd (df/->ndarray ndm test-features))
+(nd/get test-nd "0:3, 0:3")
+#+end_src
+
+#+RESULTS:
+: ND: (3, 3) cpu() float64
+: [[-0.3841, -1.0272, -1.1134],
+:  [ 0.6293, -1.0272, -1.257 ],
+:  [-0.2798,  0.7812,  0.6574],
+: ]
+
+define training process
+#+begin_src clojure :results silent :exports both
+(defn do-train [nepochs learning-rate weight-decay batchsize output]
+  (let [train-dataset
+        (-> (ds/new-array-dataset-builder)
+            (ds/set-data (nd/to-type train-nd :float32 false))
+            (ds/opt-labels (nd/to-type label-nd :float32 false))
+            (ds/set-sampling batchsize false)
+            (ds/build))
+
+        net (-> (nn/sequential-block)
+                (nn/add (-> (nn/new-linear-builder)
+                            (nn/set-units 1)
+                            (nn/build)))
+                (nn/set-initializer (nn/new-normal-initializer)))
+
+        loss (loss/l2-loss)
+
+        cfg (t/default-training-config {:loss loss
+                                        :optimizer (optimizer/sgd {:tracker (tracker/fixed learning-rate)})
+                                        :evaluator (t/accuracy) ;; log-rmse?
+                                        :listeners (listener/logging)})]
+    (with-open [model (m/new-model {:name "mlp" :block net})
+                trainer (t/new-trainer model cfg)]
+      (t/initialize trainer (nd/shape 1 310))
+      (t/set-metrics trainer (t/metrics))
+      (t/fit trainer nepochs train-dataset)
+      (t/get-training-result trainer)
+      (let [metrics (t/get-metrics trainer)]
+        (d2l/plot-lines output
+                        ["train loss" "train-accuracy"]
+                        (range nepochs)
+                        [(map :value (metrics "train_epoch_L2Loss"))
+                         (map :value (metrics "validate_epoch_L2Loss"))
+                         (map :value (metrics "validate_epoch_Accuracy"))])))))
+
+#+end_src
+
+
+#+begin_src clojure :results silent :exports both
+(do-train 3 0.05 0 64 "figure/house-prices.svg")
+#+end_src
+
+[[./figure/house-prices.svg]]

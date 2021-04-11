@@ -1,0 +1,752 @@
+#+PROPERTY: header-args    :tangle src/clj_d2l/data_manipulation.clj
+* Data Manipulation
+
+** Getting Started
+
+To start, we should load =clj-djl.ndarray=:
+
+#+begin_src clojure :results silent
+(ns clj-d2l.data-manipulation
+  (:require [clj-djl.ndarray :as nd]))
+#+end_src
+
+Then create a =ndmanager=, which is used to manage ndarray memory:
+
+#+begin_src clojure :results value pp :exports both
+(def ndm (nd/new-base-manager))
+ndm
+#+end_src
+
+#+RESULTS:
+: UID: 4138e465-874b-484c-8933-6334cf893b3f Parent UID: 083df343-8671-4a9d-b6dc-5747d8353799 isOpen: true Resource size: 0
+
+Then create an ndarray containing the first 12 integers starting with 0.
+
+#+begin_src clojure :results value pp :exports both
+(def x (nd/arange ndm 0 12))
+x
+#+end_src
+
+#+RESULTS:
+: ND: (12) cpu() int32
+: [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
+
+Access ndarray's shape with =nd/shape=:
+
+#+begin_src clojure :results value pp :exports both
+(nd/shape x)
+#+end_src
+
+#+RESULTS:
+: (12)
+
+The size is the same as shape for one dimentional ndarray:
+
+#+begin_src clojure :results value pp :exports both
+(nd/size x)
+#+end_src
+
+#+RESULTS:
+: 12
+
+
+#+begin_src clojure :results value pp :exports both
+(def y (nd/reshape x [3 4]))
+y
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+automatically inference the rest dimention specified with =-1=:
+
+#+begin_src clojure :results value pp :exports both
+(def y (nd/reshape x [3 -1]))
+y
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/create ndm (int-array [2 3]))
+#+end_src
+
+#+RESULTS:
+: ND: (2) cpu() int32
+: [ 2,  3]
+
+#+begin_src clojure :results value pp :exports both
+(nd/zeros ndm [2 3])
+#+end_src
+
+#+RESULTS:
+: ND: (2, 3) cpu() float32
+: [[0., 0., 0.],
+:  [0., 0., 0.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/zeros ndm [2 3 4])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ND: (2, 3, 4) cpu() float32
+[[[0., 0., 0., 0.],
+  [0., 0., 0., 0.],
+  [0., 0., 0., 0.],
+ ],
+ [[0., 0., 0., 0.],
+  [0., 0., 0., 0.],
+  [0., 0., 0., 0.],
+ ],
+]
+#+end_example
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/zeros ndm [2 2 2 2])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ND: (2, 2, 2, 2) cpu() float32
+[[[[0., 0.],
+   [0., 0.],
+  ],
+  [[0., 0.],
+   [0., 0.],
+  ],
+ ],
+ [[[0., 0.],
+   [0., 0.],
+  ],
+  [[0., 0.],
+   [0., 0.],
+  ],
+ ],
+]
+#+end_example
+
+#+begin_src clojure :results value pp :exports both
+(nd/ones ndm [2 3])
+#+end_src
+
+#+RESULTS:
+: ND: (2, 3) cpu() float32
+: [[1., 1., 1.],
+:  [1., 1., 1.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/ones ndm [2 3 4])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ND: (2, 3, 4) cpu() float32
+[[[1., 1., 1., 1.],
+  [1., 1., 1., 1.],
+  [1., 1., 1., 1.],
+ ],
+ [[1., 1., 1., 1.],
+  [1., 1., 1., 1.],
+  [1., 1., 1., 1.],
+ ],
+]
+#+end_example
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/ones ndm [2 2 2 2])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ND: (2, 2, 2, 2) cpu() float32
+[[[[1., 1.],
+   [1., 1.],
+  ],
+  [[1., 1.],
+   [1., 1.],
+  ],
+ ],
+ [[[1., 1.],
+   [1., 1.],
+  ],
+  [[1., 1.],
+   [1., 1.],
+  ],
+ ],
+]
+#+end_example
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/random-normal ndm 0 1 [3 4] :float32)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float32
+: [[-1.771 , -0.5459, -0.4514, -2.3556],
+:  [ 0.5794,  0.5414, -1.8561,  2.6785],
+:  [-1.9769,  1.2546, -0.208 , -0.5488],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/random-normal ndm 0 1 [3 4] :float64)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float64
+: [[ 0.2444, -0.6811, -0.0372, -0.1353],
+:  [-0.4877,  0.3772, -0.0226,  0.4102],
+:  [ 0.5746,  0.5713,  1.4661, -2.758 ],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/random-normal ndm [3 4])
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float32
+: [[ 0.6863,  1.0763,  0.355 , -0.6141],
+:  [ 1.0732,  1.8308,  0.1202, -1.1468],
+:  [-0.9711,  0.0538, -0.7757, -2.5075],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/create ndm [[2 1 4 3][1 2 3 4][4 3 2 1]])
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int64
+: [[ 2,  1,  4,  3],
+:  [ 1,  2,  3,  4],
+:  [ 4,  3,  2,  1],
+: ]
+
+
+** Operations
+
+#+begin_src clojure :results value pp :exports both
+(nd/create ndm (int-array [2 1 4 3]) (nd/shape [2 2]))
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() int32
+: [[ 2,  1],
+:  [ 4,  3],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/create ndm [2 1 4 3] [2 2])
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() int64
+: [[ 2,  1],
+:  [ 4,  3],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/create ndm [(int 2) 1 4 3] [2 2])
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() int32
+: [[ 2,  1],
+:  [ 4,  3],
+: ]
+
+
+#+begin_src clojure :results none :exports both
+(def x (nd/create ndm [1. 2 4 8] [2 2]))
+(def y (nd/create ndm [2. 2 2 2] [2 2]))
+#+end_src
+
+
+#+begin_src clojure :results value pp :exports both
+x
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() float64
+: [[1., 2.],
+:  [4., 8.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+y
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() float64
+: [[2., 2.],
+:  [2., 2.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/+ x y)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() float64
+: [[ 3.,  4.],
+:  [ 6., 10.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/- x y)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() float64
+: [[-1.,  0.],
+:  [ 2.,  6.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/* x y)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() float64
+: [[ 2.,  4.],
+:  [ 8., 16.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd// x y)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() float64
+: [[0.5, 1. ],
+:  [2. , 4. ],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/** x y)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() float64
+: [[ 1.,  4.],
+:  [16., 64.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/exp x)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() float64
+: [[ 2.71828183e+00,  7.38905610e+00],
+:  [ 5.45981500e+01,  2.98095799e+03],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/= x y)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 2) cpu() boolean
+: [[false,  true],
+:  [false, false],
+: ]
+
+
+#+begin_src clojure :results none :exports both
+(def X (-> (nd/arange ndm 0 12) (nd/reshape [3 4])))
+(def Y (nd/create ndm (int-array [2, 1, 4, 3, 1, 2, 3, 4, 4, 3, 2, 1]) [3 4]))
+#+end_src
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/concat X Y)
+#+end_src
+
+#+RESULTS:
+: ND: (6, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+:  [ 2,  1,  4,  3],
+:  [ 1,  2,  3,  4],
+:  [ 4,  3,  2,  1],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/concat X Y 0)
+#+end_src
+
+#+RESULTS:
+: ND: (6, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+:  [ 2,  1,  4,  3],
+:  [ 1,  2,  3,  4],
+:  [ 4,  3,  2,  1],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/concat X Y 1)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 8) cpu() int32
+: [[ 0,  1,  2,  3,  2,  1,  4,  3],
+:  [ 4,  5,  6,  7,  1,  2,  3,  4],
+:  [ 8,  9, 10, 11,  4,  3,  2,  1],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/= X Y)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() boolean
+: [[false,  true, false,  true],
+:  [false, false, false, false],
+:  [false, false, false, false],
+: ]
+
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/sum X)
+#+end_src
+
+#+RESULTS:
+: ND: () cpu() int32
+: 66
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/sum X 0)
+#+end_src
+
+#+RESULTS:
+: ND: (4) cpu() int32
+: [12, 15, 18, 21]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/sum X 1)
+#+end_src
+
+#+RESULTS:
+: ND: (3) cpu() int32
+: [ 6, 22, 38]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/sum X 1 true)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 1) cpu() int32
+: [[ 6],
+:  [22],
+:  [38],
+: ]
+
+** Broadcasting Mechanism
+
+#+begin_src clojure :results value pp :exports both
+(def a (-> (nd/arange ndm 3) (nd/reshape [3 1])))
+a
+#+end_src
+
+#+RESULTS:
+: ND: (3, 1) cpu() int32
+: [[ 0],
+:  [ 1],
+:  [ 2],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(def b (-> (nd/arange ndm 2) (nd/reshape [1 2])))
+b
+#+end_src
+
+#+RESULTS:
+: ND: (1, 2) cpu() int32
+: [[ 0,  1],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/+ a b)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 2) cpu() int32
+: [[ 0,  1],
+:  [ 1,  2],
+:  [ 2,  3],
+: ]
+
+
+** Indexing and Slicing
+
+#+begin_src clojure :results value pp :exports both
+X
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/get X "-1")
+#+end_src
+
+#+RESULTS:
+: ND: (4) cpu() int32
+: [ 8,  9, 10, 11]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/get X "1:3")
+#+end_src
+
+#+RESULTS:
+: ND: (2, 4) cpu() int32
+: [[ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/set X "1,2" 9)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  9,  7],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(nd/set X "0:2, :" 12)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[12, 12, 12, 12],
+:  [12, 12, 12, 12],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+** Saving Memory
+
+#+begin_src clojure :results value pp :exports both
+(def original (nd/zeros ndm (nd/get-shape X)))
+original
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float32
+: [[0., 0., 0., 0.],
+:  [0., 0., 0., 0.],
+:  [0., 0., 0., 0.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(def actual (nd/+ original X))
+actual
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float32
+: [[12., 12., 12., 12.],
+:  [12., 12., 12., 12.],
+:  [ 8.,  9., 10., 11.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(identical? original actual)
+#+end_src
+
+#+RESULTS:
+: false
+
+
+#+begin_src clojure :results value pp :exports both
+(def copy (nd/+! original X))
+copy
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float32
+: [[12., 12., 12., 12.],
+:  [12., 12., 12., 12.],
+:  [ 8.,  9., 10., 11.],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(identical? original copy)
+#+end_src
+
+#+RESULTS:
+: true
+
+
+#+begin_src clojure :results value pp :exports both
+(def original (nd/zeros-like X))
+original
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[ 0,  0,  0,  0],
+:  [ 0,  0,  0,  0],
+:  [ 0,  0,  0,  0],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(def actual (nd/+ original X))
+actual
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[12, 12, 12, 12],
+:  [12, 12, 12, 12],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(identical? original actual)
+#+end_src
+
+#+RESULTS:
+: false
+
+
+#+begin_src clojure :results value pp :exports both
+(def copy (nd/+! original X))
+copy
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[12, 12, 12, 12],
+:  [12, 12, 12, 12],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(identical? original copy)
+#+end_src
+
+#+RESULTS:
+: true
+
+** Conversion to Other Clojure Objects
+
+#+begin_src clojure :results value pp :exports both
+X
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[12, 12, 12, 12],
+:  [12, 12, 12, 12],
+:  [ 8,  9, 10, 11],
+: ]
+
+
+#+begin_src clojure :results value pp :exports both
+(type (nd/to-vec X))
+#+end_src
+
+#+RESULTS:
+: class clojure.lang.PersistentVector
+
+#+begin_src clojure :results value pp :exports both
+(nd/to-vec X)
+#+end_src
+
+#+RESULTS:
+: [12 12 12 12 12 12 12 12 8 9 10 11]
+
+
+#+begin_src clojure :results value pp :exports both
+(type (nd/to-array X))
+#+end_src
+
+#+RESULTS:
+: class [Ljava.lang.Integer;
+
+#+begin_src clojure :results value pp :exports both
+(nd/to-array X)
+#+end_src
+
+#+RESULTS:
+: [Ljava.lang.Integer;@371a453f
+
+
+To convert a size-1 tensor to a scalar
+
+#+begin_src clojure :results value pp :exports both
+(def a (nd/create ndm [3.5]))
+a
+#+end_src
+
+#+RESULTS:
+: ND: (1) cpu() float64
+: [3.5]
+
+#+begin_src clojure :results value pp :exports both
+(nd/get-element a)
+#+end_src
+
+#+RESULTS:
+: 3.5

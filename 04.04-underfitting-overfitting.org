@@ -1,0 +1,178 @@
+* Model Selection, Underfitting and Overfitting
+** Polynomial Regression
+
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.model-selection
+  (:require [clj-djl.ndarray :as nd]
+            [clj-djl.training :as t]
+            [clj-djl.training.loss :as loss]
+            [clj-djl.training.optimizer :as o]
+            [clj-djl.training.tracker :as tracker]
+            [clj-djl.device :as dev]
+            [clj-djl.training.listener :as listener]
+            [clj-djl.model :as m]
+            [clj-djl.nn :as nn]
+            [clj-djl.training.dataset :as ds]
+            [clj-djl.metric :as metric]
+            [clj-d2l.core :as d2l]))
+#+end_src
+
+#+begin_src clojure :results silent :exports both
+(defn facti [x]
+  (if (< x 0) 0
+      (loop [fact 1
+             x x]
+        (if (> x 1)
+          (recur (* x fact) (dec x))
+          fact))))
+#+end_src
+
+
+*** Generating the dataset
+
+#+begin_src clojure :results value pp :exports both
+(def ndm (nd/new-base-manager))
+(def ntrain 100)
+(def ntest 100)
+(def max-degree 20)
+(def true-w (nd/zeros ndm 20))
+(nd/set true-w "0:4" [5. 1.2 -3.4 5.6])
+
+(def features (nd/random-normal ndm [(+ ntrain ntest) 1]))
+(def poly-features (nd/** features (-> (nd/arange ndm max-degree) (nd/reshape 1 -1))))
+(doseq [i (range max-degree)]
+  (.divi (nd/get poly-features ":,{}" i) (facti (+ i 1))))
+
+(def labels (nd/dot poly-features true-w))
+(nd/+ labels (nd/random-normal ndm 0 0.1 (nd/get-shape labels)))
+
+(map #(d2l/ps %) [(nd/get features "0:2") (nd/get poly-features ":2,:") (nd/get labels ":2")])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ND: (2, 1) cpu() float32
+[[1.0701],
+ [1.3585],
+]
+ND: (2, 20) cpu() float32
+[[  1.    ,   1.0701,   1.1451,   1.2254,   1.3113,   1.4032,   1.5016,   1.6068,   1.7195,   1.84  ,   1.969 ,   2.107 ,   2.2547,   2.4128,   2.5819,   2.7629,   2.9566,   3.1638,   3.3856,   3.6229],
+ [  1.    ,   1.3585,   1.8454,   2.507 ,   3.4057,   4.6265,   6.285 ,   8.538 ,  11.5987,  15.7565,  21.4047,  29.0778,  39.5013,  53.6615,  72.8977,  99.0296, 134.529 , 182.754 , 248.2664, 337.2631],
+]
+ND: (2) cpu() float32
+[ 9.2529, 14.3948]
+clojure.lang.LazySeq@745f
+#+end_example
+
+
+*** Training and Testing the Model
+
+#+begin_src clojure :results silent :exports both
+(def metrics (atom {:epoch []
+                    :train-loss []
+                    :validate-loss []}))
+
+(defn train [train-features test-features train-labels test-labels ndegree]
+  (let [l2loss (loss/l2-loss)
+        ndm (nd/new-base-manager)
+        sgd (o/sgd {:tracker (tracker/fixed 0.01)})
+        config (t/default-training-config {:loss l2loss
+                                           :devices (dev/get-devices 1)
+                                           :optimizer sgd
+                                           :listeners (listener/logging)})
+        batchsize (min 10 (nd/get (nd/get-shape train-labels) 0))
+        train-iter (ds/array-dataset {:data [train-features]
+                                      :labels [train-labels]
+                                      :batchsize batchsize
+                                      :shuffle true})
+        test-iter (ds/array-dataset {:data [test-features]
+                                     :labels [test-labels]
+                                     :batchsize batchsize
+                                     :shuffle true})]
+    (with-open [model (m/new-model {:name "mlp"
+                                    :block (-> (nn/sequential-block)
+                                               (nn/add (nn/linear-block {:bias false :units 1})))})
+                trainer (t/new-trainer model config)]
+      (t/initialize trainer (nd/shape 1 ndegree))
+      (doseq [epoch (range 1 1001)]
+        (doseq [batch (t/iterate-dataset trainer train-iter)]
+          (t/train-batch trainer batch)
+          (t/step trainer)
+          (ds/close-batch batch))
+        (doseq [batch (t/iterate-dataset trainer test-iter)]
+          (t/validate-batch trainer batch)
+          (ds/close-batch batch))
+        (t/notify-listeners trainer #(.onEpoch % trainer))
+        (when (zero? (mod epoch 50))
+          (let [train-result (t/get-training-result trainer)
+                index (- (quot epoch 50) 1)]
+            (swap! metrics assoc-in [:epoch index] (train-result :epoch))
+            (swap! metrics assoc-in [:train-loss index] (train-result :train-loss))
+            (swap! metrics assoc-in [:validate-loss index] (train-result :validate-loss)))))
+      (swap! metrics assoc :weight (-> model
+                                       (m/get-block)
+                                       (nn/get-parameters)
+                                       (.get "01Linear_weight")
+                                       (.getArray)
+                                       (nd/to-vec))))))
+#+end_src
+
+
+#+begin_src clojure :results outputs :exports both
+(def ndegree 4)
+(train (nd/get poly-features (str "0:" ntrain ", 0:" ndegree))
+       (nd/get poly-features (str ntrain ":, 0:" ndegree))
+       (nd/get labels (str ":" ntrain))
+       (nd/get labels (str ntrain ":"))
+       ndegree)
+#+end_src
+
+
+#+begin_src clojure :results value pp :exports both
+(@metrics :weight)
+#+end_src
+
+#+RESULTS:
+: [4.999991 1.2000033 -3.3999977 5.599999]
+
+
+#+begin_src clojure :results silent :exports both
+(d2l/plot-lines "figure/normalfitting.svg"
+                ["train loss" "validate loss"]
+                (map #(/ % 50) (@metrics :epoch))
+                [(map #(Math/log10 %) (@metrics :train-loss))
+                 (map #(Math/log10 %) (@metrics :validate-loss))])
+#+end_src
+
+[[./figure/normalfitting.svg]]
+
+
+#+begin_src clojure :results value pp :exports both
+(reset! metrics {:epoch []
+                 :train-loss []
+                 :validate-loss []})
+
+(def ndegree 2)
+
+(train (nd/get poly-features (str "0:" ntrain ", 0:" ndegree))
+       (nd/get poly-features (str ntrain ":, 0:" ndegree))
+       (nd/get labels (str ":" ntrain))
+       (nd/get labels (str ntrain ":"))
+       ndegree)
+
+(@metrics :weight)
+#+end_src
+
+#+RESULTS:
+: [-1.6962206 27.78034]
+
+
+#+begin_src clojure :results silent :exports both
+(d2l/plot-lines "figure/underfitting.svg"
+                ["train loss" "validate loss"]
+                (map #(/ % 50) (@metrics :epoch))
+                [(map #(Math/log10 %) (@metrics :train-loss))
+                 (map #(Math/log10 %) (@metrics :validate-loss))])
+#+end_src
+
+[[./figure/underfitting.svg]]

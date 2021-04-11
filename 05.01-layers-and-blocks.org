@@ -1,0 +1,54 @@
+#+begin_src clojure :results silent :exports both
+(ns clj-d2l.layers-and-blocks
+  (:require
+   [clojure.spec.alpha :as s]
+   [clj-djl.ndarray :as nd]
+   [clj-djl.training :as t]
+   [clj-djl.training.dataset :as ds]
+   [clj-djl.training.loss :as loss]
+   [clj-djl.training.optimizer :as optimizer]
+   [clj-djl.training.tracker :as tracker]
+   [clj-djl.training.listener :as listener]
+   [clj-djl.model :as m]
+   [clj-djl.nn :as nn]
+   [clj-djl.device :as dev]
+   [clj-djl.dataframe :as df]
+   [clj-djl.dataframe.column-filters :as cf]
+   [clj-djl.dataframe.functional :as dfn]
+   [clj-d2l.core :as d2l]))
+#+end_src
+
+#+begin_src clojure :results value pp :exports both
+(def ndm (nd/base-manager))
+(def X (nd/random-uniform ndm 0 1 [2 20]))
+
+(def net1 (-> (nn/sequential-block)
+              (nn/add (nn/linear-block {:units 256}))
+              (nn/add (nn/relu-block))
+              (nn/add (nn/linear-block {:units 10}))
+              (nn/set-initializer (nn/normal-initializer))))
+
+(def net2 (nn/sequential {:blocks
+                          [(nn/linear {:units 256})
+                           (nn/relu-block)
+                           (nn/linear {:units 10})]
+                          :initializer (nn/normal-initializer)}))
+
+(nn/forward net1 X)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 10) cpu() float32
+: [[-0.0012,  0.0042,  0.001 ,  0.0054,  0.0033, -0.0056, -0.0033, -0.0019,  0.002 , -0.0005],
+:  [-0.0017,  0.0043,  0.0037,  0.0043,  0.0014, -0.0071, -0.0042, -0.0008,  0.0018, -0.0007],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(nn/forward net2 X)
+#+end_src
+
+#+RESULTS:
+: ND: (2, 10) cpu() float32
+: [[-0.0011, -0.0028, -0.0019,  0.0012, -0.0008, -0.0027, -0.0091,  0.0002, -0.001 ,  0.0006],
+:  [ 0.0003,  0.0007,  0.0001,  0.0005, -0.0014, -0.003 , -0.0067, -0.0013, -0.0028,  0.0012],
+: ]
