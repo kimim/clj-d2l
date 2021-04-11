@@ -1,71 +1,130 @@
+ #+TITLE: Data Manipulation
 #+PROPERTY: header-args    :tangle src/clj_d2l/data_manipulation.clj
+
 * Data Manipulation
+
+In order to get anything done, we need some way to store and
+manipulate data. Generally, there are two important things we need
+to do with data: (i) acquire them; and (ii) process them once they
+are inside the computer. There is no point in acquiring data without
+some way to store it, so let us get our hands dirty first by playing
+with synthetic data. To start, we introduce the $n$-dimensional
+array, which is also called the /ndarray/.
+
+If you have worked with NumPy, the most widely-used scientific
+computing package in Python, then you will find this section
+familiar. No matter which framework you use, its tensor class
+(/ndarray/ in MXNet, DJL and clj-djl, /Tensor/ in both PyTorch and
+TensorFlow) is similar to NumPy's ndarray with a few killer
+features. First, GPU is well-supported to accelerate the computation
+whereas NumPy only supports CPU computation. Second, the tensor
+class supports automatic differentiation. These properties make the
+tensor class suitable for deep learning. Throughout the book, when
+we say ndarrays, we are referring to instances of the ndarray class
+unless otherwise stated.
 
 ** Getting Started
 
+In this section, we aim to get you up and running, equipping you
+with the basic math and numerical computing tools that you will
+build on as you progress through the book. Do not worry if you
+struggle to grok some of the mathematical concepts or library
+functions. The following sections will revisit this material in the
+context of practical examples and it will sink. On the other hand,
+if you already have some background and want to go deeper into the
+mathematical content, just skip this section.
+
+To start, we import the ndarray namespace from clj-djl. Here, the
+ndarray namespace includes functions supported by clj-djl.
+
 #+begin_src clojure :results silent
 (ns clj-d2l.data-manipulation
-  (:require [clj-djl.ndarray :as nd]
-            [clj-d2l.core :as d2l])
-  (:import [ai.djl.ndarray.types DataType]))
+  (:require [clj-djl.ndarray :as nd]))
 #+end_src
 
-Create a vector from in range 0 - 11:
+An ndarray represents a (possibly multi-dimensional) array of
+numerical values. With one axis, an ndarray corresponds (in math) to
+a vector. With two axes, an ndarray corresponds to a
+matrix. NDArrays with more than two axes do not have special
+mathematical names.
 
-#+begin_src clojure :results output :exports both
+To start, we can use arange to create a row vector x containing the
+first 12 integers starting with 0. Each of the values in an ndarray
+is called an element of the ndarray. For instance, there are 12
+elements in the ndarray x. Unless otherwise specified, a new ndarray
+will be stored in main memory and designated for CPU-based
+computation.
+
+#+begin_src clojure :results pp :exports both
 (def ndm (nd/new-base-manager))
-(d2l/ps ndm)
-#+end_src
-
-#+RESULTS:
-: UID: a2588b8f-8a6a-4122-9657-14a2a12059ef Parent UID: 70080891-ddc5-4fa8-9307-bb71baa4059e isOpen: true Resource size: 0
-
-#+begin_src clojure :results output :exports both
 (def x (nd/arange ndm 0 12))
-(d2l/ps x)
+x
 #+end_src
 
 #+RESULTS:
-: ND: (12) cpu() int32
-: [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
+: #object[ai.djl.mxnet.engine.MxNDArray 0x1c6d5df4 "ND: (12) cpu() int32\r\n[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]\r\n"]
+:
 
+We can access an ndarray's shape (the length along each axis) by
+inspecting its shape property.
 
-#+begin_src clojure :results output :exports both
-(d2l/psl (nd/get-shape x))
-(d2l/ps (nd/size x))
+#+begin_src clojure :results value :exports both
+(nd/get-shape x)
 #+end_src
 
 #+RESULTS:
-: (12)
+: #object[ai.djl.ndarray.types.Shape 0x3648fafe "(12)"]
+
+If we just want to know the total number of elements in an ndarray,
+i.e., the product of all of the shape elements, we can inspect its
+size. Because we are dealing with a vector here, the single element
+of its shape is same to its size. The difference is that =get-shape=
+will return a /Shape/ object.
+
+#+begin_src clojure :results value
+(nd/size x)
+#+end_src
+
+#+RESULTS:
 : 12
 
-#+begin_src clojure :results output :exports both
+To change the shape of an ndarray without altering either the number
+of elements or their values, we can invoke the reshape function. For
+example, we can transform our ndarray, x, from a row vector with
+shape (12,) to a matrix with shape (3, 4). This new ndarray contains
+the exact same values, but views them as a matrix organized as 3
+rows and 4 columns. To reiterate, although the shape has changed,
+the elements have not. Note that the size is unaltered by reshaping.
+
+#+begin_src clojure :results pp :exports both
 (def y (nd/reshape x [3 4]))
-(d2l/ps y)
+y
 #+end_src
 
 #+RESULTS:
-: ND: (3, 4) cpu() int32
-: [[ 0,  1,  2,  3],
-:  [ 4,  5,  6,  7],
-:  [ 8,  9, 10, 11],
-: ]
+: #object[ai.djl.mxnet.engine.MxNDArray 0x6ec18b16 "ND: (3, 4) cpu() int32\r\n[[ 0,  1,  2,  3],\r\n [ 4,  5,  6,  7],\r\n [ 8,  9, 10, 11],\r\n]\r\n"]
+:
 
+Reshaping by manually specifying every dimension is unnecessary. If
+our target shape is a matrix with shape (height, width), then after
+we know the width, the height is given implicitly. Why should we
+have to perform the division ourselves? In the example above, to get
+a matrix with 3 rows, we specified both that it should have 3 rows
+and 4 columns. Fortunately, ndarrays can automatically work out one
+dimension given the rest. We invoke this capability by placing -1
+for the dimension that we would like ndarrays to automatically
+infer. In our case, instead of calling x.reshape(3, 4), we could
+have equivalently called =(nd/reshape x [-1 4])= or =(nd/reshape x [3
+-1])=.
 
-automatically inference the rest dimention specified with =-1=:
-
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results pp :exports both
 (def y (nd/reshape x [3 -1]))
-(d2l/ps y)
+y
 #+end_src
 
 #+RESULTS:
-: ND: (3, 4) cpu() int32
-: [[ 0,  1,  2,  3],
-:  [ 4,  5,  6,  7],
-:  [ 8,  9, 10, 11],
-: ]
-
+: #object[ai.djl.mxnet.engine.MxNDArray 0x27c4a644 "ND: (3, 4) cpu() int32\r\n[[ 0,  1,  2,  3],\r\n [ 4,  5,  6,  7],\r\n [ 8,  9, 10, 11],\r\n]\r\n"]
+:
 
 #+begin_src clojure :results output :exports both
 (d2l/ps (nd/shape 2 3))
@@ -81,6 +140,12 @@ automatically inference the rest dimention specified with =-1=:
 #+RESULTS:
 : ND: (2) cpu() int32
 : [ 2,  3]
+
+Typically, we will want our matrices initialized either with zeros,
+ones, some other constants, or numbers randomly sampled from a
+specific distribution. We can create a ndarray representing a tensor
+with all elements set to 0 and a shape of =[2 3 4]= as follows:
+automatically inference the rest dimention specified with =-1=:
 
 #+begin_src clojure :results output :exports both
 (d2l/ps (nd/zeros ndm [2 3]))

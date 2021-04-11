@@ -6,7 +6,7 @@
 <!-- 2021-04-11 Sun 15:18 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My Sitemap</title>
+<title>Preliminaries</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -221,35 +221,57 @@
  |
  <a accesskey="H" href="index.html"> HOME </a>
 </div><div id="content">
-<h1 class="title">My Sitemap</h1>
-<ul class="org-ul">
-<li><a href="2.1-data-manipulation.html">2.1-data-manipulation</a></li>
-<li><a href="2.2-data-preprocess.html">2.2-data-preprocess</a></li>
-<li><a href="2.3-linear-algebra.html">2.3-linear-algebra</a></li>
-<li><a href="2.4-calculus.html">2.4-calculus</a></li>
-<li><a href="2.5-automatic-differentiation.html">2.5-automatic-differentiation</a></li>
-<li><a href="2.6-probability.html">2.6-probability</a></li>
-<li><a href="2.7-dataset.html">2.7-dataset</a></li>
-<li><a href="3.1-linear-regression.html">3.1-linear-regression</a></li>
-<li><a href="3.2-linear-reg-impl-from-scrach.html">3.2-linear-reg-impl-from-scrach</a></li>
-<li><a href="3.3-concise-impl-of-linear-reg.html">3.3-concise-impl-of-linear-reg</a></li>
-<li><a href="3.5-the-image-classification-dataset.html">3.5-the-image-classification-dataset</a></li>
-<li><a href="3.6-implementation-of-softmax-regression-from-scratch.html">3.6-implementation-of-softmax-regression-from-scratch</a></li>
-<li><a href="3.7-concise-impl-of-softmax-regression.html">3.7-concise-impl-of-softmax-regression</a></li>
-<li><a href="4.1-multilayer-perceptrons.html">4.1-multilayer-perceptrons</a></li>
-<li><a href="4.2-impl-multilayer-perceptron-from-scratch.html">4.2-impl-multilayer-perceptron-from-scratch</a></li>
-<li><a href="4.3-concise-impl-multilayer-perceptron.html">4.3-concise-impl-multilayer-perceptron</a></li>
-<li><a href="4.4-underfitting-overfitting.html">4.4-underfitting-overfitting</a></li>
-<li><a href="4.5-weight-decay.html">4.5-weight-decay</a></li>
-<li><a href="4.6-dropout.html">4.6-dropout</a></li>
-<li><a href="4.8-numerical-stability.html">4.8-numerical-stability</a></li>
-<li><a href="theindex.html">Index</a></li>
-<li><a href="index.html">Index</a></li>
-<li><a href="installation.html">Installation</a></li>
-<li><a href="1.0-introductin.html">Introdution</a></li>
-<li><a href="notation.html">Notation</a></li>
-<li><a href="2.0-preliminaries.html">Preliminaries</a></li>
-</ul>
+<h1 class="title">Preliminaries</h1>
+<p>
+To get started with deep learning, we will need to develop a few
+basic skills. All machine learning is concerned with extracting
+information from data. So we will begin by learning the practical
+skills for storing, manipulating, and preprocessing data.
+</p>
+
+<p>
+Moreover, machine learning typically requires working with large
+datasets, which we can think of as tables, where the rows correspond
+to examples and the columns correspond to attributes. Linear algebra
+gives us a powerful set of techniques for working with tabular
+data. We will not go too far into the weeds but rather focus on the
+basic of matrix operations and their implementation.
+</p>
+
+<p>
+Additionally, <b>deep learning is all about optimization</b>. We have a
+model with some parameters and we want to find those that fit our
+data the best. Determining which way to move each parameter at each
+step of an algorithm requires a little bit of calculus, which will
+be briefly introduced. Fortunately, the autograd package
+automatically computes differentiation for us, and we will cover it
+next.
+</p>
+
+<p>
+Next, <b>machine learning is concerned with making predictions</b>: what is
+the likely value of some unknown attribute, given the information
+that we observe? To reason rigorously under uncertainty we will need
+to invoke the language of probability.
+</p>
+
+<p>
+In the end, the official documentation provides plenty of
+descriptions and examples that are beyond this book. To conclude the
+chapter, we will show you how to look up documentation for the
+needed information.
+</p>
+
+<p>
+This book has kept the mathematical content to the minimum necessary
+to get a proper understanding of deep learning. However, it does not
+mean that this book is mathematics free. Thus, this chapter provides
+a rapid introduction to basic and frequently-used mathematics to
+allow anyone to understand at least most of the mathematical content
+of the book. If you wish to understand all of the mathematical
+content, further reviewing the online appendix on mathematics should
+be sufficient.
+</p>
 </div>
 <div id="postamble" class="status">
 <p class="date">Created: 2021-04-11 Sun 15:18</p>
