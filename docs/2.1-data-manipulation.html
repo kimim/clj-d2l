@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 15:22 -->
+<!-- 2021-04-11 Sun 21:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data Manipulation</title>
@@ -39,7 +39,7 @@
   }
   pre.src {
     position: relative;
-    overflow: auto;
+    overflow: visible;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -51,7 +51,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
+  pre.src:hover:before { display: inline;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -193,26 +193,50 @@
   /*]]>*/-->
 </style>
 <script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
 <!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
 </script>
 </head>
 <body>
@@ -226,22 +250,22 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgaa8ae78">1. Data Manipulation</a>
+<li><a href="#org9664326">1. Data Manipulation</a>
 <ul>
-<li><a href="#org271dad3">1.1. Getting Started</a></li>
-<li><a href="#org15921db">1.2. Operations</a></li>
-<li><a href="#org85308c5">1.3. Broadcasting Mechanism</a></li>
-<li><a href="#orgedb4ae3">1.4. Indexing and Slicing</a></li>
-<li><a href="#org5df5635">1.5. Saving Memory</a></li>
-<li><a href="#orgcbb226c">1.6. Conversion to Other Clojure Objects</a></li>
+<li><a href="#org3a01b8d">1.1. Getting Started</a></li>
+<li><a href="#orgb929f3b">1.2. Operations</a></li>
+<li><a href="#org2b8a4d0">1.3. Broadcasting Mechanism</a></li>
+<li><a href="#org84a8821">1.4. Indexing and Slicing</a></li>
+<li><a href="#orgdfa9b28">1.5. Saving Memory</a></li>
+<li><a href="#orgf23a17e">1.6. Conversion to Other Clojure Objects</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgaa8ae78" class="outline-2">
-<h2 id="orgaa8ae78"><span class="section-number-2">1</span> Data Manipulation</h2>
+<div id="outline-container-org9664326" class="outline-2">
+<h2 id="org9664326"><span class="section-number-2">1</span> Data Manipulation</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In order to get anything done, we need some way to store and
@@ -268,8 +292,8 @@ unless otherwise stated.
 </p>
 </div>
 
-<div id="outline-container-org271dad3" class="outline-3">
-<h3 id="org271dad3"><span class="section-number-3">1.1</span> Getting Started</h3>
+<div id="outline-container-org3a01b8d" class="outline-3">
+<h3 id="org3a01b8d"><span class="section-number-3">1.1</span> Getting Started</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 In this section, we aim to get you up and running, equipping you
@@ -318,8 +342,8 @@ x
 </div>
 
 <pre class="example">
-#object[ai.djl.mxnet.engine.MxNDArray 0x1c6d5df4 "ND: (12) cpu() int32\r\n[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]\r\n"]
-
+ND: (12) cpu() int32
+[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
 </pre>
 
 
@@ -334,7 +358,7 @@ inspecting its shape property.
 </div>
 
 <pre class="example">
-#object[ai.djl.ndarray.types.Shape 0x3648fafe "(12)"]
+(12)
 </pre>
 
 
@@ -373,8 +397,11 @@ y
 </div>
 
 <pre class="example">
-#object[ai.djl.mxnet.engine.MxNDArray 0x6ec18b16 "ND: (3, 4) cpu() int32\r\n[[ 0,  1,  2,  3],\r\n [ 4,  5,  6,  7],\r\n [ 8,  9, 10, 11],\r\n]\r\n"]
-
+ND: (3, 4) cpu() int32
+[[ 0,  1,  2,  3],
+ [ 4,  5,  6,  7],
+ [ 8,  9, 10, 11],
+]
 </pre>
 
 
@@ -399,13 +426,16 @@ y
 </div>
 
 <pre class="example">
-#object[ai.djl.mxnet.engine.MxNDArray 0x27c4a644 "ND: (3, 4) cpu() int32\r\n[[ 0,  1,  2,  3],\r\n [ 4,  5,  6,  7],\r\n [ 8,  9, 10, 11],\r\n]\r\n"]
-
+ND: (3, 4) cpu() int32
+[[ 0,  1,  2,  3],
+ [ 4,  5,  6,  7],
+ [ 8,  9, 10, 11],
+]
 </pre>
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape 2 3<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape 2 3<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -415,7 +445,7 @@ y
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">int-array</span> <span style="color: #709870;">[</span>2 3<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #7388d6;">(</span>int-array <span style="color: #909183;">[</span>2 3<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -430,21 +460,14 @@ Typically, we will want our matrices initialized either with zeros,
 ones, some other constants, or numbers randomly sampled from a
 specific distribution. We can create a ndarray representing a tensor
 with all elements set to 0 and a shape of <code>[2 3 4]</code> as follows:
-automatically inference the rest dimention specified with <code>-1</code>:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">[</span>2 3<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">[</span>2 3 4<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">[</span>2 2 2 2<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #7388d6;">[</span>2 3 4<span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="org2678777">
-ND: (2, 3) cpu() float32
-[[0., 0., 0.],
- [0., 0., 0.],
-]
+<pre class="example">
 ND: (2, 3, 4) cpu() float32
 [[[0., 0., 0., 0.],
   [0., 0., 0., 0.],
@@ -455,36 +478,18 @@ ND: (2, 3, 4) cpu() float32
   [0., 0., 0., 0.],
  ],
 ]
-ND: (2, 2, 2, 2) cpu() float32
-[[[[0., 0.],
-   [0., 0.],
-  ],
-  [[0., 0.],
-   [0., 0.],
-  ],
- ],
- [[[0., 0.],
-   [0., 0.],
-  ],
-  [[0., 0.],
-   [0., 0.],
-  ],
- ],
-]
 </pre>
 
+<p>
+Similarly, we can create ndarrays with each element set to 1 as follows:
+</p>
+
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones ndm <span style="color: #909183;">[</span>2 3<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones ndm <span style="color: #909183;">[</span>2 3 4<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones ndm <span style="color: #909183;">[</span>2 2 2 2<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones ndm <span style="color: #7388d6;">[</span>2 3 4<span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="orga14ad59">
-ND: (2, 3) cpu() float32
-[[1., 1., 1.],
- [1., 1., 1.],
-]
+<pre class="example">
 ND: (2, 3, 4) cpu() float32
 [[[1., 1., 1., 1.],
   [1., 1., 1., 1.],
@@ -495,70 +500,100 @@ ND: (2, 3, 4) cpu() float32
   [1., 1., 1., 1.],
  ],
 ]
-ND: (2, 2, 2, 2) cpu() float32
-[[[[1., 1.],
-   [1., 1.],
-  ],
-  [[1., 1.],
-   [1., 1.],
-  ],
- ],
- [[[1., 1.],
-   [1., 1.],
-  ],
-  [[1., 1.],
-   [1., 1.],
-  ],
- ],
-]
 </pre>
 
+<p>
+Often, we want to randomly sample the values for each element in an ndarray from
+some probability distribution. For example, when we construct arrays to serve as
+parameters in a neural network, we will typically initialize their values
+randomly. The following snippet creates an ndarray with shape (3, 4). Each of
+its elements is randomly sampled from a standard Gaussian (normal) distribution
+with a mean of 0 and a standard deviation of 1.
+</p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1 <span style="color: #909183;">[</span>3 4<span style="color: #909183;">]</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">DataType</span>/FLOAT32<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1 <span style="color: #909183;">[</span>3 4<span style="color: #909183;">]</span> <span style="color: #110099;">:float64</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-</pre>
-</div>
-
-<pre class="example" id="orgf8552f9">
-ND: (3, 4) cpu() float32
-[[ 2.2122,  1.1631,  0.774 ,  0.4838],
- [ 1.0434,  0.2996,  1.1839,  0.153 ],
- [ 1.8917, -1.1688, -1.2347,  1.5581],
-]
-ND: (3, 4) cpu() float64
-[[-1.771 , -0.5459, -0.4514, -2.3556],
- [ 0.5794,  0.5414, -1.8561,  2.6785],
- [-1.9769,  1.2546, -0.208 , -0.5488],
-]
-</pre>
-
-<div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #909183;">[</span>3 4<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1 <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #909183;">[</span>3 4<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
 ND: (3, 4) cpu() float32
-[[ 0.2444, -0.6811, -0.0372, -0.1353],
- [-0.4877,  0.3772, -0.0226,  0.4102],
- [ 0.5746,  0.5713,  1.4661, -2.758 ],
+[[-1.7376,  0.0664,  0.0473,  0.8487],
+ [ 0.1458, -0.8004,  0.326 , -0.1688],
+ [ 0.4579,  0.9363, -0.8943,  0.3574],
+]
+</pre>
+
+
+<p>
+We can directly use a clojure vec as the shape:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1 <span style="color: #7388d6;">[</span>3 4<span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (3, 4) cpu() float32
+[[ 0.4938,  0.7793, -0.9043, -1.0103],
+ [-1.2141, -0.3916,  2.1564,  1.3166],
+ [ 1.0938, -0.4329,  1.8271,  0.7154],
+]
+</pre>
+
+
+<p>
+You can also just pass the shape and it will use default values for mean and
+standard deviation (0 and 1).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #7388d6;">[</span>3 4<span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (3, 4) cpu() float32
+[[-0.7922,  0.2415,  0.9321,  0.479 ],
+ [-3.1558,  0.9689,  2.1935, -1.0218],
+ [-0.5386, -0.0681, -0.8611, -0.3187],
+]
+</pre>
+
+
+<p>
+We can also specify the exact values for each element in the desired ndarray by
+supplying a clojure vec (or list) containing the numerical values. Here, the
+outermost list corresponds to axis 0, and the inner list to axis 1.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #7388d6;">[</span><span style="color: #909183;">[</span>2 1 4 3<span style="color: #909183;">][</span>1 2 3 4<span style="color: #909183;">][</span>4 3 2 1<span style="color: #909183;">]</span><span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (3, 4) cpu() int64
+[[ 2,  1,  4,  3],
+ [ 1,  2,  3,  4],
+ [ 4,  3,  2,  1],
 ]
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org15921db" class="outline-3">
-<h3 id="org15921db"><span class="section-number-3">1.2</span> Operations</h3>
+<div id="outline-container-orgb929f3b" class="outline-3">
+<h3 id="orgb929f3b"><span class="section-number-3">1.2</span> Operations</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">int-array</span> <span style="color: #709870;">[</span>2 1 4 3<span style="color: #709870;">]</span><span style="color: #909183;">)</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #709870;">[</span>2 2<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>int-array <span style="color: #709870;">[</span>2 1 4 3<span style="color: #709870;">]</span><span style="color: #909183;">)</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #709870;">[</span>2 2<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">[</span>2 1 4 3<span style="color: #909183;">]</span> <span style="color: #909183;">[</span>2 2<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">[</span><span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">int</span> 2<span style="color: #709870;">)</span> 1 4 3<span style="color: #909183;">]</span> <span style="color: #909183;">[</span>2 2<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">[</span><span style="color: #709870;">(</span>int 2<span style="color: #709870;">)</span> 1 4 3<span style="color: #909183;">]</span> <span style="color: #909183;">[</span>2 2<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="org74cd46b">
+<pre class="example">
 ND: (2, 2) cpu() int32
 [[ 2,  1],
  [ 4,  3],
@@ -587,7 +622,7 @@ ND: (2, 2) cpu() int32
 </pre>
 </div>
 
-<pre class="example" id="org5865aa6">
+<pre class="example">
 ND: (2, 2) cpu() float64
 [[1., 2.],
  [4., 8.],
@@ -629,7 +664,7 @@ ND: (2, 2) cpu() float64
 </pre>
 </div>
 
-<pre class="example" id="org66bbfd4">
+<pre class="example">
 ND: (2, 2) cpu() float64
 [[1., 2.],
  [4., 8.],
@@ -646,14 +681,14 @@ ND: (2, 2) cpu() boolean
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 0 12<span style="color: #909183;">)</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/reshape <span style="color: #709870;">[</span>3 4<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">int-array</span> <span style="color: #709870;">[</span>2, 1, 4, 3, 1, 2, 3, 4, 4, 3, 2, 1<span style="color: #709870;">]</span><span style="color: #909183;">)</span> <span style="color: #909183;">[</span>3 4<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">concat</span> X Y<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">concat</span> X Y 0<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">concat</span> X Y 1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>int-array <span style="color: #709870;">[</span>2, 1, 4, 3, 1, 2, 3, 4, 4, 3, 2, 1<span style="color: #709870;">]</span><span style="color: #909183;">)</span> <span style="color: #909183;">[</span>3 4<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/concat X Y<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/concat X Y 0<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/concat X Y 1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="org0ae44d0">
+<pre class="example">
 ND: (6, 4) cpu() int32
 [[ 0,  1,  2,  3],
  [ 4,  5,  6,  7],
@@ -703,8 +738,8 @@ ND: () cpu() int32
 </div>
 </div>
 
-<div id="outline-container-org85308c5" class="outline-3">
-<h3 id="org85308c5"><span class="section-number-3">1.3</span> Broadcasting Mechanism</h3>
+<div id="outline-container-org2b8a4d0" class="outline-3">
+<h3 id="org2b8a4d0"><span class="section-number-3">1.3</span> Broadcasting Mechanism</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">a</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 3<span style="color: #909183;">)</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/reshape <span style="color: #709870;">[</span>3 1<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -715,7 +750,7 @@ ND: () cpu() int32
 </pre>
 </div>
 
-<pre class="example" id="orgea0ef77">
+<pre class="example">
 ND: (3, 1) cpu() int32
 [[ 0],
  [ 1],
@@ -734,19 +769,19 @@ ND: (3, 2) cpu() int32
 </div>
 
 
-<div id="outline-container-orgedb4ae3" class="outline-3">
-<h3 id="orgedb4ae3"><span class="section-number-3">1.4</span> Indexing and Slicing</h3>
+<div id="outline-container-org84a8821" class="outline-3">
+<h3 id="org84a8821"><span class="section-number-3">1.4</span> Indexing and Slicing</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps X<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> X <span style="color: #2A00FF;">"-1"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> X <span style="color: #2A00FF;">"1:3"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">set</span> X <span style="color: #2A00FF;">"1,2"</span> 9<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">set</span> X <span style="color: #2A00FF;">"0:2,:"</span> 12<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get X <span style="color: #2A00FF;">"-1"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get X <span style="color: #2A00FF;">"1:3"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/set X <span style="color: #2A00FF;">"1,2"</span> 9<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/set X <span style="color: #2A00FF;">"0:2,:"</span> 12<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="orgca51d7a">
+<pre class="example">
 ND: (3, 4) cpu() int32
 [[ 0,  1,  2,  3],
  [ 4,  5,  6,  7],
@@ -773,23 +808,23 @@ ND: (3, 4) cpu() int32
 </div>
 
 
-<div id="outline-container-org5df5635" class="outline-3">
-<h3 id="org5df5635"><span class="section-number-3">1.5</span> Saving Memory</h3>
+<div id="outline-container-orgdfa9b28" class="outline-3">
+<h3 id="orgdfa9b28"><span class="section-number-3">1.5</span> Saving Memory</h3>
 <div class="outline-text-3" id="text-1-5">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">original</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-shape X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">actual</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ original X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps original<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps actual<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">identical?</span> original actual<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>identical? original actual<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">copy</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+! original X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps original<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps copy<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">identical?</span> original copy<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>identical? original copy<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="orgca66808">
+<pre class="example">
 ND: (3, 4) cpu() float32
 [[0., 0., 0., 0.],
  [0., 0., 0., 0.],
@@ -819,15 +854,15 @@ true
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">actual</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ original X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps original<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps actual<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">identical?</span> original actual<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span>identical? original actual<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">copy</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+! original X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps original<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps copy<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">identical?</span> original copy<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span>identical? original copy<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="orgaff44dd">
+<pre class="example">
 ND: (3, 4) cpu() int32
 [[ 0,  0,  0,  0],
  [ 0,  0,  0,  0],
@@ -854,15 +889,15 @@ true
 </div>
 </div>
 
-<div id="outline-container-orgcbb226c" class="outline-3">
-<h3 id="orgcbb226c"><span class="section-number-3">1.6</span> Conversion to Other Clojure Objects</h3>
+<div id="outline-container-orgf23a17e" class="outline-3">
+<h3 id="orgf23a17e"><span class="section-number-3">1.6</span> Conversion to Other Clojure Objects</h3>
 <div class="outline-text-3" id="text-1-6">
 <div class="org-src-container">
 <pre class="src src-clojure">
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">type</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>type <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>type <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">to-array</span> X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">type</span> X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>type <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-array X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>type X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps X<span style="color: #707183;">)</span>
 </pre>
 </div>
@@ -887,7 +922,7 @@ To convert a size-1 tensor to a scalar
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">a</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">[</span>3.5<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps a<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element a<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element a<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -901,7 +936,7 @@ ND: (1) cpu() float64
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 15:22</p>
+<p class="date">Created: 2021-04-11 Sun 21:02</p>
 </div>
 </body>
 </html>

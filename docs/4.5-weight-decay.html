@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 15:23 -->
+<!-- 2021-04-11 Sun 20:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -39,7 +39,7 @@
   }
   pre.src {
     position: relative;
-    overflow: auto;
+    overflow: visible;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -51,7 +51,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
+  pre.src:hover:before { display: inline;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -192,27 +192,52 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
 <!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
 </script>
 </head>
 <body>
@@ -225,20 +250,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3f28cad">1. Weight Decay</a>
+<li><a href="#org61fd3e9">1. Weight Decay</a>
 <ul>
-<li><a href="#orgda8bf31">1.1. High-Dimensional Linear Regression</a></li>
-<li><a href="#orgcedecd0">1.2. Implementation from Scratch</a>
+<li><a href="#org7190335">1.1. High-Dimensional Linear Regression</a></li>
+<li><a href="#orgb98483e">1.2. Implementation from Scratch</a>
 <ul>
-<li><a href="#org19e3a12">1.2.1. Defining L2 Norm Penalty</a></li>
-<li><a href="#orgea9325f">1.2.2. Defining the Training Loop</a></li>
-<li><a href="#org95ae93e">1.2.3. Training without Regularization</a></li>
-<li><a href="#org09c40b2">1.2.4. Using Weight Decay</a></li>
+<li><a href="#org999e61c">1.2.1. Defining L2 Norm Penalty</a></li>
+<li><a href="#org8c14f55">1.2.2. Defining the Training Loop</a></li>
+<li><a href="#org361c6df">1.2.3. Training without Regularization</a></li>
+<li><a href="#orgc09d040">1.2.4. Using Weight Decay</a></li>
 </ul>
 </li>
-<li><a href="#org1ee9281">1.3. Concise Implementation</a>
+<li><a href="#org88cffa6">1.3. Concise Implementation</a>
 <ul>
-<li><a href="#org3e6ef33">1.3.1. without weight decay</a></li>
+<li><a href="#org35fb22e">1.3.1. without weight decay</a></li>
 </ul>
 </li>
 </ul>
@@ -246,12 +271,12 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org3f28cad" class="outline-2">
-<h2 id="org3f28cad"><span class="section-number-2">1</span> Weight Decay</h2>
+<div id="outline-container-org61fd3e9" class="outline-2">
+<h2 id="org61fd3e9"><span class="section-number-2">1</span> Weight Decay</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgda8bf31" class="outline-3">
-<h3 id="orgda8bf31"><span class="section-number-3">1.1</span> High-Dimensional Linear Regression</h3>
+<div id="outline-container-org7190335" class="outline-3">
+<h3 id="org7190335"><span class="section-number-3">1.1</span> High-Dimensional Linear Regression</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.weight-decay</span>
@@ -287,12 +312,12 @@
 </div>
 </div>
 
-<div id="outline-container-orgcedecd0" class="outline-3">
-<h3 id="orgcedecd0"><span class="section-number-3">1.2</span> Implementation from Scratch</h3>
+<div id="outline-container-orgb98483e" class="outline-3">
+<h3 id="orgb98483e"><span class="section-number-3">1.2</span> Implementation from Scratch</h3>
 <div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-org19e3a12" class="outline-4">
-<h4 id="org19e3a12"><span class="section-number-4">1.2.1</span> Defining L2 Norm Penalty</h4>
+<div id="outline-container-org999e61c" class="outline-4">
+<h4 id="org999e61c"><span class="section-number-4">1.2.1</span> Defining L2 Norm Penalty</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">l2penalty</span> <span style="color: #7388d6;">[</span>w<span style="color: #7388d6;">]</span>
@@ -303,7 +328,7 @@
 </div>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">metrics</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #909183;">{</span><span style="color: #110099;">:train-loss</span> <span style="color: #709870;">[]</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">metrics</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">{</span><span style="color: #110099;">:train-loss</span> <span style="color: #709870;">[]</span>
                     <span style="color: #110099;">:test-loss</span> <span style="color: #709870;">[]</span>
                     <span style="color: #110099;">:epoch</span> <span style="color: #709870;">[]</span><span style="color: #909183;">}</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
@@ -311,8 +336,8 @@
 </div>
 </div>
 
-<div id="outline-container-orgea9325f" class="outline-4">
-<h4 id="orgea9325f"><span class="section-number-4">1.2.2</span> Defining the Training Loop</h4>
+<div id="outline-container-org8c14f55" class="outline-4">
+<h4 id="org8c14f55"><span class="section-number-4">1.2.2</span> Defining the Training Loop</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">train</span> <span style="color: #7388d6;">[</span>lambd<span style="color: #7388d6;">]</span>
@@ -320,42 +345,42 @@
         lr 0.003
         w <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1.0 <span style="color: #907373;">[</span>ninputs 1<span style="color: #907373;">]</span> <span style="color: #110099;">:float32</span><span style="color: #709870;">)</span>
         b <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #907373;">[</span>1<span style="color: #907373;">]</span><span style="color: #709870;">)</span>
-        _ <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient <span style="color: #6276ba;">[</span>w b<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+        _ <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #907373;">(</span>map <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient <span style="color: #6276ba;">[</span>w b<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
         params <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ndlist w b<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
 
-    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">reset!</span> metrics <span style="color: #709870;">{</span><span style="color: #110099;">:train-loss</span> <span style="color: #907373;">[]</span>
+    <span style="color: #909183;">(</span>reset! metrics <span style="color: #709870;">{</span><span style="color: #110099;">:train-loss</span> <span style="color: #907373;">[]</span>
                      <span style="color: #110099;">:test-loss</span> <span style="color: #907373;">[]</span>
                      <span style="color: #110099;">:epoch</span> <span style="color: #907373;">[]</span><span style="color: #709870;">}</span><span style="color: #909183;">)</span>
 
-    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #709870;">[</span>epoch <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 0 <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">inc</span> 100<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #709870;">[</span>epoch <span style="color: #907373;">(</span>range 0 <span style="color: #6276ba;">(</span>inc 100<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">]</span>
       <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #907373;">[</span>batch <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/iter-seq <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data train-ds ndm<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
-        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #6276ba;">[</span>X <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">first</span> <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-              y <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">first</span> <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-              w <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> params 0<span style="color: #858580;">)</span>
-              b <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> params 1<span style="color: #858580;">)</span><span style="color: #6276ba;">]</span>
+        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #6276ba;">[</span>X <span style="color: #858580;">(</span>first <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
+              y <span style="color: #858580;">(</span>first <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
+              w <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 0<span style="color: #858580;">)</span>
+              b <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 1<span style="color: #858580;">)</span><span style="color: #6276ba;">]</span>
           <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #858580;">[</span>gc <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/new-gradient-collector<span style="color: #80a880;">)</span><span style="color: #858580;">]</span>
             <span style="color: #3F7F5F;">;;</span><span style="color: #3F7F5F;">NDArray l = Training.squaredLoss(Training.linreg(X, w, b), y).add(l2Penalty(w).mul(lambd));</span>
             <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #80a880;">[</span>l <span style="color: #887070;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/linreg X w b<span style="color: #707183;">)</span> <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/squared-loss y<span style="color: #707183;">)</span> <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* <span style="color: #909183;">(</span>l2penalty w<span style="color: #909183;">)</span> lambd<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span><span style="color: #887070;">)</span><span style="color: #80a880;">]</span>
               <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc l<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
         <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #907373;">)</span>
         <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/sgd params lr batchsize<span style="color: #907373;">)</span><span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">when</span> <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">zero?</span> <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">mod</span> epoch 5<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
-        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #6276ba;">[</span>index <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">quot</span> epoch 5<span style="color: #858580;">)</span>
-              train-loss <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/linreg <span style="color: #887070;">(</span>train-data 0<span style="color: #887070;">)</span> <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 0<span style="color: #887070;">)</span> <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> params 1<span style="color: #887070;">)</span><span style="color: #80a880;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">when</span> <span style="color: #907373;">(</span>zero? <span style="color: #6276ba;">(</span>mod epoch 5<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #6276ba;">[</span>index <span style="color: #858580;">(</span>quot epoch 5<span style="color: #858580;">)</span>
+              train-loss <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/linreg <span style="color: #887070;">(</span>train-data 0<span style="color: #887070;">)</span> <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 0<span style="color: #887070;">)</span> <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 1<span style="color: #887070;">)</span><span style="color: #80a880;">)</span>
                              <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/squared-loss <span style="color: #887070;">(</span>train-data 1<span style="color: #887070;">)</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-              test-loss <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/linreg <span style="color: #887070;">(</span>test-data 0<span style="color: #887070;">)</span> <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 0<span style="color: #887070;">)</span> <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> params 1<span style="color: #887070;">)</span><span style="color: #80a880;">)</span>
+              test-loss <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/linreg <span style="color: #887070;">(</span>test-data 0<span style="color: #887070;">)</span> <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 0<span style="color: #887070;">)</span> <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 1<span style="color: #887070;">)</span><span style="color: #80a880;">)</span>
                             <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/squared-loss <span style="color: #887070;">(</span>test-data 1<span style="color: #887070;">)</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">]</span>
-          <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> metrics assoc-in <span style="color: #858580;">[</span><span style="color: #110099;">:epoch</span> index<span style="color: #858580;">]</span> epoch<span style="color: #6276ba;">)</span>
-          <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> metrics assoc-in <span style="color: #858580;">[</span><span style="color: #110099;">:train-loss</span> index<span style="color: #858580;">]</span> train-loss<span style="color: #6276ba;">)</span>
-          <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> metrics assoc-in <span style="color: #858580;">[</span><span style="color: #110099;">:test-loss</span> index<span style="color: #858580;">]</span> test-loss<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
-    <span style="color: #909183;">(</span>println <span style="color: #2A00FF;">"l1 norm of w: "</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> params 0<span style="color: #907373;">)</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/abs<span style="color: #907373;">)</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+          <span style="color: #6276ba;">(</span>swap! metrics assoc-in <span style="color: #858580;">[</span><span style="color: #110099;">:epoch</span> index<span style="color: #858580;">]</span> epoch<span style="color: #6276ba;">)</span>
+          <span style="color: #6276ba;">(</span>swap! metrics assoc-in <span style="color: #858580;">[</span><span style="color: #110099;">:train-loss</span> index<span style="color: #858580;">]</span> train-loss<span style="color: #6276ba;">)</span>
+          <span style="color: #6276ba;">(</span>swap! metrics assoc-in <span style="color: #858580;">[</span><span style="color: #110099;">:test-loss</span> index<span style="color: #858580;">]</span> test-loss<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span>println <span style="color: #2A00FF;">"l1 norm of w: "</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get params 0<span style="color: #907373;">)</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/abs<span style="color: #907373;">)</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org95ae93e" class="outline-4">
-<h4 id="org95ae93e"><span class="section-number-4">1.2.3</span> Training without Regularization</h4>
+<div id="outline-container-org361c6df" class="outline-4">
+<h4 id="org361c6df"><span class="section-number-4">1.2.3</span> Training without Regularization</h4>
 <div class="outline-text-4" id="text-1-2-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span>train 0<span style="color: #707183;">)</span>
@@ -363,14 +388,14 @@
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines <span style="color: #2A00FF;">"figure/train_no_regularization.svg"</span>
                 <span style="color: #7388d6;">[</span><span style="color: #2A00FF;">"train loss"</span> <span style="color: #2A00FF;">"test loss"</span><span style="color: #7388d6;">]</span>
                 <span style="color: #7388d6;">(</span>@metrics <span style="color: #110099;">:epoch</span><span style="color: #7388d6;">)</span>
-                <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">fn</span> <span style="color: #907373;">[</span>ndarray<span style="color: #907373;">]</span>
+                <span style="color: #7388d6;">(</span>map #<span style="color: #909183;">(</span>map <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">fn</span> <span style="color: #907373;">[</span>ndarray<span style="color: #907373;">]</span>
                              <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/log10 <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/mean ndarray<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span> <span style="color: #000000;">%</span><span style="color: #909183;">)</span>
                      <span style="color: #909183;">[</span><span style="color: #709870;">(</span>@metrics <span style="color: #110099;">:train-loss</span><span style="color: #709870;">)</span> <span style="color: #709870;">(</span>@metrics <span style="color: #110099;">:test-loss</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 
-<div id="org7f02002" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/train_no_regularization.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -379,8 +404,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="outline-container-org09c40b2" class="outline-4">
-<h4 id="org09c40b2"><span class="section-number-4">1.2.4</span> Using Weight Decay</h4>
+<div id="outline-container-orgc09d040" class="outline-4">
+<h4 id="orgc09d040"><span class="section-number-4">1.2.4</span> Using Weight Decay</h4>
 <div class="outline-text-4" id="text-1-2-4">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span>train 3<span style="color: #707183;">)</span>
@@ -388,14 +413,14 @@ Sorry, your browser does not support SVG.</object>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines <span style="color: #2A00FF;">"figure/train_weight_decay.svg"</span>
                 <span style="color: #7388d6;">[</span><span style="color: #2A00FF;">"train loss"</span> <span style="color: #2A00FF;">"test loss"</span><span style="color: #7388d6;">]</span>
                 <span style="color: #7388d6;">(</span>@metrics <span style="color: #110099;">:epoch</span><span style="color: #7388d6;">)</span>
-                <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">fn</span> <span style="color: #907373;">[</span>ndarray<span style="color: #907373;">]</span>
+                <span style="color: #7388d6;">(</span>map #<span style="color: #909183;">(</span>map <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">fn</span> <span style="color: #907373;">[</span>ndarray<span style="color: #907373;">]</span>
                              <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/log10 <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/mean ndarray<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span> <span style="color: #000000;">%</span><span style="color: #909183;">)</span>
                      <span style="color: #909183;">[</span><span style="color: #709870;">(</span>@metrics <span style="color: #110099;">:train-loss</span><span style="color: #709870;">)</span> <span style="color: #709870;">(</span>@metrics <span style="color: #110099;">:test-loss</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 
-<div id="orgaf77a58" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/train_weight_decay.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -405,8 +430,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="outline-container-org1ee9281" class="outline-3">
-<h3 id="org1ee9281"><span class="section-number-3">1.3</span> Concise Implementation</h3>
+<div id="outline-container-org88cffa6" class="outline-3">
+<h3 id="org88cffa6"><span class="section-number-3">1.3</span> Concise Implementation</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">train-concise</span> <span style="color: #7388d6;">[</span>wd<span style="color: #7388d6;">]</span>
@@ -414,7 +439,7 @@ Sorry, your browser does not support SVG.</object>
         lr 0.003
         w <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 1.0 <span style="color: #907373;">[</span>ninputs 1<span style="color: #907373;">]</span> <span style="color: #110099;">:float32</span><span style="color: #709870;">)</span>
         b <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #907373;">[</span>1<span style="color: #907373;">]</span><span style="color: #709870;">)</span>
-        _ <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient <span style="color: #6276ba;">[</span>w b<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+        _ <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #907373;">(</span>map <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient <span style="color: #6276ba;">[</span>w b<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
         params <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ndlist w b<span style="color: #709870;">)</span>
         config <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/<span style="color: #7F0055; font-weight: bold;">default-training-config</span> <span style="color: #907373;">{</span><span style="color: #110099;">:loss</span> <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">loss</span>/l2<span style="color: #6276ba;">)</span>
                                            <span style="color: #110099;">:optimizer</span> <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">o</span>/sgd <span style="color: #858580;">{</span><span style="color: #110099;">:tracker</span> <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">tracker</span>/fixed lr<span style="color: #80a880;">)</span>
@@ -427,15 +452,15 @@ Sorry, your browser does not support SVG.</object>
                                                <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/add <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/linear-block <span style="color: #707183;">{</span><span style="color: #110099;">:bias</span> <span style="color: #110099;">true</span> <span style="color: #110099;">:units</span> 1<span style="color: #707183;">}</span><span style="color: #887070;">)</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">}</span><span style="color: #907373;">)</span>
                 trainer <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/new-trainer model config<span style="color: #907373;">)</span><span style="color: #709870;">]</span>
 
-      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">reset!</span> metrics <span style="color: #907373;">{</span><span style="color: #110099;">:train-loss</span> <span style="color: #6276ba;">[]</span>
+      <span style="color: #709870;">(</span>reset! metrics <span style="color: #907373;">{</span><span style="color: #110099;">:train-loss</span> <span style="color: #6276ba;">[]</span>
                        <span style="color: #110099;">:test-loss</span> <span style="color: #6276ba;">[]</span>
                        <span style="color: #110099;">:epoch</span> <span style="color: #6276ba;">[]</span><span style="color: #907373;">}</span><span style="color: #709870;">)</span>
 
       <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/initialize trainer <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #6276ba;">[</span>batchsize 200<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
 
-      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #907373;">[</span>epoch <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 0 <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">inc</span> 100<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #907373;">[</span>epoch <span style="color: #6276ba;">(</span>range 0 <span style="color: #858580;">(</span>inc 100<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
         <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #6276ba;">[</span>batch <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/iterate-dataset trainer train-ds<span style="color: #858580;">)</span><span style="color: #6276ba;">]</span>
-          <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">first</span> <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span> <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">5 x 200</span>
+          <span style="color: #6276ba;">(</span>println <span style="color: #858580;">(</span>first <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span> <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">5 x 200</span>
           <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/train-batch trainer batch<span style="color: #6276ba;">)</span>
           <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/step trainer<span style="color: #6276ba;">)</span>
           <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
@@ -443,13 +468,13 @@ Sorry, your browser does not support SVG.</object>
           <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/validate-batch trainer batch<span style="color: #6276ba;">)</span>
           <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
         <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/notify-listeners trainer <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">fn</span> <span style="color: #858580;">[</span>listner<span style="color: #858580;">]</span> <span style="color: #858580;">(</span>.onEpoch listner trainer<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
-        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">when</span> <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">zero?</span> <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">mod</span> epoch 5<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
+        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">when</span> <span style="color: #6276ba;">(</span>zero? <span style="color: #858580;">(</span>mod epoch 5<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
           <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #858580;">[</span>train-result <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-training-result trainer<span style="color: #80a880;">)</span>
-                index <span style="color: #80a880;">(</span><span style="color: #7F0055; font-weight: bold;">quot</span> epoch 5<span style="color: #80a880;">)</span><span style="color: #858580;">]</span>
-            <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> metrics assoc-in <span style="color: #80a880;">[</span><span style="color: #110099;">:epoch</span> index<span style="color: #80a880;">]</span> <span style="color: #80a880;">(</span>train-result <span style="color: #110099;">:epoch</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-            <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> metrics assoc-in <span style="color: #80a880;">[</span><span style="color: #110099;">:train-loss</span> index<span style="color: #80a880;">]</span> <span style="color: #80a880;">(</span>train-result <span style="color: #110099;">:train-loss</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-            <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> metrics assoc-in <span style="color: #80a880;">[</span><span style="color: #110099;">:test-loss</span> index<span style="color: #80a880;">]</span> <span style="color: #80a880;">(</span>train-result <span style="color: #110099;">:validate-loss</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"l2 norm of w: "</span> <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> model
+                index <span style="color: #80a880;">(</span>quot epoch 5<span style="color: #80a880;">)</span><span style="color: #858580;">]</span>
+            <span style="color: #858580;">(</span>swap! metrics assoc-in <span style="color: #80a880;">[</span><span style="color: #110099;">:epoch</span> index<span style="color: #80a880;">]</span> <span style="color: #80a880;">(</span>train-result <span style="color: #110099;">:epoch</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
+            <span style="color: #858580;">(</span>swap! metrics assoc-in <span style="color: #80a880;">[</span><span style="color: #110099;">:train-loss</span> index<span style="color: #80a880;">]</span> <span style="color: #80a880;">(</span>train-result <span style="color: #110099;">:train-loss</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
+            <span style="color: #858580;">(</span>swap! metrics assoc-in <span style="color: #80a880;">[</span><span style="color: #110099;">:test-loss</span> index<span style="color: #80a880;">]</span> <span style="color: #80a880;">(</span>train-result <span style="color: #110099;">:validate-loss</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span>println <span style="color: #2A00FF;">"l2 norm of w: "</span> <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> model
                                     <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">m</span>/get-block<span style="color: #6276ba;">)</span>
                                     <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/get-parameters<span style="color: #6276ba;">)</span>
                                     <span style="color: #6276ba;">(</span>.get <span style="color: #2A00FF;">"01Linear_weight"</span><span style="color: #6276ba;">)</span>
@@ -459,8 +484,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org3e6ef33" class="outline-4">
-<h4 id="org3e6ef33"><span class="section-number-4">1.3.1</span> without weight decay</h4>
+<div id="outline-container-org35fb22e" class="outline-4">
+<h4 id="org35fb22e"><span class="section-number-4">1.3.1</span> without weight decay</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <p>
 extend eval timeout for long training:
@@ -487,7 +512,7 @@ extend eval timeout for long training:
 </div>
 
 
-<div id="org0fd83a0" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/train_no_wd_concise.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -504,7 +529,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="orgb75d6e7" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/train_wd_concise.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -515,7 +540,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 15:23</p>
+<p class="date">Created: 2021-04-11 Sun 20:59</p>
 </div>
 </body>
 </html>

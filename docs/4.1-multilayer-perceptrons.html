@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 15:23 -->
+<!-- 2021-04-11 Sun 20:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -39,7 +39,7 @@
   }
   pre.src {
     position: relative;
-    overflow: auto;
+    overflow: visible;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -51,7 +51,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
+  pre.src:hover:before { display: inline;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -192,27 +192,52 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
 <!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
 </script>
 </head>
 <body>
@@ -225,29 +250,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org724b129">1. Multilayer Perceptrons</a>
+<li><a href="#org12cfae9">1. Multilayer Perceptrons</a>
 <ul>
-<li><a href="#org65e3c70">1.1. Hidden Layers</a>
+<li><a href="#org3032531">1.1. Hidden Layers</a>
 <ul>
-<li><a href="#orgff3835e">1.1.1. Incorporating Hidden Layers</a></li>
-<li><a href="#org89b525e">1.1.2. From Linear to Nonlinear</a></li>
-<li><a href="#orgd2ed300">1.1.3. Vectorization and Minibatch</a></li>
+<li><a href="#org1e5a923">1.1.1. Incorporating Hidden Layers</a></li>
+<li><a href="#org82fbf05">1.1.2. From Linear to Nonlinear</a></li>
+<li><a href="#org9b64914">1.1.3. Vectorization and Minibatch</a></li>
 </ul>
 </li>
-<li><a href="#org7077d58">1.2. Activation Functions</a>
+<li><a href="#org05708d7">1.2. Activation Functions</a>
 <ul>
-<li><a href="#org2ab6d89">1.2.1. ReLU Function</a></li>
+<li><a href="#orgb0f24bf">1.2.1. ReLU Function</a></li>
 </ul>
 </li>
-<li><a href="#org361c950">1.3. Sigmoid Function</a></li>
-<li><a href="#org4c7b537">1.4. Tanh Function</a></li>
+<li><a href="#org14c81bd">1.3. Sigmoid Function</a></li>
+<li><a href="#orgae940e5">1.4. Tanh Function</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org724b129" class="outline-2">
-<h2 id="org724b129"><span class="section-number-2">1</span> Multilayer Perceptrons</h2>
+<div id="outline-container-org12cfae9" class="outline-2">
+<h2 id="org12cfae9"><span class="section-number-2">1</span> Multilayer Perceptrons</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.multilayer-perceptrons</span>
@@ -272,35 +297,35 @@
       <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
        <span style="color: #110099;">:y</span> y
        <span style="color: #110099;">:style</span> <span style="color: #6276ba;">{</span><span style="color: #110099;">:marker-type</span> <span style="color: #110099;">:none</span><span style="color: #6276ba;">}</span><span style="color: #907373;">}</span><span style="color: #709870;">}</span><span style="color: #909183;">)</span>
-    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/<span style="color: #7F0055; font-weight: bold;">spit</span> filename<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/spit filename<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
 
 
-<div id="outline-container-org65e3c70" class="outline-3">
-<h3 id="org65e3c70"><span class="section-number-3">1.1</span> Hidden Layers</h3>
+<div id="outline-container-org3032531" class="outline-3">
+<h3 id="org3032531"><span class="section-number-3">1.1</span> Hidden Layers</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-orgff3835e" class="outline-4">
-<h4 id="orgff3835e"><span class="section-number-4">1.1.1</span> Incorporating Hidden Layers</h4>
+<div id="outline-container-org1e5a923" class="outline-4">
+<h4 id="org1e5a923"><span class="section-number-4">1.1.1</span> Incorporating Hidden Layers</h4>
 </div>
 
-<div id="outline-container-org89b525e" class="outline-4">
-<h4 id="org89b525e"><span class="section-number-4">1.1.2</span> From Linear to Nonlinear</h4>
+<div id="outline-container-org82fbf05" class="outline-4">
+<h4 id="org82fbf05"><span class="section-number-4">1.1.2</span> From Linear to Nonlinear</h4>
 </div>
 
-<div id="outline-container-orgd2ed300" class="outline-4">
-<h4 id="orgd2ed300"><span class="section-number-4">1.1.3</span> Vectorization and Minibatch</h4>
+<div id="outline-container-org9b64914" class="outline-4">
+<h4 id="org9b64914"><span class="section-number-4">1.1.3</span> Vectorization and Minibatch</h4>
 </div>
 </div>
 
-<div id="outline-container-org7077d58" class="outline-3">
-<h3 id="org7077d58"><span class="section-number-3">1.2</span> Activation Functions</h3>
+<div id="outline-container-org05708d7" class="outline-3">
+<h3 id="org05708d7"><span class="section-number-3">1.2</span> Activation Functions</h3>
 <div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-org2ab6d89" class="outline-4">
-<h4 id="org2ab6d89"><span class="section-number-4">1.2.1</span> ReLU Function</h4>
+<div id="outline-container-orgb0f24bf" class="outline-4">
+<h4 id="orgb0f24bf"><span class="section-number-4">1.2.1</span> ReLU Function</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 rectified linear unit:
@@ -320,7 +345,7 @@ rectified linear unit:
 </div>
 
 
-<div id="org95d283f" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/relu.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -344,7 +369,7 @@ The derivative of the relu function is:
 </div>
 
 
-<div id="org0bf2726" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/grad_relu.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -353,8 +378,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org361c950" class="outline-3">
-<h3 id="org361c950"><span class="section-number-3">1.3</span> Sigmoid Function</h3>
+<div id="outline-container-org14c81bd" class="outline-3">
+<h3 id="org14c81bd"><span class="section-number-3">1.3</span> Sigmoid Function</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/sigmoid x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -364,7 +389,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="orgb7f8763" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/sigmoid.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -386,7 +411,7 @@ The derivative of the sigmoid function is:
 </div>
 
 
-<div id="org85e1d55" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/grad_sigmoid.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -394,8 +419,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 
-<div id="outline-container-org4c7b537" class="outline-3">
-<h3 id="org4c7b537"><span class="section-number-3">1.4</span> Tanh Function</h3>
+<div id="outline-container-orgae940e5" class="outline-3">
+<h3 id="orgae940e5"><span class="section-number-3">1.4</span> Tanh Function</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nn</span>/tanh x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -405,7 +430,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="org1708c60" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/tanh.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -428,7 +453,7 @@ The derivative of the Tanh function is:
 </div>
 
 
-<div id="org91d5285" class="figure">
+<div class="figure">
 <p><object type="image/svg+xml" data="./figure/grad_tanh.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -438,7 +463,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 15:23</p>
+<p class="date">Created: 2021-04-11 Sun 20:59</p>
 </div>
 </body>
 </html>

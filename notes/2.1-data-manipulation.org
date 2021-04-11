@@ -55,25 +55,25 @@ elements in the ndarray x. Unless otherwise specified, a new ndarray
 will be stored in main memory and designated for CPU-based
 computation.
 
-#+begin_src clojure :results pp :exports both
+#+begin_src clojure :results value pp :exports both
 (def ndm (nd/new-base-manager))
 (def x (nd/arange ndm 0 12))
 x
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.mxnet.engine.MxNDArray 0x1c6d5df4 "ND: (12) cpu() int32\r\n[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]\r\n"]
-:
+: ND: (12) cpu() int32
+: [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
 
 We can access an ndarray's shape (the length along each axis) by
 inspecting its shape property.
 
-#+begin_src clojure :results value :exports both
+#+begin_src clojure :results value pp :exports both
 (nd/get-shape x)
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.ndarray.types.Shape 0x3648fafe "(12)"]
+: (12)
 
 If we just want to know the total number of elements in an ndarray,
 i.e., the product of all of the shape elements, we can inspect its
@@ -81,7 +81,7 @@ size. Because we are dealing with a vector here, the single element
 of its shape is same to its size. The difference is that =get-shape=
 will return a /Shape/ object.
 
-#+begin_src clojure :results value
+#+begin_src clojure :results value pp :exports both
 (nd/size x)
 #+end_src
 
@@ -96,14 +96,17 @@ the exact same values, but views them as a matrix organized as 3
 rows and 4 columns. To reiterate, although the shape has changed,
 the elements have not. Note that the size is unaltered by reshaping.
 
-#+begin_src clojure :results pp :exports both
+#+begin_src clojure :results value pp :exports both
 (def y (nd/reshape x [3 4]))
 y
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.mxnet.engine.MxNDArray 0x6ec18b16 "ND: (3, 4) cpu() int32\r\n[[ 0,  1,  2,  3],\r\n [ 4,  5,  6,  7],\r\n [ 8,  9, 10, 11],\r\n]\r\n"]
-:
+: ND: (3, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+: ]
 
 Reshaping by manually specifying every dimension is unnecessary. If
 our target shape is a matrix with shape (height, width), then after
@@ -123,18 +126,21 @@ y
 #+end_src
 
 #+RESULTS:
-: #object[ai.djl.mxnet.engine.MxNDArray 0x27c4a644 "ND: (3, 4) cpu() int32\r\n[[ 0,  1,  2,  3],\r\n [ 4,  5,  6,  7],\r\n [ 8,  9, 10, 11],\r\n]\r\n"]
-:
+: ND: (3, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+: ]
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/shape 2 3))
+#+begin_src clojure :results pp :exports both
+(nd/shape 2 3)
 #+end_src
 
 #+RESULTS:
 : (2, 3)
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/create ndm (int-array [2 3])))
+#+begin_src clojure :results pp :exports both
+(nd/create ndm (int-array [2 3]))
 #+end_src
 
 #+RESULTS:
@@ -145,20 +151,13 @@ Typically, we will want our matrices initialized either with zeros,
 ones, some other constants, or numbers randomly sampled from a
 specific distribution. We can create a ndarray representing a tensor
 with all elements set to 0 and a shape of =[2 3 4]= as follows:
-automatically inference the rest dimention specified with =-1=:
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/zeros ndm [2 3]))
-(d2l/ps (nd/zeros ndm [2 3 4]))
-(d2l/ps (nd/zeros ndm [2 2 2 2]))
+#+begin_src clojure :results value pp :exports both
+(nd/zeros ndm [2 3 4])
 #+end_src
 
 #+RESULTS:
 #+begin_example
-ND: (2, 3) cpu() float32
-[[0., 0., 0.],
- [0., 0., 0.],
-]
 ND: (2, 3, 4) cpu() float32
 [[[0., 0., 0., 0.],
   [0., 0., 0., 0.],
@@ -169,36 +168,16 @@ ND: (2, 3, 4) cpu() float32
   [0., 0., 0., 0.],
  ],
 ]
-ND: (2, 2, 2, 2) cpu() float32
-[[[[0., 0.],
-   [0., 0.],
-  ],
-  [[0., 0.],
-   [0., 0.],
-  ],
- ],
- [[[0., 0.],
-   [0., 0.],
-  ],
-  [[0., 0.],
-   [0., 0.],
-  ],
- ],
-]
 #+end_example
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/ones ndm [2 3]))
-(d2l/ps (nd/ones ndm [2 3 4]))
-(d2l/ps (nd/ones ndm [2 2 2 2]))
+Similarly, we can create ndarrays with each element set to 1 as follows:
+
+#+begin_src clojure :results value pp :exports both
+(nd/ones ndm [2 3 4])
 #+end_src
 
 #+RESULTS:
 #+begin_example
-ND: (2, 3) cpu() float32
-[[1., 1., 1.],
- [1., 1., 1.],
-]
 ND: (2, 3, 4) cpu() float32
 [[[1., 1., 1., 1.],
   [1., 1., 1., 1.],
@@ -209,53 +188,66 @@ ND: (2, 3, 4) cpu() float32
   [1., 1., 1., 1.],
  ],
 ]
-ND: (2, 2, 2, 2) cpu() float32
-[[[[1., 1.],
-   [1., 1.],
-  ],
-  [[1., 1.],
-   [1., 1.],
-  ],
- ],
- [[[1., 1.],
-   [1., 1.],
-  ],
-  [[1., 1.],
-   [1., 1.],
-  ],
- ],
-]
 #+end_example
 
+Often, we want to randomly sample the values for each element in an ndarray from
+some probability distribution. For example, when we construct arrays to serve as
+parameters in a neural network, we will typically initialize their values
+randomly. The following snippet creates an ndarray with shape (3, 4). Each of
+its elements is randomly sampled from a standard Gaussian (normal) distribution
+with a mean of 0 and a standard deviation of 1.
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/random-normal ndm 0 1 [3 4] DataType/FLOAT32))
-(d2l/ps (nd/random-normal ndm 0 1 [3 4] :float64))
-#+end_src
-
-#+RESULTS:
-#+begin_example
-ND: (3, 4) cpu() float32
-[[ 2.2122,  1.1631,  0.774 ,  0.4838],
- [ 1.0434,  0.2996,  1.1839,  0.153 ],
- [ 1.8917, -1.1688, -1.2347,  1.5581],
-]
-ND: (3, 4) cpu() float64
-[[-1.771 , -0.5459, -0.4514, -2.3556],
- [ 0.5794,  0.5414, -1.8561,  2.6785],
- [-1.9769,  1.2546, -0.208 , -0.5488],
-]
-#+end_example
-
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/random-normal ndm [3 4]))
+#+begin_src clojure :results value pp :exports both
+(nd/random-normal ndm 0 1 (nd/shape [3 4]))
 #+end_src
 
 #+RESULTS:
 : ND: (3, 4) cpu() float32
-: [[ 0.2444, -0.6811, -0.0372, -0.1353],
-:  [-0.4877,  0.3772, -0.0226,  0.4102],
-:  [ 0.5746,  0.5713,  1.4661, -2.758 ],
+: [[-1.7376,  0.0664,  0.0473,  0.8487],
+:  [ 0.1458, -0.8004,  0.326 , -0.1688],
+:  [ 0.4579,  0.9363, -0.8943,  0.3574],
+: ]
+
+We can directly use a clojure vec as the shape:
+
+#+begin_src clojure :results value pp :exports both
+(nd/random-normal ndm 0 1 [3 4])
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float32
+: [[ 0.4938,  0.7793, -0.9043, -1.0103],
+:  [-1.2141, -0.3916,  2.1564,  1.3166],
+:  [ 1.0938, -0.4329,  1.8271,  0.7154],
+: ]
+
+You can also just pass the shape and it will use default values for mean and
+standard deviation (0 and 1).
+
+#+begin_src clojure :results value pp :exports both
+(nd/random-normal ndm [3 4])
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float32
+: [[-0.7922,  0.2415,  0.9321,  0.479 ],
+:  [-3.1558,  0.9689,  2.1935, -1.0218],
+:  [-0.5386, -0.0681, -0.8611, -0.3187],
+: ]
+
+We can also specify the exact values for each element in the desired ndarray by
+supplying a clojure vec (or list) containing the numerical values. Here, the
+outermost list corresponds to axis 0, and the inner list to axis 1.
+
+#+begin_src clojure :results value pp :exports both
+(nd/create ndm [[2 1 4 3][1 2 3 4][4 3 2 1]])
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int64
+: [[ 2,  1,  4,  3],
+:  [ 1,  2,  3,  4],
+:  [ 4,  3,  2,  1],
 : ]
 
 ** Operations

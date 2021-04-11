@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 15:23 -->
+<!-- 2021-04-11 Sun 20:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -39,7 +39,7 @@
   }
   pre.src {
     position: relative;
-    overflow: auto;
+    overflow: visible;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -51,7 +51,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
+  pre.src:hover:before { display: inline;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -192,27 +192,52 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
 <!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
 </script>
 </head>
 <body>
@@ -225,18 +250,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org9d2197e">1. Data Preprocessing</a>
+<li><a href="#org979d33c">1. Data Preprocessing</a>
 <ul>
-<li><a href="#orgd471e51">1.1. Reading the Dataset</a></li>
-<li><a href="#org3239188">1.2. Handling Missing Data</a></li>
-<li><a href="#org3bafdb8">1.3. Conversion to the Tensor Format</a></li>
+<li><a href="#org85bb302">1.1. Reading the Dataset</a></li>
+<li><a href="#orgf374de8">1.2. Handling Missing Data</a></li>
+<li><a href="#org134b95e">1.3. Conversion to the Tensor Format</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org9d2197e" class="outline-2">
-<h2 id="org9d2197e"><span class="section-number-2">1</span> Data Preprocessing</h2>
+<div id="outline-container-org979d33c" class="outline-2">
+<h2 id="org979d33c"><span class="section-number-2">1</span> Data Preprocessing</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.data-preprocess</span>
@@ -248,8 +273,8 @@
 </div>
 </div>
 
-<div id="outline-container-orgd471e51" class="outline-3">
-<h3 id="orgd471e51"><span class="section-number-3">1.1</span> Reading the Dataset</h3>
+<div id="outline-container-org85bb302" class="outline-3">
+<h3 id="org85bb302"><span class="section-number-3">1.1</span> Reading the Dataset</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>filename <span style="color: #2A00FF;">"data/house_tiny.csv"</span>
@@ -260,7 +285,7 @@
                <span style="color: #2A00FF;">"NA,NA,140000</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span><span style="color: #909183;">]</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">io</span>/make-parents filename<span style="color: #7388d6;">)</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span>
-   <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">spit</span> filename <span style="color: #000000;">%</span> <span style="color: #110099;">:append</span> <span style="color: #110099;">true</span><span style="color: #709870;">)</span> records<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+   <span style="color: #909183;">(</span>map #<span style="color: #709870;">(</span>spit filename <span style="color: #000000;">%</span> <span style="color: #110099;">:append</span> <span style="color: #110099;">true</span><span style="color: #709870;">)</span> records<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">data</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/dataset <span style="color: #2A00FF;">"data/house_tiny.csv"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
@@ -282,14 +307,14 @@ data/house_tiny.csv [4 3]:
 </div>
 
 
-<div id="outline-container-org3239188" class="outline-3">
-<h3 id="org3239188"><span class="section-number-3">1.2</span> Handling Missing Data</h3>
+<div id="outline-container-orgf374de8" class="outline-3">
+<h3 id="orgf374de8"><span class="section-number-3">1.2</span> Handling Missing Data</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">dataset</span>
  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/replace-missing data <span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #110099;">:value</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">tech.v2.datatype.functional</span>/mean<span style="color: #709870;">)</span>
-       data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/add-or-replace-columns data <span style="color: #907373;">{</span><span style="color: #2A00FF;">"Alley_nil"</span> <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span><span style="color: #7F0055; font-weight: bold;">nil?</span> <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 1 0<span style="color: #858580;">)(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
-                                             <span style="color: #2A00FF;">"Alley"</span> <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span><span style="color: #7F0055; font-weight: bold;">nil?</span> <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 0 1<span style="color: #858580;">)</span> <span style="color: #858580;">(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">}</span><span style="color: #709870;">)</span>
+       data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/add-or-replace-columns data <span style="color: #907373;">{</span><span style="color: #2A00FF;">"Alley_nil"</span> <span style="color: #6276ba;">(</span>map #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span>nil? <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 1 0<span style="color: #858580;">)(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
+                                             <span style="color: #2A00FF;">"Alley"</span> <span style="color: #6276ba;">(</span>map #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span>nil? <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 0 1<span style="color: #858580;">)</span> <span style="color: #858580;">(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">}</span><span style="color: #709870;">)</span>
        inputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #907373;">[</span><span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #2A00FF;">"Alley"</span> <span style="color: #2A00FF;">"Alley_nil"</span><span style="color: #907373;">]</span><span style="color: #709870;">)</span>
        outputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #2A00FF;">"Price"</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
    <span style="color: #909183;">[</span>inputs outputs<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -298,19 +323,19 @@ data/house_tiny.csv [4 3]:
 </div>
 </div>
 
-<div id="outline-container-org3bafdb8" class="outline-3">
-<h3 id="org3bafdb8"><span class="section-number-3">1.3</span> Conversion to the Tensor Format</h3>
+<div id="outline-container-org134b95e" class="outline-3">
+<h3 id="org134b95e"><span class="section-number-3">1.3</span> Conversion to the Tensor Format</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> dataset 0<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> dataset 1<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>map vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span>get dataset 0<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>map vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span>get dataset 1<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps X<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="orge5da0b7">
+<pre class="example">
 ND: (4, 3) cpu() int32
 [[ 3,  1,  0],
  [ 2,  0,  1],
@@ -329,7 +354,7 @@ ND: (4, 1) cpu() int32
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 15:23</p>
+<p class="date">Created: 2021-04-11 Sun 20:59</p>
 </div>
 </body>
 </html>

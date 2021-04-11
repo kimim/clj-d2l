@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 15:23 -->
+<!-- 2021-04-11 Sun 20:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -39,7 +39,7 @@
   }
   pre.src {
     position: relative;
-    overflow: auto;
+    overflow: visible;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -51,7 +51,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
+  pre.src:hover:before { display: inline;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -192,27 +192,52 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
 <!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
 </script>
 </head>
 <body>
@@ -225,22 +250,22 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbebb31e">1. Implementation of Softmax Regression from Scratch</a>
+<li><a href="#org833312d">1. Implementation of Softmax Regression from Scratch</a>
 <ul>
-<li><a href="#orgeaac554">1.1. Initializing Model Parameters</a></li>
-<li><a href="#org8ece653">1.2. The Softmax</a></li>
-<li><a href="#org78e7d67">1.3. The Model</a></li>
-<li><a href="#org0e11f56">1.4. The Loss Function</a></li>
-<li><a href="#org756378a">1.5. Classification Accuracy</a></li>
-<li><a href="#orga4d9cfd">1.6. Model Training</a></li>
-<li><a href="#orgef7b76d">1.7. Prediction</a></li>
+<li><a href="#orge83130e">1.1. Initializing Model Parameters</a></li>
+<li><a href="#orga571fab">1.2. The Softmax</a></li>
+<li><a href="#orgb3e7fca">1.3. The Model</a></li>
+<li><a href="#org90ae458">1.4. The Loss Function</a></li>
+<li><a href="#org88bfb11">1.5. Classification Accuracy</a></li>
+<li><a href="#org2698b43">1.6. Model Training</a></li>
+<li><a href="#org63f0dfd">1.7. Prediction</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbebb31e" class="outline-2">
-<h2 id="orgbebb31e"><span class="section-number-2">1</span> Implementation of Softmax Regression from Scratch</h2>
+<div id="outline-container-org833312d" class="outline-2">
+<h2 id="org833312d"><span class="section-number-2">1</span> Implementation of Softmax Regression from Scratch</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.softmax-from-scratch</span>
@@ -290,8 +315,8 @@
                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #909183;">)</span>
                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"train dataset size: "</span><span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"test dataset size: "</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-test<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"train dataset size: "</span><span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"test dataset size: "</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-test<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -301,8 +326,8 @@ test dataset size:  10000
 </pre>
 </div>
 
-<div id="outline-container-orgeaac554" class="outline-3">
-<h3 id="orgeaac554"><span class="section-number-3">1.1</span> Initializing Model Parameters</h3>
+<div id="outline-container-orge83130e" class="outline-3">
+<h3 id="orge83130e"><span class="section-number-3">1.1</span> Initializing Model Parameters</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">num-inputs</span> 784<span style="color: #707183;">)</span>
@@ -315,8 +340,8 @@ test dataset size:  10000
 </div>
 </div>
 
-<div id="outline-container-org8ece653" class="outline-3">
-<h3 id="org8ece653"><span class="section-number-3">1.2</span> The Softmax</h3>
+<div id="outline-container-orga571fab" class="outline-3">
+<h3 id="orga571fab"><span class="section-number-3">1.2</span> The Softmax</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create manager <span style="color: #909183;">[</span><span style="color: #709870;">[</span>1 2 3<span style="color: #709870;">]</span> <span style="color: #709870;">[</span>4 5 6<span style="color: #709870;">]</span><span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -328,7 +353,7 @@ test dataset size:  10000
 </pre>
 </div>
 
-<pre class="example" id="org5ec1564">
+<pre class="example">
 ND: (1, 3) cpu() int64
 [[ 5,  7,  9],
 ]
@@ -369,8 +394,8 @@ ND: (2) cpu() float32
 </div>
 </div>
 
-<div id="outline-container-org78e7d67" class="outline-3">
-<h3 id="org78e7d67"><span class="section-number-3">1.3</span> The Model</h3>
+<div id="outline-container-orgb3e7fca" class="outline-3">
+<h3 id="orgb3e7fca"><span class="section-number-3">1.3</span> The Model</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">net</span> <span style="color: #7388d6;">[</span>ndarray<span style="color: #7388d6;">]</span>
@@ -386,12 +411,12 @@ ND: (2) cpu() float32
 </div>
 </div>
 
-<div id="outline-container-org0e11f56" class="outline-3">
-<h3 id="org0e11f56"><span class="section-number-3">1.4</span> The Loss Function</h3>
+<div id="outline-container-org90ae458" class="outline-3">
+<h3 id="org90ae458"><span class="section-number-3">1.4</span> The Loss Function</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y-hat</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create manager <span style="color: #909183;">[</span><span style="color: #709870;">[</span>0.1 0.3 0.6<span style="color: #709870;">][</span>0.3 0.2 0.5<span style="color: #709870;">]</span><span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> y-hat <span style="color: #2A00FF;">":,{}"</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create manager <span style="color: #709870;">[</span>0 2<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get y-hat <span style="color: #2A00FF;">":,{}"</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create manager <span style="color: #709870;">[</span>0 2<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -405,7 +430,7 @@ ND: (2, 1) cpu() float64
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">cross-entropy</span> <span style="color: #7388d6;">[</span>y-hat y<span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> y-hat <span style="color: #2A00FF;">":, {}"</span> <span style="color: #709870;">(</span>.toType y <span style="color: #000000; font-style: italic; text-decoration: underline;">DataType</span>/INT32 <span style="color: #110099;">false</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get y-hat <span style="color: #2A00FF;">":, {}"</span> <span style="color: #709870;">(</span>.toType y <span style="color: #000000; font-style: italic; text-decoration: underline;">DataType</span>/INT32 <span style="color: #110099;">false</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
       <span style="color: #909183;">(</span>.log<span style="color: #909183;">)</span>
       <span style="color: #909183;">(</span>.neg<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
@@ -422,8 +447,8 @@ ND: (2, 1) cpu() float64
 </div>
 </div>
 
-<div id="outline-container-org756378a" class="outline-3">
-<h3 id="org756378a"><span class="section-number-3">1.5</span> Classification Accuracy</h3>
+<div id="outline-container-org88bfb11" class="outline-3">
+<h3 id="org88bfb11"><span class="section-number-3">1.5</span> Classification Accuracy</h3>
 <div class="outline-text-3" id="text-1-5">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">accuracy</span> <span style="color: #7388d6;">[</span>y-hat y<span style="color: #7388d6;">]</span>
@@ -440,14 +465,14 @@ ND: (2, 1) cpu() float64
         <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">evaluate-accuracy</span> <span style="color: #7388d6;">[</span>net data-iter<span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>acc <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #907373;">[</span>0 0<span style="color: #907373;">]</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>acc <span style="color: #709870;">(</span>atom <span style="color: #907373;">[</span>0 0<span style="color: #907373;">]</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #709870;">[</span>batch <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/iter-seq data-iter<span style="color: #907373;">)</span><span style="color: #709870;">]</span>
       <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #907373;">[</span>X <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
             y <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
-        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> acc update 0 + <span style="color: #6276ba;">(</span>accuracy <span style="color: #858580;">(</span>net X<span style="color: #858580;">)</span> y<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
-        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> acc update 1 + <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size y<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+        <span style="color: #907373;">(</span>swap! acc update 0 + <span style="color: #6276ba;">(</span>accuracy <span style="color: #858580;">(</span>net X<span style="color: #858580;">)</span> y<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+        <span style="color: #907373;">(</span>swap! acc update 1 + <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size y<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
         <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
-    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">reduce</span> / @acc<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+    <span style="color: #909183;">(</span>reduce / @acc<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -464,14 +489,14 @@ ND: (2, 1) cpu() float64
 </div>
 
 
-<div id="outline-container-orga4d9cfd" class="outline-3">
-<h3 id="orga4d9cfd"><span class="section-number-3">1.6</span> Model Training</h3>
+<div id="outline-container-org2698b43" class="outline-3">
+<h3 id="org2698b43"><span class="section-number-3">1.6</span> Model Training</h3>
 <div class="outline-text-3" id="text-1-6">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">accumulate</span> <span style="color: #7388d6;">[</span>atom x y z<span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> atom update 0 + x<span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> atom update 1 + y<span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> atom update 2 + z<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+  <span style="color: #7388d6;">(</span>swap! atom update 0 + x<span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span>swap! atom update 1 + y<span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span>swap! atom update 2 + z<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">sgd</span> <span style="color: #7388d6;">[</span>params lr batch-size<span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>param params<span style="color: #909183;">]</span>
@@ -483,7 +508,7 @@ ND: (2, 1) cpu() float64
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">train-epoch-ch3</span> <span style="color: #7388d6;">[</span>net train-iter lr loss updater<span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>acc <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #907373;">[</span>0 0 0<span style="color: #907373;">]</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>acc <span style="color: #709870;">(</span>atom <span style="color: #907373;">[</span>0 0 0<span style="color: #907373;">]</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #709870;">[</span>param <span style="color: #907373;">[</span>W b<span style="color: #907373;">]</span><span style="color: #709870;">]</span>
       <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient param<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
     <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #709870;">[</span>batch <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/iter-seq train-iter<span style="color: #907373;">)</span><span style="color: #709870;">]</span>
@@ -503,14 +528,14 @@ ND: (2, 1) cpu() float64
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">train-ch3</span> <span style="color: #7388d6;">[</span>net train-ds test-ds lr loss num-epochs updater<span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>i <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> num-epochs<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>i <span style="color: #709870;">(</span>range num-epochs<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #709870;">[</span>train-metrics <span style="color: #907373;">(</span>train-epoch-ch3 net <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data train-ds manager<span style="color: #6276ba;">)</span> lr loss updater<span style="color: #907373;">)</span>
           accuracy <span style="color: #907373;">(</span>evaluate-accuracy net <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data test-ds manager<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
-          train-accuracy <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> train-metrics 1<span style="color: #907373;">)</span>
-          train-loss <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> train-metrics 0<span style="color: #907373;">)</span><span style="color: #709870;">]</span>
-      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Epoch "</span> i <span style="color: #2A00FF;">": Test Accuracy: "</span> accuracy<span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Train Accuracy: "</span> train-accuracy<span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Train Loss: "</span>train-loss<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+          train-accuracy <span style="color: #907373;">(</span>get train-metrics 1<span style="color: #907373;">)</span>
+          train-loss <span style="color: #907373;">(</span>get train-metrics 0<span style="color: #907373;">)</span><span style="color: #709870;">]</span>
+      <span style="color: #709870;">(</span>println <span style="color: #2A00FF;">"Epoch "</span> i <span style="color: #2A00FF;">": Test Accuracy: "</span> accuracy<span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span>println <span style="color: #2A00FF;">"Train Accuracy: "</span> train-accuracy<span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span>println <span style="color: #2A00FF;">"Train Loss: "</span>train-loss<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -537,8 +562,8 @@ Train Loss:  0.5255329947153727
 </div>
 
 
-<div id="outline-container-orgef7b76d" class="outline-3">
-<h3 id="orgef7b76d"><span class="section-number-3">1.7</span> Prediction</h3>
+<div id="outline-container-org63f0dfd" class="outline-3">
+<h3 id="org63f0dfd"><span class="section-number-3">1.7</span> Prediction</h3>
 <div class="outline-text-3" id="text-1-7">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">predict-ch3</span> <span style="color: #7388d6;">[</span>net dataset ndmanager<span style="color: #7388d6;">]</span>
@@ -549,8 +574,8 @@ Train Loss:  0.5255329947153727
     <span style="color: #909183;">[</span>y-hat y<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">prediction</span> <span style="color: #7388d6;">(</span>predict-ch3 net mnist-test manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Prediction:   "</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">take</span> 20 <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #709870;">(</span>prediction 0<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Actual label: "</span><span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">take</span> 20 <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> int <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #907373;">(</span>prediction 1<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"Prediction:   "</span> <span style="color: #7388d6;">(</span>take 20 <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #709870;">(</span>prediction 0<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"Actual label: "</span><span style="color: #7388d6;">(</span>take 20 <span style="color: #909183;">(</span>map int <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #907373;">(</span>prediction 1<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -563,7 +588,7 @@ Actual label:  (0 8 0 9 2 4 4 6 3 6 3 5 9 6 8 1 3 2 0 2)
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 15:23</p>
+<p class="date">Created: 2021-04-11 Sun 20:59</p>
 </div>
 </body>
 </html>

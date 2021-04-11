@@ -23,6 +23,6 @@
 - [[file:theindex.org][Index]]
 - [[file:index.org][Index]]
 - [[file:installation.org][Installation]]
-- [[file:1.0-introductin.org][Introdution]]
+- [[file:1.0-introduction.org][Introdution]]
 - [[file:notation.org][Notation]]
 - [[file:2.0-preliminaries.org][Preliminaries]]
