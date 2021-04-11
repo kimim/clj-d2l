@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 09:03 -->
+<!-- 2021-04-11 Sun 13:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -39,7 +39,7 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
+    overflow: auto;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -51,7 +51,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -193,50 +193,26 @@
   /*]]>*/-->
 </style>
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -249,22 +225,22 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga93bb2d">1. Concise Implementation of Softmax Regression</a>
+<li><a href="#orga6bc6e9">1. Concise Implementation of Softmax Regression</a>
 <ul>
-<li><a href="#org67f9afc">1.1. Initializing Model Parameters</a></li>
-<li><a href="#orgec18cb1">1.2. The Softmax</a></li>
-<li><a href="#org0ca8baf">1.3. Optimization Algorithm</a></li>
-<li><a href="#org7f70d78">1.4. Instantiate Configuration and Trainer</a></li>
-<li><a href="#org63cfcb4">1.5. Initializing Trainer</a></li>
-<li><a href="#orgaedb838">1.6. Metrics</a></li>
-<li><a href="#org3b78fa8">1.7. Training</a></li>
+<li><a href="#org27822cb">1.1. Initializing Model Parameters</a></li>
+<li><a href="#orgea731d1">1.2. The Softmax</a></li>
+<li><a href="#org94ab8ad">1.3. Optimization Algorithm</a></li>
+<li><a href="#org92283f5">1.4. Instantiate Configuration and Trainer</a></li>
+<li><a href="#orgc8ef50d">1.5. Initializing Trainer</a></li>
+<li><a href="#orgc48739f">1.6. Metrics</a></li>
+<li><a href="#org4306dd4">1.7. Training</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga93bb2d" class="outline-2">
-<h2 id="orga93bb2d"><span class="section-number-2">1</span> Concise Implementation of Softmax Regression</h2>
+<div id="outline-container-orga6bc6e9" class="outline-2">
+<h2 id="orga6bc6e9"><span class="section-number-2">1</span> Concise Implementation of Softmax Regression</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.concise-softmax-reg</span>
@@ -307,8 +283,8 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-org67f9afc" class="outline-3">
-<h3 id="org67f9afc"><span class="section-number-3">1.1</span> Initializing Model Parameters</h3>
+<div id="outline-container-org27822cb" class="outline-3">
+<h3 id="org27822cb"><span class="section-number-3">1.1</span> Initializing Model Parameters</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">softmax</span> <span style="color: #7388d6;">[</span>arrays<span style="color: #7388d6;">]</span>
@@ -333,8 +309,8 @@ for the JavaScript code in this tag.
 
 
 
-<div id="outline-container-orgec18cb1" class="outline-3">
-<h3 id="orgec18cb1"><span class="section-number-3">1.2</span> The Softmax</h3>
+<div id="outline-container-orgea731d1" class="outline-3">
+<h3 id="orgea731d1"><span class="section-number-3">1.2</span> The Softmax</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">loss</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">loss</span>/sotfmax-cross-entropy-loss<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -343,8 +319,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0ca8baf" class="outline-3">
-<h3 id="org0ca8baf"><span class="section-number-3">1.3</span> Optimization Algorithm</h3>
+<div id="outline-container-org94ab8ad" class="outline-3">
+<h3 id="org94ab8ad"><span class="section-number-3">1.3</span> Optimization Algorithm</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">lrt</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">tracker</span>/fixed 0.1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -354,8 +330,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org7f70d78" class="outline-3">
-<h3 id="org7f70d78"><span class="section-number-3">1.4</span> Instantiate Configuration and Trainer</h3>
+<div id="outline-container-org92283f5" class="outline-3">
+<h3 id="org92283f5"><span class="section-number-3">1.4</span> Instantiate Configuration and Trainer</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">config</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/training-config <span style="color: #909183;">{</span><span style="color: #110099;">:loss</span> loss
@@ -369,8 +345,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org63cfcb4" class="outline-3">
-<h3 id="org63cfcb4"><span class="section-number-3">1.5</span> Initializing Trainer</h3>
+<div id="outline-container-orgc8ef50d" class="outline-3">
+<h3 id="orgc8ef50d"><span class="section-number-3">1.5</span> Initializing Trainer</h3>
 <div class="outline-text-3" id="text-1-5">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/initialize trainer <span style="color: #7388d6;">[</span><span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #709870;">[</span>1 <span style="color: #907373;">(</span>* 28 28<span style="color: #907373;">)</span><span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
@@ -379,8 +355,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgaedb838" class="outline-3">
-<h3 id="orgaedb838"><span class="section-number-3">1.6</span> Metrics</h3>
+<div id="outline-container-orgc48739f" class="outline-3">
+<h3 id="orgc48739f"><span class="section-number-3">1.6</span> Metrics</h3>
 <div class="outline-text-3" id="text-1-6">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">metrics</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/metrics<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -391,8 +367,8 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org3b78fa8" class="outline-3">
-<h3 id="org3b78fa8"><span class="section-number-3">1.7</span> Training</h3>
+<div id="outline-container-org4306dd4" class="outline-3">
+<h3 id="org4306dd4"><span class="section-number-3">1.7</span> Training</h3>
 <div class="outline-text-3" id="text-1-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">setq</span> org-babel-clojure-sync-nrepl-timeout 1000<span style="color: #707183;">)</span>
@@ -410,7 +386,7 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="orgc8ca846">
 
 Training:    100% |████████████████████████████████████████| Accuracy: 0.74, SoftmaxCrossEntropyLoss: 0.80
 
@@ -491,7 +467,7 @@ Validating:  100% |████████████████████�
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 09:03</p>
+<p class="date">Created: 2021-04-11 Sun 13:51</p>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 09:03 -->
+<!-- 2021-04-11 Sun 13:36 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -39,7 +39,7 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
+    overflow: auto;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -51,7 +51,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -193,50 +193,26 @@
   /*]]>*/-->
 </style>
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -249,27 +225,27 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5f1e5e6">1. Linear Algebra</a>
+<li><a href="#orgaa2c0ca">1. Linear Algebra</a>
 <ul>
-<li><a href="#orgcfbdf4b">1.1. Scalars</a></li>
-<li><a href="#org22b73f4">1.2. Vectors</a></li>
-<li><a href="#org1eb184f">1.3. Length, Dimensionality, and Shape</a></li>
-<li><a href="#org19acb31">1.4. Matrices</a></li>
-<li><a href="#orgb379242">1.5. Tensors</a></li>
-<li><a href="#org04c4658">1.6. Basic Properties of Tensor Arithmetic</a></li>
-<li><a href="#orgecd7b73">1.7. Reduction</a></li>
-<li><a href="#org6ce1b5a">1.8. Non-Reduction Sum</a></li>
-<li><a href="#orgeb3c968">1.9. Dot Products</a></li>
-<li><a href="#orgf3fe439">1.10. Matrix-Vector Products</a></li>
-<li><a href="#orgec03d25">1.11. Matrix-Matrix Multiplication</a></li>
-<li><a href="#org2ecf28e">1.12. Norms</a></li>
+<li><a href="#org16f75f1">1.1. Scalars</a></li>
+<li><a href="#orgb36dd8a">1.2. Vectors</a></li>
+<li><a href="#org457f4a6">1.3. Length, Dimensionality, and Shape</a></li>
+<li><a href="#org76cd93a">1.4. Matrices</a></li>
+<li><a href="#orgb80e365">1.5. Tensors</a></li>
+<li><a href="#org76ef3d7">1.6. Basic Properties of Tensor Arithmetic</a></li>
+<li><a href="#org7250ee0">1.7. Reduction</a></li>
+<li><a href="#org1bc8603">1.8. Non-Reduction Sum</a></li>
+<li><a href="#orgd8cec9a">1.9. Dot Products</a></li>
+<li><a href="#org27b1896">1.10. Matrix-Vector Products</a></li>
+<li><a href="#org0b5d5ab">1.11. Matrix-Matrix Multiplication</a></li>
+<li><a href="#org5c9a191">1.12. Norms</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5f1e5e6" class="outline-2">
-<h2 id="org5f1e5e6"><span class="section-number-2">1</span> Linear Algebra</h2>
+<div id="outline-container-orgaa2c0ca" class="outline-2">
+<h2 id="orgaa2c0ca"><span class="section-number-2">1</span> Linear Algebra</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.linear-algebra</span>
@@ -280,8 +256,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgcfbdf4b" class="outline-3">
-<h3 id="orgcfbdf4b"><span class="section-number-3">1.1</span> Scalars</h3>
+<div id="outline-container-org16f75f1" class="outline-3">
+<h3 id="org16f75f1"><span class="section-number-3">1.1</span> Scalars</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -308,8 +284,8 @@ ND: () cpu() float64
 </div>
 </div>
 
-<div id="outline-container-org22b73f4" class="outline-3">
-<h3 id="org22b73f4"><span class="section-number-3">1.2</span> Vectors</h3>
+<div id="outline-container-orgb36dd8a" class="outline-3">
+<h3 id="orgb36dd8a"><span class="section-number-3">1.2</span> Vectors</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">x</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 4<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -336,8 +312,8 @@ ND: () cpu() int32
 </div>
 
 
-<div id="outline-container-org1eb184f" class="outline-3">
-<h3 id="org1eb184f"><span class="section-number-3">1.3</span> Length, Dimensionality, and Shape</h3>
+<div id="outline-container-org457f4a6" class="outline-3">
+<h3 id="org457f4a6"><span class="section-number-3">1.3</span> Length, Dimensionality, and Shape</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size x<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -352,8 +328,8 @@ ND: () cpu() int32
 </div>
 </div>
 
-<div id="outline-container-org19acb31" class="outline-3">
-<h3 id="org19acb31"><span class="section-number-3">1.4</span> Matrices</h3>
+<div id="outline-container-org76cd93a" class="outline-3">
+<h3 id="org76cd93a"><span class="section-number-3">1.4</span> Matrices</h3>
 <div class="outline-text-3" id="text-1-4">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">A</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 20.<span style="color: #909183;">)</span>
@@ -364,7 +340,7 @@ ND: () cpu() int32
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org07e27ad">
 ND: (5, 4) cpu() float32
 [[ 0.,  1.,  2.,  3.],
  [ 4.,  5.,  6.,  7.],
@@ -402,8 +378,8 @@ ND: (3, 3) cpu() boolean
 </div>
 </div>
 
-<div id="outline-container-orgb379242" class="outline-3">
-<h3 id="orgb379242"><span class="section-number-3">1.5</span> Tensors</h3>
+<div id="outline-container-orgb80e365" class="outline-3">
+<h3 id="orgb80e365"><span class="section-number-3">1.5</span> Tensors</h3>
 <div class="outline-text-3" id="text-1-5">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 24.<span style="color: #909183;">)</span>
@@ -412,7 +388,7 @@ ND: (3, 3) cpu() boolean
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org643f582">
 ND: (2, 3, 4) cpu() float32
 [[[ 0.,  1.,  2.,  3.],
   [ 4.,  5.,  6.,  7.],
@@ -428,8 +404,8 @@ ND: (2, 3, 4) cpu() float32
 </div>
 
 
-<div id="outline-container-org04c4658" class="outline-3">
-<h3 id="org04c4658"><span class="section-number-3">1.6</span> Basic Properties of Tensor Arithmetic</h3>
+<div id="outline-container-org76ef3d7" class="outline-3">
+<h3 id="org76ef3d7"><span class="section-number-3">1.6</span> Basic Properties of Tensor Arithmetic</h3>
 <div class="outline-text-3" id="text-1-6">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">A</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 20.<span style="color: #909183;">)</span>
@@ -441,7 +417,7 @@ ND: (2, 3, 4) cpu() float32
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org3a07b4f">
 ND: (5, 4) cpu() float32
 [[ 0.,  1.,  2.,  3.],
  [ 4.,  5.,  6.,  7.],
@@ -469,7 +445,7 @@ ND: (5, 4) cpu() float32
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org7985b22">
 ND: (5, 4) cpu() float32
 [[  0.,   1.,   4.,   9.],
  [ 16.,  25.,  36.,  49.],
@@ -495,7 +471,7 @@ ND: (2, 3, 4) cpu() float32
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="orgff226a2">
 ND: (2, 3, 4) cpu() float32
 [[[ 2.,  3.,  4.,  5.],
   [ 6.,  7.,  8.,  9.],
@@ -512,8 +488,8 @@ ND: (2, 3, 4) cpu() float32
 </div>
 
 
-<div id="outline-container-orgecd7b73" class="outline-3">
-<h3 id="orgecd7b73"><span class="section-number-3">1.7</span> Reduction</h3>
+<div id="outline-container-org7250ee0" class="outline-3">
+<h3 id="org7250ee0"><span class="section-number-3">1.7</span> Reduction</h3>
 <div class="outline-text-3" id="text-1-7">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">x</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 4<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -614,8 +590,8 @@ ND: (4) cpu() float32
 </div>
 </div>
 
-<div id="outline-container-org6ce1b5a" class="outline-3">
-<h3 id="org6ce1b5a"><span class="section-number-3">1.8</span> Non-Reduction Sum</h3>
+<div id="outline-container-org1bc8603" class="outline-3">
+<h3 id="org1bc8603"><span class="section-number-3">1.8</span> Non-Reduction Sum</h3>
 <div class="outline-text-3" id="text-1-8">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">sum-A</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum A <span style="color: #909183;">[</span>1<span style="color: #909183;">]</span> <span style="color: #110099;">true</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -624,7 +600,7 @@ ND: (4) cpu() float32
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="orgc3236a9">
 ND: (5, 1) cpu() float32
 [[ 6.],
  [22.],
@@ -648,7 +624,7 @@ ND: (5, 4) cpu() float32
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="orgb1871be">
 ND: (20) cpu() float32
 [  0.,   1.,   3.,   6.,  10.,  15.,  21.,  28.,  36.,  45.,  55.,  66.,  78.,  91., 105., 120., 136., 153., 171., 190.]
 ND: (5, 4) cpu() float32
@@ -670,8 +646,8 @@ ND: (5, 4) cpu() float32
 </div>
 
 
-<div id="outline-container-orgeb3c968" class="outline-3">
-<h3 id="orgeb3c968"><span class="section-number-3">1.9</span> Dot Products</h3>
+<div id="outline-container-orgd8cec9a" class="outline-3">
+<h3 id="orgd8cec9a"><span class="section-number-3">1.9</span> Dot Products</h3>
 <div class="outline-text-3" id="text-1-9">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones ndm <span style="color: #909183;">[</span>4<span style="color: #909183;">]</span> <span style="color: #110099;">:float32</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -691,8 +667,8 @@ ND: () cpu() float32
 </div>
 
 
-<div id="outline-container-orgf3fe439" class="outline-3">
-<h3 id="orgf3fe439"><span class="section-number-3">1.10</span> Matrix-Vector Products</h3>
+<div id="outline-container-org27b1896" class="outline-3">
+<h3 id="org27b1896"><span class="section-number-3">1.10</span> Matrix-Vector Products</h3>
 <div class="outline-text-3" id="text-1-10">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-shape A<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -708,8 +684,8 @@ ND: () cpu() float32
 </div>
 </div>
 
-<div id="outline-container-orgec03d25" class="outline-3">
-<h3 id="orgec03d25"><span class="section-number-3">1.11</span> Matrix-Matrix Multiplication</h3>
+<div id="outline-container-org0b5d5ab" class="outline-3">
+<h3 id="org0b5d5ab"><span class="section-number-3">1.11</span> Matrix-Matrix Multiplication</h3>
 <div class="outline-text-3" id="text-1-11">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">B</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones ndm <span style="color: #909183;">[</span>4 9<span style="color: #909183;">]</span> <span style="color: #110099;">:float32</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -730,13 +706,13 @@ ND: (5, 9) cpu() float32
 </div>
 
 
-<div id="outline-container-org2ecf28e" class="outline-3">
-<h3 id="org2ecf28e"><span class="section-number-3">1.12</span> Norms</h3>
+<div id="outline-container-org5c9a191" class="outline-3">
+<h3 id="org5c9a191"><span class="section-number-3">1.12</span> Norms</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 09:03</p>
+<p class="date">Created: 2021-04-11 Sun 13:36</p>
 </div>
 </body>
 </html>

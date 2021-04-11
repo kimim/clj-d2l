@@ -6,7 +6,7 @@
 <!-- 2021-04-11 Sun 13:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My Sitemap</title>
+<title>Notation</title>
 <meta name="generator" content="Org mode" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
@@ -214,6 +214,28 @@
     /*]]>*///-->
 // @license-end
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="org-div-home-and-up">
@@ -221,33 +243,131 @@
  |
  <a accesskey="H" href="index.html"> HOME </a>
 </div><div id="content">
-<h1 class="title">My Sitemap</h1>
-<ul class="org-ul">
-<li><a href="2.1-data-manipulation.html">2.1-data-manipulation</a></li>
-<li><a href="2.2-data-preprocess.html">2.2-data-preprocess</a></li>
-<li><a href="2.3-linear-algebra.html">2.3-linear-algebra</a></li>
-<li><a href="2.4-calculus.html">2.4-calculus</a></li>
-<li><a href="2.5-automatic-differentiation.html">2.5-automatic-differentiation</a></li>
-<li><a href="2.6-probability.html">2.6-probability</a></li>
-<li><a href="2.7-dataset.html">2.7-dataset</a></li>
-<li><a href="3.1-linear-regression.html">3.1-linear-regression</a></li>
-<li><a href="3.2-linear-reg-impl-from-scrach.html">3.2-linear-reg-impl-from-scrach</a></li>
-<li><a href="3.3-concise-impl-of-linear-reg.html">3.3-concise-impl-of-linear-reg</a></li>
-<li><a href="3.5-the-image-classification-dataset.html">3.5-the-image-classification-dataset</a></li>
-<li><a href="3.6-implementation-of-softmax-regression-from-scratch.html">3.6-implementation-of-softmax-regression-from-scratch</a></li>
-<li><a href="3.7-concise-impl-of-softmax-regression.html">3.7-concise-impl-of-softmax-regression</a></li>
-<li><a href="4.1-multilayer-perceptrons.html">4.1-multilayer-perceptrons</a></li>
-<li><a href="4.2-impl-multilayer-perceptron-from-scratch.html">4.2-impl-multilayer-perceptron-from-scratch</a></li>
-<li><a href="4.3-concise-impl-multilayer-perceptron.html">4.3-concise-impl-multilayer-perceptron</a></li>
-<li><a href="4.4-underfitting-overfitting.html">4.4-underfitting-overfitting</a></li>
-<li><a href="4.5-weight-decay.html">4.5-weight-decay</a></li>
-<li><a href="4.6-dropout.html">4.6-dropout</a></li>
-<li><a href="4.8-numerical-stability.html">4.8-numerical-stability</a></li>
-<li><a href="theindex.html">Index</a></li>
-<li><a href="index.html">Index</a></li>
-<li><a href="installation.html">Installation</a></li>
-<li><a href="notation.html">Notation</a></li>
+<h1 class="title">Notation</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9b9ba85">1. Numbers</a></li>
+<li><a href="#org7240538">2. Set Theory</a></li>
+<li><a href="#org0d6900d">3. Functions and Operators</a></li>
+<li><a href="#org270b7e2">4. Calculus</a></li>
+<li><a href="#orgf85f513">5. Probability and Information Theory</a></li>
+<li><a href="#org43bec34">6. Complexity</a></li>
 </ul>
+</div>
+</div>
+<p>
+The notation used throughout this book is summarized below.
+</p>
+
+<div id="outline-container-org9b9ba85" class="outline-2">
+<h2 id="org9b9ba85"><span class="section-number-2">1</span> Numbers</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>\(x\): A scalar</li>
+<li>\(\mathbf{x}\): A vector</li>
+<li>\(\mathbf{X}\): A matrix</li>
+<li>\(\mathsf{X}\): A tensor</li>
+<li>\(\mathbf{I}\): An identity matrix</li>
+<li>\(x_i\), \([\mathbf{x}]_i\): The \(i^\mathrm{th}\) element of vector
+\(\mathbf{x}\)</li>
+<li>\(x_{ij}\), \([\mathbf{X}]_{ij}\): The element of matrix \(\mathbf{X}\)
+at row \(i\) and column \(j\)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7240538" class="outline-2">
+<h2 id="org7240538"><span class="section-number-2">2</span> Set Theory</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>\(\mathcal{X}\): A set</li>
+<li>\(\mathbb{Z}\): The set of integers</li>
+<li>\(\mathbb{R}\): The set of real numbers</li>
+<li>\(\mathbb{R}^n\): The set of $n$-dimensional vectors of real numbers</li>
+<li>\(\mathbb{R}^{a\times b}\): The set of matrices of real numbers with
+\(a\) rows and \(b\) columns</li>
+<li>\(\mathcal{A}\cup\mathcal{B}\): Union of sets \(\mathcal{A}\) and
+\(\mathcal{B}\)</li>
+<li>\(\mathcal{A}\cap\mathcal{B}\): Intersection of sets \(\mathcal{A}\)
+and \(\mathcal{B}\)</li>
+<li>\(\mathcal{A}\setminus\mathcal{B}\): Subtraction of set
+\(\mathcal{B}\) from set \(\mathcal{A}\)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org0d6900d" class="outline-2">
+<h2 id="org0d6900d"><span class="section-number-2">3</span> Functions and Operators</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>\(f(\cdot)\): A function</li>
+<li>\(\log(\cdot)\): The natural logarithm</li>
+<li>\(\exp(\cdot)\): The exponential function</li>
+<li>\(\mathbf{1}_\mathcal{X}\): The indicator function</li>
+<li>\(\mathbf{(\cdot)}^\top\): Transpose of a vector or a matrix</li>
+<li>\(\mathbf{X}^{-1}\): Inverse of matrix \(\mathbf{X}\)</li>
+<li>\(\odot\): Hadamard (elementwise) product</li>
+<li>\([\cdot, \cdot]\): Concatenation</li>
+<li>\(\lvert \mathcal{X} \rvert\): Cardinality of set \(\mathcal{X}\)</li>
+<li>\(\|\cdot\|_p\): \(\ell_p\) norm</li>
+<li>\(\|\cdot\|\): \(\ell_2\) norm</li>
+<li>\(\langle \mathbf{x}, \mathbf{y} \rangle\): Dot product of vectors
+\(\mathbf{x}\) and \(\mathbf{y}\)</li>
+<li>\(\sum\): Series addition</li>
+<li>\(\prod\): Series multiplication</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org270b7e2" class="outline-2">
+<h2 id="org270b7e2"><span class="section-number-2">4</span> Calculus</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>\(\frac{dy}{dx}\): Derivative of \(y\) with respect to \(x\)</li>
+<li>\(\frac{\partial y}{\partial x}\): Partial derivative of \(y\) with
+respect to \(x\)</li>
+<li>\(\nabla_{\mathbf{x}} y\): Gradient of \(y\) with respect to
+\(\mathbf{x}\)</li>
+<li>\(\int_a^b f(x) \;dx\): Definite integral of \(f\) from \(a\) to \(b\)
+with respect to \(x\)</li>
+<li>\(\int f(x) \;dx\): Indefinite integral of \(f\) with respect to \(x\)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf85f513" class="outline-2">
+<h2 id="orgf85f513"><span class="section-number-2">5</span> Probability and Information Theory</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>\(P(\cdot)\): Probability distribution</li>
+<li>\(z \sim P\): Random variable \(z\) has probability distribution \(P\)</li>
+<li>\(P(X \mid Y)\): Conditional probability of \(X \mid Y\)</li>
+<li>\(p(x)\): Probability density function</li>
+<li>\({E}_{x} [f(x)]\): Expectation of \(f\) with respect to \(x\)</li>
+<li>\(X \perp Y\): Random variables \(X\) and \(Y\) are independent</li>
+<li>\(X \perp Y \mid Z\): Random variables \(X\) and \(Y\) are conditionally
+independent given random variable \(Z\)</li>
+<li>\(\mathrm{Var}(X)\): Variance of random variable \(X\)</li>
+<li>\(\sigma_X\): Standard deviation of random variable \(X\)</li>
+<li>\(\mathrm{Cov}(X, Y)\): Covariance of random variables \(X\) and \(Y\)</li>
+<li>\(\rho(X, Y)\): Correlation of random variables \(X\) and \(Y\)</li>
+<li>\(H(X)\): Entropy of random variable \(X\)</li>
+<li>\(D_{\mathrm{KL}}(P\|Q)\): KL-divergence of distributions \(P\) and
+\(Q\)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org43bec34" class="outline-2">
+<h2 id="org43bec34"><span class="section-number-2">6</span> Complexity</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>\(\mathcal{O}\): Big O notation</li>
+</ul>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Created: 2021-04-11 Sun 13:51</p>

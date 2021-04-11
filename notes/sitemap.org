@@ -23,3 +23,4 @@
 - [[file:theindex.org][Index]]
 - [[file:index.org][Index]]
 - [[file:installation.org][Installation]]
+- [[file:notation.org][Notation]]
