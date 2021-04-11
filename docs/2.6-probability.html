@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 13:36 -->
+<!-- 2021-04-11 Sun 15:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -251,7 +251,7 @@
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">fair-probs</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>repeat 6 <span style="color: #709870;">(</span>/ 1.0 6<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">fair-probs</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">repeat</span> 6 <span style="color: #709870;">(</span>/ 1.0 6<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-multinomial ndm 1 fair-probs<span style="color: #707183;">)</span>
 </pre>
 </div>
@@ -290,19 +290,19 @@ ND: (6) cpu() float32
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">cum-counts</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/cumsum counts 0<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">estimates</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>// cum-counts <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum cum-counts 1 <span style="color: #110099;">true</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span>range 0 500<span style="color: #909183;">)</span>
-      dies <span style="color: #909183;">(</span>range 0 6<span style="color: #909183;">)</span>
-      ys <span style="color: #909183;">(</span>mapv #<span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/transpose estimates<span style="color: #6276ba;">)</span> <span style="color: #000000;">%</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span> dies<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 0 500<span style="color: #909183;">)</span>
+      dies <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 0 6<span style="color: #909183;">)</span>
+      ys <span style="color: #909183;">(</span>mapv #<span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/transpose estimates<span style="color: #6276ba;">)</span> <span style="color: #000000;">%</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span> dies<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines
    <span style="color: #2A00FF;">"figure/probability_dies.svg"</span>
-   <span style="color: #909183;">(</span>conj <span style="color: #709870;">(</span>mapv #<span style="color: #907373;">(</span>str <span style="color: #2A00FF;">"P(die="</span> <span style="color: #000000;">%</span><span style="color: #907373;">)</span> dies<span style="color: #709870;">)</span> <span style="color: #2A00FF;">"0.167"</span><span style="color: #909183;">)</span>
+   <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">conj</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">mapv</span> #<span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> <span style="color: #2A00FF;">"P(die="</span> <span style="color: #000000;">%</span><span style="color: #907373;">)</span> dies<span style="color: #709870;">)</span> <span style="color: #2A00FF;">"0.167"</span><span style="color: #909183;">)</span>
    x
-   <span style="color: #909183;">(</span>conj ys <span style="color: #709870;">(</span>repeat 500 0.167<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+   <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">conj</span> ys <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">repeat</span> 500 0.167<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 
-<div id="org14ba572" class="figure">
+<div id="org248147b" class="figure">
 <p><object type="image/svg+xml" data="./figure/probability_dies.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -312,7 +312,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 13:36</p>
+<p class="date">Created: 2021-04-11 Sun 15:23</p>
 </div>
 </body>
 </html>

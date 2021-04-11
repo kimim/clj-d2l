@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 13:51 -->
+<!-- 2021-04-11 Sun 15:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -266,13 +266,13 @@
     <span style="color: #909183;">[</span>X <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ y noise<span style="color: #709870;">)</span><span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">true-w</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>float-array <span style="color: #709870;">[</span>2 -3.4<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">true-w</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">float-array</span> <span style="color: #709870;">[</span>2 -3.4<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">true-b</span> 4.2<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">dp</span> <span style="color: #7388d6;">(</span>synthetic-data ndm true-w true-b 1000<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">features</span> <span style="color: #7388d6;">(</span>get dp 0<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">labels</span> <span style="color: #7388d6;">(</span>get dp 1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"features(0): "</span><span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get features <span style="color: #709870;">[</span>0<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"labels(0): "</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element labels <span style="color: #909183;">[</span>0<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">features</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> dp 0<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">labels</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> dp 1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"features(0): "</span><span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> features <span style="color: #709870;">[</span>0<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"labels(0): "</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element labels <span style="color: #909183;">[</span>0<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -288,7 +288,7 @@ Now we can show the data with plotly:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get features <span style="color: #2A00FF;">":, 1"</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> features <span style="color: #2A00FF;">":, 1"</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
       y <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec labels<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/plot-scatter
    <span style="color: #2A00FF;">"../figure/synthetic_data.svg"</span>
@@ -299,7 +299,7 @@ Now we can show the data with plotly:
 </div>
 
 
-<div id="orga3898c2" class="figure">
+<div id="org2dd3c26" class="figure">
 <p><object type="image/svg+xml" data="../figure/synthetic_data.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -327,14 +327,14 @@ Sorry, your browser does not support SVG.</object>
             <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
       y <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #709870;">)</span>
             <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span>println <span style="color: #909183;">(</span>str X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>println <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/dot X true-w<span style="color: #907373;">)</span> true-b<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>println <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/dot X true-w<span style="color: #907373;">)</span> true-b<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
   <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="orgdc71ce3">
+<pre class="example" id="orgbfe2f88">
 ND: (10, 2) cpu() float32
 [[ 0.2727,  0.0463],
  [ 0.8032,  1.3645],
@@ -360,8 +360,8 @@ ND: (10, 2) cpu() float32
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">w</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm 0 0.01 <span style="color: #909183;">[</span>2 1<span style="color: #909183;">]</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">DataType</span>/FLOAT32 <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">device</span>/<span style="color: #7F0055; font-weight: bold;">default-device</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">b</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">[</span>1<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec w<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec b<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec w<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec b<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -420,9 +420,9 @@ stochastic gradient descent (SGD):
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">lr</span> 0.03<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">epochs</span> 3<span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #7388d6;">(</span>map #<span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient <span style="color: #000000;">%</span><span style="color: #909183;">)</span> <span style="color: #909183;">[</span>w b<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient <span style="color: #000000;">%</span><span style="color: #909183;">)</span> <span style="color: #909183;">[</span>w b<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #7388d6;">[</span>epoch <span style="color: #909183;">(</span>range epochs<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #7388d6;">[</span>epoch <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> epochs<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>batch <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/iter-seq <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data dataset ndm<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #709870;">[</span>X <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #6276ba;">)</span>
                 <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
@@ -434,7 +434,7 @@ stochastic gradient descent (SGD):
       <span style="color: #709870;">(</span>sgd <span style="color: #907373;">[</span>w b<span style="color: #907373;">]</span> lr batch-size<span style="color: #709870;">)</span>
       <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>train-loss <span style="color: #709870;">(</span>squared-loss <span style="color: #907373;">(</span>linreg features w b<span style="color: #907373;">)</span> labels<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
-    <span style="color: #909183;">(</span>println <span style="color: #2A00FF;">"epoch"</span> <span style="color: #709870;">(</span>inc epoch<span style="color: #709870;">)</span> <span style="color: #2A00FF;">", loss "</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #907373;">(</span>.mean train-loss<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"epoch"</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">inc</span> epoch<span style="color: #709870;">)</span> <span style="color: #2A00FF;">", loss "</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #907373;">(</span>.mean train-loss<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -446,11 +446,11 @@ epoch 3 , loss  4.955114E-5
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec w<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec true-w<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec w<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec true-w<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">w-error</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/- true-w <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/reshape w <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-shape true-w<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"Error in estimating w:"</span> <span style="color: #7388d6;">(</span>vec w-error<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"Error in estimating w:"</span> <span style="color: #7388d6;">(</span>- true-b <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element b<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Error in estimating w:"</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">vec</span> w-error<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Error in estimating w:"</span> <span style="color: #7388d6;">(</span>- true-b <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element b<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -465,7 +465,7 @@ Error in estimating w: 6.200790405275214E-4
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 13:51</p>
+<p class="date">Created: 2021-04-11 Sun 15:23</p>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 13:51 -->
+<!-- 2021-04-11 Sun 15:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -321,17 +321,17 @@ ND: (2, 8) cpu() float32
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">train</span> <span style="color: #7388d6;">[</span>ndm net train-ds test-ds nepochs loss-fn updater-fn<span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>results <span style="color: #709870;">(</span>atom <span style="color: #907373;">{</span><span style="color: #110099;">:epoch</span> <span style="color: #6276ba;">[]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>results <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #907373;">{</span><span style="color: #110099;">:epoch</span> <span style="color: #6276ba;">[]</span>
                        <span style="color: #110099;">:train-loss</span> <span style="color: #6276ba;">[]</span>
                        <span style="color: #110099;">:train-accuracy</span> <span style="color: #6276ba;">[]</span>
                        <span style="color: #110099;">:test-loss</span> <span style="color: #6276ba;">[]</span>
                        <span style="color: #110099;">:test-accuracy</span> <span style="color: #6276ba;">[]</span><span style="color: #907373;">}</span><span style="color: #709870;">)</span>
-        acc <span style="color: #709870;">(</span>atom <span style="color: #907373;">{</span><span style="color: #110099;">:size</span> 0
+        acc <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #907373;">{</span><span style="color: #110099;">:size</span> 0
                    <span style="color: #110099;">:loss</span> 0
                    <span style="color: #110099;">:accuracy</span> 0<span style="color: #907373;">}</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
-    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #709870;">[</span>i <span style="color: #907373;">(</span>range <span style="color: #6276ba;">(</span>inc nepochs<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">]</span>
-      <span style="color: #709870;">(</span>print <span style="color: #2A00FF;">"epoch "</span> i <span style="color: #2A00FF;">", training..."</span><span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span>swap! results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:epoch</span> i<span style="color: #907373;">]</span> i<span style="color: #709870;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #709870;">[</span>i <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">inc</span> nepochs<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">]</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">print</span> <span style="color: #2A00FF;">"epoch "</span> i <span style="color: #2A00FF;">", training..."</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:epoch</span> i<span style="color: #907373;">]</span> i<span style="color: #709870;">)</span>
       <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #907373;">[</span>batch <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/iter-seq <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data train-ds ndm<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
         <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #6276ba;">[</span>X <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> batch <span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #858580;">)</span>
               y <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> batch <span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #858580;">)</span><span style="color: #6276ba;">]</span>
@@ -340,28 +340,28 @@ ND: (2, 8) cpu() float32
                   l <span style="color: #887070;">(</span>loss-fn y-hat y<span style="color: #887070;">)</span>
                   a <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/accuracy y-hat y<span style="color: #887070;">)</span><span style="color: #80a880;">]</span>
               <span style="color: #80a880;">(</span>.backward gc l<span style="color: #80a880;">)</span>
-              <span style="color: #80a880;">(</span>swap! acc update <span style="color: #110099;">:size</span> + <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size y<span style="color: #887070;">)</span><span style="color: #80a880;">)</span>
-              <span style="color: #80a880;">(</span>swap! acc update <span style="color: #110099;">:loss</span> + <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #707183;">)</span><span style="color: #887070;">)</span><span style="color: #80a880;">)</span>
-              <span style="color: #80a880;">(</span>swap! acc update <span style="color: #110099;">:accuracy</span> +  a<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+              <span style="color: #80a880;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> acc update <span style="color: #110099;">:size</span> + <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size y<span style="color: #887070;">)</span><span style="color: #80a880;">)</span>
+              <span style="color: #80a880;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> acc update <span style="color: #110099;">:loss</span> + <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #707183;">)</span><span style="color: #887070;">)</span><span style="color: #80a880;">)</span>
+              <span style="color: #80a880;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> acc update <span style="color: #110099;">:accuracy</span> +  a<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
         <span style="color: #907373;">(</span>updater-fn<span style="color: #907373;">)</span>
         <span style="color: #907373;">(</span>.close batch<span style="color: #907373;">)</span><span style="color: #709870;">)</span>
 
-      <span style="color: #709870;">(</span>swap! results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:train-loss</span> i<span style="color: #907373;">]</span> <span style="color: #907373;">(</span>/ <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:loss</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:size</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span>swap! results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:train-accuracy</span> i<span style="color: #907373;">]</span> <span style="color: #907373;">(</span>/ <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:accuracy</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:size</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span>reset! acc <span style="color: #907373;">{</span><span style="color: #110099;">:size</span> 0 <span style="color: #110099;">:loss</span> 0 <span style="color: #110099;">:accuracy</span> 0<span style="color: #907373;">}</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:train-loss</span> i<span style="color: #907373;">]</span> <span style="color: #907373;">(</span>/ <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:loss</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:size</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:train-accuracy</span> i<span style="color: #907373;">]</span> <span style="color: #907373;">(</span>/ <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:accuracy</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:size</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">reset!</span> acc <span style="color: #907373;">{</span><span style="color: #110099;">:size</span> 0 <span style="color: #110099;">:loss</span> 0 <span style="color: #110099;">:accuracy</span> 0<span style="color: #907373;">}</span><span style="color: #709870;">)</span>
 
-      <span style="color: #709870;">(</span>println <span style="color: #2A00FF;">"validating..."</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"validating..."</span><span style="color: #709870;">)</span>
       <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #907373;">[</span>batch <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/iter-seq <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data test-ds ndm<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
         <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #6276ba;">[</span>X <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> batch <span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #858580;">)</span>
               y <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> batch <span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head<span style="color: #858580;">)</span><span style="color: #6276ba;">]</span>
           <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #858580;">[</span>y-hat <span style="color: #80a880;">(</span>net X <span style="color: #110099;">false</span><span style="color: #80a880;">)</span>
                 l <span style="color: #80a880;">(</span>loss-fn y-hat y<span style="color: #80a880;">)</span>
                 a <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/accuracy y-hat y<span style="color: #80a880;">)</span><span style="color: #858580;">]</span>
-            <span style="color: #858580;">(</span>swap! acc update <span style="color: #110099;">:size</span> + <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size y<span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-            <span style="color: #858580;">(</span>swap! acc update <span style="color: #110099;">:loss</span> + <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #887070;">)</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-            <span style="color: #858580;">(</span>swap! acc update <span style="color: #110099;">:accuracy</span> +  a<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span>swap! results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:test-loss</span> i<span style="color: #907373;">]</span> <span style="color: #907373;">(</span>/ <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:loss</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:size</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span>swap! results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:test-accuracy</span> i<span style="color: #907373;">]</span> <span style="color: #907373;">(</span>/ <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:accuracy</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:size</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+            <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> acc update <span style="color: #110099;">:size</span> + <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size y<span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
+            <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> acc update <span style="color: #110099;">:loss</span> + <span style="color: #80a880;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element <span style="color: #887070;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #887070;">)</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
+            <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> acc update <span style="color: #110099;">:accuracy</span> +  a<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:test-loss</span> i<span style="color: #907373;">]</span> <span style="color: #907373;">(</span>/ <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:loss</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:size</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> results assoc-in <span style="color: #907373;">[</span><span style="color: #110099;">:test-accuracy</span> i<span style="color: #907373;">]</span> <span style="color: #907373;">(</span>/ <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:accuracy</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>@acc <span style="color: #110099;">:size</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
     @results<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
@@ -375,7 +375,7 @@ ND: (2, 8) cpu() float32
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">softmax-cross-entropy</span> <span style="color: #7388d6;">[</span>y-hat y<span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span>softmax y-hat<span style="color: #909183;">)</span>
-      <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get <span style="color: #2A00FF;">":, {}"</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-type y <span style="color: #110099;">:int32</span> <span style="color: #110099;">false</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+      <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> <span style="color: #2A00FF;">":, {}"</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-type y <span style="color: #110099;">:int32</span> <span style="color: #110099;">false</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
       <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/log<span style="color: #909183;">)</span>
       <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/-<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
@@ -435,7 +435,7 @@ ND: (2, 8) cpu() float32
 </pre>
 </div>
 
-<pre class="example" id="org99ae948">
+<pre class="example" id="orgc847dac">
 epoch  0 , training...validating...
 epoch  1 , training...validating...
 epoch  2 , training...validating...
@@ -450,7 +450,7 @@ epoch  10 , training...validating...
 </pre>
 
 
-<div id="org29e5527" class="figure">
+<div id="org8101970" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_11.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -468,7 +468,7 @@ epoch  1 , training...validating...
 
 
 
-<div id="org58711b4" class="figure">
+<div id="org1a57fa1" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_12.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -480,7 +480,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="org4643f47" class="figure">
+<div id="org0f83e9e" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_13.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -492,7 +492,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="orgf2c6ab2" class="figure">
+<div id="org27081c9" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_14.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -504,7 +504,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="org165dae1" class="figure">
+<div id="org8c48fce" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_21.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -516,7 +516,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="org41948b2" class="figure">
+<div id="org8d915a6" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_22.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -528,7 +528,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="org5e73b54" class="figure">
+<div id="org2775292" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_23.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -540,7 +540,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 
-<div id="orgd5a2e15" class="figure">
+<div id="org06ef2a7" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_24.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -574,10 +574,10 @@ Sorry, your browser does not support SVG.</object>
       <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #907373;">[</span>metrics <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-metrics trainer<span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
         <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines output
                         <span style="color: #6276ba;">[</span><span style="color: #2A00FF;">"train loss"</span> <span style="color: #2A00FF;">"validate loss"</span> <span style="color: #2A00FF;">"train accuracy"</span><span style="color: #6276ba;">]</span>
-                        <span style="color: #6276ba;">(</span>range nepochs<span style="color: #6276ba;">)</span>
-                        <span style="color: #6276ba;">[</span><span style="color: #858580;">(</span>map <span style="color: #110099;">:value</span> <span style="color: #80a880;">(</span>metrics <span style="color: #2A00FF;">"train_epoch_SoftmaxCrossEntropyLoss"</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-                         <span style="color: #858580;">(</span>map <span style="color: #110099;">:value</span> <span style="color: #80a880;">(</span>metrics <span style="color: #2A00FF;">"validate_epoch_SoftmaxCrossEntropyLoss"</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
-                         <span style="color: #858580;">(</span>map <span style="color: #110099;">:value</span> <span style="color: #80a880;">(</span>metrics <span style="color: #2A00FF;">"validate_epoch_Accuracy"</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+                        <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> nepochs<span style="color: #6276ba;">)</span>
+                        <span style="color: #6276ba;">[</span><span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #110099;">:value</span> <span style="color: #80a880;">(</span>metrics <span style="color: #2A00FF;">"train_epoch_SoftmaxCrossEntropyLoss"</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
+                         <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #110099;">:value</span> <span style="color: #80a880;">(</span>metrics <span style="color: #2A00FF;">"validate_epoch_SoftmaxCrossEntropyLoss"</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span>
+                         <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #110099;">:value</span> <span style="color: #80a880;">(</span>metrics <span style="color: #2A00FF;">"validate_epoch_Accuracy"</span><span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -586,7 +586,7 @@ Sorry, your browser does not support SVG.</object>
 </pre>
 </div>
 
-<pre class="example" id="orgb9d9ad2">
+<pre class="example" id="orgaf3c1d9">
 Training:    100% |████████████████████████████████████████| Accuracy: 0.55, SoftmaxCrossEntropyLoss: 1.17
 
 Validating:  100% |████████████████████████████████████████|
@@ -667,7 +667,7 @@ Validating:  100% |████████████████████�
 </pre>
 
 
-<div id="org142156d" class="figure">
+<div id="org6157bd1" class="figure">
 <p><object type="image/svg+xml" data="./figure/dropout_41.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -676,7 +676,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 13:51</p>
+<p class="date">Created: 2021-04-11 Sun 15:23</p>
 </div>
 </body>
 </html>

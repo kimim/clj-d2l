@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 13:51 -->
+<!-- 2021-04-11 Sun 15:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -290,7 +290,7 @@
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">W2</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal manager 0 0.01 <span style="color: #909183;">[</span>nhiddens noutputs<span style="color: #909183;">]</span> <span style="color: #110099;">:float32</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">default-device</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">b2</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros manager <span style="color: #909183;">[</span>noutputs<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">params</span> <span style="color: #7388d6;">[</span>W1 b1 W2 b2<span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #7388d6;">(</span>map <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient params<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/attach-gradient params<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
@@ -339,14 +339,14 @@
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">nepochs</span> 10<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">lr</span> 0.5<span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">epoch-loss</span> <span style="color: #7388d6;">(</span>atom 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">accuracy-val</span> <span style="color: #7388d6;">(</span>atom 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-loss</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-accuracy</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">test-accuracy</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">epoch-loss</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">accuracy-val</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-loss</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-accuracy</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">test-accuracy</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #7388d6;">[</span>epoch <span style="color: #909183;">(</span>range 1 <span style="color: #709870;">(</span>+ nepochs 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span>print <span style="color: #2A00FF;">"Running epoch "</span> epoch <span style="color: #2A00FF;">"......"</span><span style="color: #7388d6;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #7388d6;">[</span>epoch <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 1 <span style="color: #709870;">(</span>+ nepochs 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">print</span> <span style="color: #2A00FF;">"Running epoch "</span> epoch <span style="color: #2A00FF;">"......"</span><span style="color: #7388d6;">)</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>batch <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data-iterator mnist-train manager<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #709870;">[</span>X <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
           y <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">]</span>
@@ -354,25 +354,25 @@
                   yhat <span style="color: #6276ba;">(</span>net X<span style="color: #6276ba;">)</span>
                   lossvalue <span style="color: #6276ba;">(</span>.evaluate loss <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ndlist <span style="color: #80a880;">[</span>y<span style="color: #80a880;">]</span><span style="color: #858580;">)</span> <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ndlist <span style="color: #80a880;">[</span>yhat<span style="color: #80a880;">]</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
                   l <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* lossvalue batch-size<span style="color: #6276ba;">)</span><span style="color: #907373;">]</span>
-        <span style="color: #907373;">(</span>swap! epoch-loss + <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element<span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
-        <span style="color: #907373;">(</span>swap! accuracy-val + <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/accuracy yhat y<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> epoch-loss + <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element<span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum l<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+        <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> accuracy-val + <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/accuracy yhat y<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
         <span style="color: #907373;">(</span>.backward gc l<span style="color: #907373;">)</span><span style="color: #709870;">)</span>
       <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/close-batch batch<span style="color: #709870;">)</span>
       <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/sgd params lr batch-size<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>swap! train-loss conj <span style="color: #909183;">(</span>/ @epoch-loss <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>swap! train-accuracy conj <span style="color: #909183;">(</span>/ @accuracy-val <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> train-loss conj <span style="color: #909183;">(</span>/ @epoch-loss <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> train-accuracy conj <span style="color: #909183;">(</span>/ @accuracy-val <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-train<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
 
-  <span style="color: #7388d6;">(</span>reset! epoch-loss 0.<span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>reset! accuracy-val 0.<span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">reset!</span> epoch-loss 0.<span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">reset!</span> accuracy-val 0.<span style="color: #7388d6;">)</span>
 
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>batch <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-data-iterator mnist-test manager<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #709870;">[</span>X <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-data batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
           y <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/head <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/get-batch-labels batch<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
           yhat <span style="color: #907373;">(</span>net X<span style="color: #907373;">)</span><span style="color: #709870;">]</span>
-      <span style="color: #709870;">(</span>swap! accuracy-val + <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/accuracy yhat y<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>swap! test-accuracy conj <span style="color: #909183;">(</span>/ @accuracy-val <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-test<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>reset! accuracy-val 0.<span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>println <span style="color: #2A00FF;">"Finished epoch "</span> epoch<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> accuracy-val + <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/accuracy yhat y<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> test-accuracy conj <span style="color: #909183;">(</span>/ @accuracy-val <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/size mnist-test<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">reset!</span> accuracy-val 0.<span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Finished epoch "</span> epoch<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -391,7 +391,7 @@ Running epoch  10 ......Finished epoch  10
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span>range 1 <span style="color: #709870;">(</span>+ nepochs 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 1 <span style="color: #709870;">(</span>+ nepochs 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/xy-chart
        <span style="color: #709870;">{</span><span style="color: #2A00FF;">"test acc"</span>
         <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
@@ -405,12 +405,12 @@ Running epoch  10 ......Finished epoch  10
         <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
          <span style="color: #110099;">:y</span> @train-loss
          <span style="color: #110099;">:style</span> <span style="color: #6276ba;">{</span><span style="color: #110099;">:marker-type</span> <span style="color: #110099;">:none</span><span style="color: #6276ba;">}</span><span style="color: #907373;">}</span><span style="color: #709870;">}</span><span style="color: #909183;">)</span>
-      <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/spit <span style="color: #2A00FF;">"figure/mlp-scratch.svg"</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+      <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/<span style="color: #7F0055; font-weight: bold;">spit</span> <span style="color: #2A00FF;">"figure/mlp-scratch.svg"</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 
-<div id="orgc12ea7d" class="figure">
+<div id="org7360608" class="figure">
 <p><object type="image/svg+xml" data="./figure/mlp-scratch.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -420,7 +420,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 13:51</p>
+<p class="date">Created: 2021-04-11 Sun 15:23</p>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 13:36 -->
+<!-- 2021-04-11 Sun 15:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -255,9 +255,9 @@
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">numerical-lim</span> <span style="color: #7388d6;">[</span>f x h<span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span>/ <span style="color: #909183;">(</span>- <span style="color: #709870;">(</span>f <span style="color: #907373;">(</span>+ x h<span style="color: #907373;">)</span><span style="color: #709870;">)</span> <span style="color: #709870;">(</span>f x<span style="color: #709870;">)</span><span style="color: #909183;">)</span> h<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;&gt;</span> <span style="color: #7388d6;">(</span>map #<span style="color: #909183;">(</span>/ 0.1 <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">Math</span>/pow 10 <span style="color: #000000;">%</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span> <span style="color: #909183;">(</span>range 5<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-     <span style="color: #7388d6;">(</span>map <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">fn</span> <span style="color: #709870;">[</span>h<span style="color: #709870;">]</span> <span style="color: #709870;">[</span>h <span style="color: #907373;">(</span>numerical-lim f 1 h<span style="color: #907373;">)</span><span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-     <span style="color: #7388d6;">(</span>map #<span style="color: #909183;">(</span>println <span style="color: #2A00FF;">"h = "</span> <span style="color: #709870;">(</span><span style="color: #000000;">%</span> 0<span style="color: #709870;">)</span> <span style="color: #2A00FF;">", numerical limit = "</span> <span style="color: #709870;">(</span><span style="color: #000000;">%</span> 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;&gt;</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #909183;">(</span>/ 0.1 <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">Math</span>/pow 10 <span style="color: #000000;">%</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span> <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 5<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+     <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">fn</span> <span style="color: #709870;">[</span>h<span style="color: #709870;">]</span> <span style="color: #709870;">[</span>h <span style="color: #907373;">(</span>numerical-lim f 1 h<span style="color: #907373;">)</span><span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+     <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"h = "</span> <span style="color: #709870;">(</span><span style="color: #000000;">%</span> 0<span style="color: #709870;">)</span> <span style="color: #2A00FF;">", numerical limit = "</span> <span style="color: #709870;">(</span><span style="color: #000000;">%</span> 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -272,9 +272,9 @@ h =  1.0E-5 , numerical limit =  2.0000300000155846
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span>range 0 3 0.1<span style="color: #909183;">)</span>
-      y1 <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;&gt;</span> x <span style="color: #709870;">(</span>map f<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
-      y2 <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;&gt;</span> x <span style="color: #709870;">(</span>map #<span style="color: #907373;">(</span>- <span style="color: #6276ba;">(</span>* 2 <span style="color: #000000;">%</span><span style="color: #6276ba;">)</span> 3<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 0 3 0.1<span style="color: #909183;">)</span>
+      y1 <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;&gt;</span> x <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> f<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+      y2 <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;&gt;</span> x <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #907373;">(</span>- <span style="color: #6276ba;">(</span>* 2 <span style="color: #000000;">%</span><span style="color: #6276ba;">)</span> 3<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/plot-lines
    <span style="color: #2A00FF;">"../figure/tangent_line.svg"</span>
    <span style="color: #909183;">[</span><span style="color: #2A00FF;">"f(x)"</span> <span style="color: #2A00FF;">"tangent line (x=1)"</span><span style="color: #909183;">]</span>
@@ -284,7 +284,7 @@ h =  1.0E-5 , numerical limit =  2.0000300000155846
 </div>
 
 
-<div id="org3a79218" class="figure">
+<div id="orge40d7d7" class="figure">
 <p><object type="image/svg+xml" data="../figure/tangent_line.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -294,7 +294,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 13:36</p>
+<p class="date">Created: 2021-04-11 Sun 15:23</p>
 </div>
 </body>
 </html>

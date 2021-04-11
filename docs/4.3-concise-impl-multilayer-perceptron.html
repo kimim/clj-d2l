@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 13:51 -->
+<!-- 2021-04-11 Sun 15:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -279,11 +279,11 @@
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">nepochs</span> 10<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">lr</span> 0.5<span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">epoch-loss</span> <span style="color: #7388d6;">(</span>atom 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">accuracy-val</span> <span style="color: #7388d6;">(</span>atom 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-loss</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-accuracy</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">test-accuracy</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">epoch-loss</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">accuracy-val</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> 0.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-loss</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">train-accuracy</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">test-accuracy</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #909183;">[]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">mnist-train</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">FashionMnist</span>/builder<span style="color: #909183;">)</span>
                      <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/opt-usage <span style="color: #110099;">:train</span><span style="color: #909183;">)</span>
@@ -297,7 +297,7 @@
                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/build<span style="color: #909183;">)</span>
                     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/prepare<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">evaluator-metrics</span> <span style="color: #7388d6;">(</span>atom <span style="color: #909183;">{}</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">evaluator-metrics</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #909183;">{}</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -313,8 +313,8 @@
                 <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/add-evaluator <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/new-accuracy<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
                 <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/add-training-listeners <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">TrainingListener$Defaults</span>/logging<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">evals</span> <span style="color: #7388d6;">(</span>atom <span style="color: #110099;">nil</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">mets</span> <span style="color: #7388d6;">(</span>atom <span style="color: #110099;">nil</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">evals</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #110099;">nil</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">mets</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">atom</span> <span style="color: #110099;">nil</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>model <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">m</span>/new-instance <span style="color: #2A00FF;">"mlp"</span><span style="color: #709870;">)</span>
@@ -324,21 +324,21 @@
       <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/initialize <span style="color: #709870;">[</span><span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #6276ba;">[</span>1 784<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">]</span><span style="color: #909183;">)</span>
       <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/set-metrics <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/metrics<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
       <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/fit nepochs mnist-train mnist-test<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>reset! evals <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-evaluators trainer<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>reset! mets <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-metrics trainer<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">reset!</span> evals <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-evaluators trainer<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">reset!</span> mets <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-metrics trainer<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>metrics <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-metrics trainer<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #709870;">[</span>evaluator <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-evaluators trainer<span style="color: #907373;">)</span><span style="color: #709870;">]</span>
-      <span style="color: #709870;">(</span>swap! evaluator-metrics
-             assoc <span style="color: #907373;">(</span>str <span style="color: #2A00FF;">"train_epoch_"</span> <span style="color: #6276ba;">(</span>.getName evaluator<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
-             <span style="color: #907373;">(</span>map <span style="color: #110099;">:value</span> <span style="color: #6276ba;">(</span>metrics <span style="color: #858580;">(</span>str <span style="color: #2A00FF;">"train_epoch_"</span> <span style="color: #80a880;">(</span>.getName evaluator<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
-      <span style="color: #709870;">(</span>swap! evaluator-metrics
-             assoc <span style="color: #907373;">(</span>str <span style="color: #2A00FF;">"validate_epoch_"</span> <span style="color: #6276ba;">(</span>.getName evaluator<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
-             <span style="color: #907373;">(</span>map <span style="color: #110099;">:value</span> <span style="color: #6276ba;">(</span>metrics <span style="color: #858580;">(</span>str <span style="color: #2A00FF;">"validate_epoch_"</span> <span style="color: #80a880;">(</span>.getName evaluator<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> evaluator-metrics
+             assoc <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> <span style="color: #2A00FF;">"train_epoch_"</span> <span style="color: #6276ba;">(</span>.getName evaluator<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+             <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #110099;">:value</span> <span style="color: #6276ba;">(</span>metrics <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> <span style="color: #2A00FF;">"train_epoch_"</span> <span style="color: #80a880;">(</span>.getName evaluator<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+      <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">swap!</span> evaluator-metrics
+             assoc <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> <span style="color: #2A00FF;">"validate_epoch_"</span> <span style="color: #6276ba;">(</span>.getName evaluator<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span>
+             <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #110099;">:value</span> <span style="color: #6276ba;">(</span>metrics <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> <span style="color: #2A00FF;">"validate_epoch_"</span> <span style="color: #80a880;">(</span>.getName evaluator<span style="color: #80a880;">)</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span>range 1 <span style="color: #709870;">(</span>+ nepochs 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>x <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> 1 <span style="color: #709870;">(</span>+ nepochs 1<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;</span> <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/xy-chart
        <span style="color: #709870;">{</span><span style="color: #2A00FF;">"test acc"</span>
         <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
@@ -352,12 +352,12 @@
         <span style="color: #907373;">{</span><span style="color: #110099;">:x</span> x
          <span style="color: #110099;">:y</span> <span style="color: #6276ba;">(</span>@evaluator-metrics <span style="color: #2A00FF;">"train_epoch_SoftmaxCrossEntropyLoss"</span><span style="color: #6276ba;">)</span>
          <span style="color: #110099;">:style</span> <span style="color: #6276ba;">{</span><span style="color: #110099;">:marker-type</span> <span style="color: #110099;">:none</span><span style="color: #6276ba;">}</span><span style="color: #907373;">}</span><span style="color: #709870;">}</span><span style="color: #909183;">)</span>
-      <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/spit <span style="color: #2A00FF;">"mlp-concise.svg"</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+      <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">c</span>/<span style="color: #7F0055; font-weight: bold;">spit</span> <span style="color: #2A00FF;">"mlp-concise.svg"</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 
-<div id="orgbb23455" class="figure">
+<div id="org6efee92" class="figure">
 <p><object type="image/svg+xml" data="./figure/mlp-concise.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -367,7 +367,7 @@ Sorry, your browser does not support SVG.</object>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 13:51</p>
+<p class="date">Created: 2021-04-11 Sun 15:23</p>
 </div>
 </body>
 </html>

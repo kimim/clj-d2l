@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 13:36 -->
+<!-- 2021-04-11 Sun 15:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -260,7 +260,7 @@
                <span style="color: #2A00FF;">"NA,NA,140000</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span><span style="color: #909183;">]</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">io</span>/make-parents filename<span style="color: #7388d6;">)</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span>
-   <span style="color: #909183;">(</span>map #<span style="color: #709870;">(</span>spit filename <span style="color: #000000;">%</span> <span style="color: #110099;">:append</span> <span style="color: #110099;">true</span><span style="color: #709870;">)</span> records<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+   <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">spit</span> filename <span style="color: #000000;">%</span> <span style="color: #110099;">:append</span> <span style="color: #110099;">true</span><span style="color: #709870;">)</span> records<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">data</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/dataset <span style="color: #2A00FF;">"data/house_tiny.csv"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
@@ -288,8 +288,8 @@ data/house_tiny.csv [4 3]:
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">dataset</span>
  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/replace-missing data <span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #110099;">:value</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">tech.v2.datatype.functional</span>/mean<span style="color: #709870;">)</span>
-       data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/add-or-replace-columns data <span style="color: #907373;">{</span><span style="color: #2A00FF;">"Alley_nil"</span> <span style="color: #6276ba;">(</span>map #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span>nil? <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 1 0<span style="color: #858580;">)(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
-                                             <span style="color: #2A00FF;">"Alley"</span> <span style="color: #6276ba;">(</span>map #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span>nil? <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 0 1<span style="color: #858580;">)</span> <span style="color: #858580;">(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">}</span><span style="color: #709870;">)</span>
+       data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/add-or-replace-columns data <span style="color: #907373;">{</span><span style="color: #2A00FF;">"Alley_nil"</span> <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span><span style="color: #7F0055; font-weight: bold;">nil?</span> <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 1 0<span style="color: #858580;">)(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
+                                             <span style="color: #2A00FF;">"Alley"</span> <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span><span style="color: #7F0055; font-weight: bold;">nil?</span> <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 0 1<span style="color: #858580;">)</span> <span style="color: #858580;">(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">}</span><span style="color: #709870;">)</span>
        inputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #907373;">[</span><span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #2A00FF;">"Alley"</span> <span style="color: #2A00FF;">"Alley_nil"</span><span style="color: #907373;">]</span><span style="color: #709870;">)</span>
        outputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #2A00FF;">"Price"</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
    <span style="color: #909183;">[</span>inputs outputs<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -303,14 +303,14 @@ data/house_tiny.csv [4 3]:
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>map vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span>get dataset 0<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>map vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span>get dataset 1<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> dataset 0<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> dataset 1<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps X<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example" id="org01d95a7">
+<pre class="example" id="orge5da0b7">
 ND: (4, 3) cpu() int32
 [[ 3,  1,  0],
  [ 2,  0,  1],
@@ -329,7 +329,7 @@ ND: (4, 1) cpu() int32
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 13:36</p>
+<p class="date">Created: 2021-04-11 Sun 15:23</p>
 </div>
 </body>
 </html>

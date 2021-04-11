@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 13:51 -->
+<!-- 2021-04-11 Sun 15:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
@@ -279,13 +279,13 @@
     <span style="color: #909183;">[</span>X <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ y noise<span style="color: #709870;">)</span><span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">true-w</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>float-array <span style="color: #709870;">[</span>2 -3.4<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">true-w</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">float-array</span> <span style="color: #709870;">[</span>2 -3.4<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">true-b</span> 4.2<span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">dp</span> <span style="color: #7388d6;">(</span>synthetic-data ndm true-w true-b 1000<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">features</span> <span style="color: #7388d6;">(</span>get dp 0<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">labels</span> <span style="color: #7388d6;">(</span>get dp 1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"features(0): "</span><span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get features <span style="color: #709870;">[</span>0<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"labels(0): "</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element labels <span style="color: #909183;">[</span>0<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">features</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> dp 0<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">labels</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">get</span> dp 1<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"features(0): "</span><span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> features <span style="color: #709870;">[</span>0<span style="color: #709870;">]</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"labels(0): "</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element labels <span style="color: #909183;">[</span>0<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -395,7 +395,7 @@ labels(0):  4.662078
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">epochs</span> 3<span style="color: #707183;">)</span>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #7388d6;">[</span>epoch <span style="color: #909183;">(</span>range epochs<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #7388d6;">[</span>epoch <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> epochs<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>batch <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/iterate-dataset trainer dataset<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/train-batch trainer batch<span style="color: #909183;">)</span>
     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">training</span>/step trainer<span style="color: #909183;">)</span>
@@ -404,7 +404,7 @@ labels(0):  4.662078
 </pre>
 </div>
 
-<pre class="example" id="org7df1985">
+<pre class="example" id="org0249509">
 
 Training:      1% |█                                       | L2Loss: _
 Training:      2% |█                                       | L2Loss: _
@@ -475,8 +475,8 @@ Training:    100% |████████████████████�
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">w</span> <span style="color: #7388d6;">(</span>.getArray <span style="color: #909183;">(</span>.valueAt params 0<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">b</span> <span style="color: #7388d6;">(</span>.getArray <span style="color: #909183;">(</span>.valueAt params 1<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">w-error</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/- true-w <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/reshape w <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-shape true-w<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"Error in estimating w:"</span> <span style="color: #7388d6;">(</span>vec w-error<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #2A00FF;">"Error in estimating w:"</span> <span style="color: #7388d6;">(</span>- true-b <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element b<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Error in estimating w:"</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">vec</span> w-error<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Error in estimating w:"</span> <span style="color: #7388d6;">(</span>- true-b <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element b<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -492,13 +492,13 @@ Error in estimating w: 1.0366439819353701E-4
 <div class="outline-text-3" id="text-2-7">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">save-model</span> <span style="color: #7388d6;">[</span>model path epoch name<span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>nio-path <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">java.nio.file.Paths</span>/get path <span style="color: #907373;">(</span>into-array <span style="color: #6276ba;">[</span><span style="color: #2A00FF;">""</span><span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>nio-path <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">java.nio.file.Paths</span>/<span style="color: #7F0055; font-weight: bold;">get</span> path <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">into-array</span> <span style="color: #6276ba;">[</span><span style="color: #2A00FF;">""</span><span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">io</span>/make-parents path<span style="color: #909183;">)</span>
     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">model</span>/set-property model <span style="color: #2A00FF;">"Epoch"</span> epoch<span style="color: #909183;">)</span>
     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">model</span>/save model nio-path name<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span>save-model model <span style="color: #2A00FF;">"models/lin-reg"</span> <span style="color: #2A00FF;">"3"</span> <span style="color: #2A00FF;">"lin-reg"</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span>str model<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> model<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -515,7 +515,7 @@ Model (
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 13:51</p>
+<p class="date">Created: 2021-04-11 Sun 15:23</p>
 </div>
 </body>
 </html>
