@@ -252,134 +252,158 @@ outermost list corresponds to axis 0, and the inner list to axis 1.
 
 ** Operations
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/create ndm (int-array [2 1 4 3]) (nd/shape [2 2])))
-(d2l/ps (nd/create ndm [2 1 4 3] [2 2]))
-(d2l/ps (nd/create ndm [(int 2) 1 4 3] [2 2]))
+This book is not about software engineering. Our interests are not limited to
+simply reading and writing data from/to arrays. We want to perform mathematical
+operations on those arrays. Some of the simplest and most useful operations are
+the elementwise operations. These apply a standard scalar operation to each
+element of an array. For functions that take two arrays as inputs, elementwise
+operations apply some standard binary operator on each pair of corresponding
+elements from the two arrays. We can create an elementwise function from any
+function that maps from a scalar to a scalar.
+
+In mathematical notation, we would denote such a unary scalar operator (taking
+one input) by the signature $f: \mathbb{R} \ rightarrow \mathbb{R}$. This just
+means that the function is mapping from any real number ($\mathbb{R}$) onto
+another. Likewise, we denote a binary scalar operator (taking two real inputs,
+and yielding one output) by the signature $f: \mathbb{R}, \mathbb{R} \rightarrow
+\mathbb{R}$. Given any two vectors $\mathbf{u}$ and $\mathbf{v}$ *of the same
+shape*, and a binary operator $f$, we can produce a vector $\mathbf{c} =
+F(\mathbf{u}, \mathbf{v})$ by setting $c_i \gets f(u_i, v_i)$ for all $i$, where
+$c_i, u_i$, and $v_i$ are the $i^\mathrm{th}$ elements of vectors $\mathbf{c}$,
+$\mathbf{u}$, and $\mathbf{v}$. Here, we produced the vector-valued $F:
+\mathbb{R}^d, \mathbb{R}^d \rightarrow \mathbb{R}^d$ by *lifting* the scalar
+function to an elementwise vector operation.
+
+The common standard arithmetic operators (=+=, =-=, =*=, =/=, and =**=) have all
+been *lifted* to elementwise operations for any identically-shaped ndarrays of
+arbitrary shape. We can call elementwise operations on any two ndarrays of the
+same shape. In the following example, we use commas to formulate a 5-element
+tuple, where each element is the result of an elementwise operation.
+
+*** COMMENT Operations
+
+The common standard arithmetic operators (=+=, =-=, =*=, =/=, and =**=) have all been
+lifted to elementwise operations.
+
+#+begin_src clojure :results value pp :exports both
+(def x (nd/create ndm [1. 2. 4. 8.]))
+(def y (nd/create ndm [2. 2. 2. 2.]))
+(nd/+ x y)
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (2, 2) cpu() int32
-[[ 2,  1],
- [ 4,  3],
-]
-ND: (2, 2) cpu() int64
-[[ 2,  1],
- [ 4,  3],
-]
-ND: (2, 2) cpu() int32
-[[ 2,  1],
- [ 4,  3],
-]
-#+end_example
+: ND: (4) cpu() float64
+: [ 3.,  4.,  6., 10.]
 
-#+begin_src clojure :results output :exports both
-(def x (nd/create ndm [1. 2 4 8] [2 2]))
-(def y (nd/create ndm [2. 2 2 2] [2 2]))
-(d2l/ps x)
-(d2l/ps y)
-(d2l/ps (nd/+ x y))
-(d2l/ps (nd/- x y))
-(d2l/ps (nd/* x y))
-(d2l/ps (nd// x y))
-(d2l/ps (nd/** x y))
-(d2l/ps (nd/exp x))
+#+begin_src clojure :results value pp :exports both
+(nd/- x y)
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (2, 2) cpu() float64
-[[1., 2.],
- [4., 8.],
-]
-ND: (2, 2) cpu() float64
-[[2., 2.],
- [2., 2.],
-]
-ND: (2, 2) cpu() float64
-[[ 3.,  4.],
- [ 6., 10.],
-]
-ND: (2, 2) cpu() float64
-[[-1.,  0.],
- [ 2.,  6.],
-]
-ND: (2, 2) cpu() float64
-[[ 2.,  4.],
- [ 8., 16.],
-]
-ND: (2, 2) cpu() float64
-[[0.5, 1. ],
- [2. , 4. ],
-]
-ND: (2, 2) cpu() float64
-[[ 1.,  4.],
- [16., 64.],
-]
-ND: (2, 2) cpu() float64
-[[ 2.71828183e+00,  7.38905610e+00],
- [ 5.45981500e+01,  2.98095799e+03],
-]
-#+end_example
+: ND: (4) cpu() float64
+: [-1.,  0.,  2.,  6.]
 
-#+begin_src clojure :results output :exports both
-(d2l/ps x)
-(d2l/ps y)
-(d2l/ps (nd/= x y))
+#+begin_src clojure :results value pp :exports both
+(nd// x y)
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (2, 2) cpu() float64
-[[1., 2.],
- [4., 8.],
-]
-ND: (2, 2) cpu() float64
-[[2., 2.],
- [2., 2.],
-]
-ND: (2, 2) cpu() boolean
-[[false,  true],
- [false, false],
-]
-#+end_example
+: ND: (4) cpu() float64
+: [0.5, 1. , 2. , 4. ]
 
-#+begin_src clojure :results output :exports both
-(def X (-> (nd/arange ndm 0 12) (nd/reshape [3 4])))
-(def Y (nd/create ndm (int-array [2, 1, 4, 3, 1, 2, 3, 4, 4, 3, 2, 1]) [3 4]))
-(d2l/ps (nd/concat X Y))
-(d2l/ps (nd/concat X Y 0))
-(d2l/ps (nd/concat X Y 1))
+#+begin_src clojure :results value pp :exports both
+(nd/** x y)
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (6, 4) cpu() int32
-[[ 0,  1,  2,  3],
- [ 4,  5,  6,  7],
- [ 8,  9, 10, 11],
- [ 2,  1,  4,  3],
- [ 1,  2,  3,  4],
- [ 4,  3,  2,  1],
-]
-ND: (6, 4) cpu() int32
-[[ 0,  1,  2,  3],
- [ 4,  5,  6,  7],
- [ 8,  9, 10, 11],
- [ 2,  1,  4,  3],
- [ 1,  2,  3,  4],
- [ 4,  3,  2,  1],
-]
-ND: (3, 8) cpu() int32
-[[ 0,  1,  2,  3,  2,  1,  4,  3],
- [ 4,  5,  6,  7,  1,  2,  3,  4],
- [ 8,  9, 10, 11,  4,  3,  2,  1],
-]
-#+end_example
+: ND: (4) cpu() float64
+: [ 1.,  4., 16., 64.]
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/= X Y))
+Many more operations can be applied elementwise, including unary operators like
+exponentiation.
+
+#+begin_src clojure :results value pp :exports both
+(nd/exp x)
+#+end_src
+
+#+RESULTS:
+: ND: (4) cpu() float64
+: [ 2.71828183e+00,  7.38905610e+00,  5.45981500e+01,  2.98095799e+03]
+
+In addition to elementwise computations, we can also perform linear algebra
+operations, including vector dot products and matrix multiplication. We will
+explain the crucial bits of linear algebra (with no assumed prior knowledge) in
+-Section 2.3-.
+
+We can also concatenate multiple ndarrays together, stacking them end-to-end to
+form a larger ndarray. We just need to provide a list of ndarrays and tell the
+system along which axis to concatenate. The example below shows what happens
+when we concatenate two matrices along rows (axis 0, the first element of the
+shape) vs. columns (axis 1, the second element of the shape). We can see that
+the first output ndarray's axis-0 length (6 ) is the sum of the two input
+ndarrays' axis-0 lengths $(3+3)$; while the second output ndarray's axis-1
+length (8) is the sum of the two input ndarrays' axis-1 lengths $(4+4)$.
+
+#+begin_src clojure :results value pp :exports both
+(def X (-> (nd/arange ndm 12)
+           (nd/reshape [3 4])))
+X
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(def Y (nd/create ndm [[2 1 4 3][1 2 3 4][4 3 2 1]]))
+Y
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int64
+: [[ 2,  1,  4,  3],
+:  [ 1,  2,  3,  4],
+:  [ 4,  3,  2,  1],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+;; concat only support int32 and float32 datatype
+(def Y (nd/to-type Y :int32 false))
+(nd/concat X Y)
+#+end_src
+
+#+RESULTS:
+: ND: (6, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+:  [ 2,  1,  4,  3],
+:  [ 1,  2,  3,  4],
+:  [ 4,  3,  2,  1],
+: ]
+
+#+begin_src clojure :results value pp :exports both
+(nd/concat X Y 1)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 8) cpu() int32
+: [[ 0,  1,  2,  3,  2,  1,  4,  3],
+:  [ 4,  5,  6,  7,  1,  2,  3,  4],
+:  [ 8,  9, 10, 11,  4,  3,  2,  1],
+: ]
+
+Sometimes, we want to construct a binary ndarray via logical statements. Take X
+== Y as an example. For each position, if X and Y are equal at that position,
+the corresponding entry in the new tensor takes a value of 1, meaning that the
+logical statement X == Y is true at that position; otherwise that position
+takes 0.
+
+#+begin_src clojure :results output pp :exports both
+(nd/= X Y)
 #+end_src
 
 #+RESULTS:
@@ -389,8 +413,10 @@ ND: (3, 8) cpu() int32
 :  [false, false, false, false],
 : ]
 
-#+begin_src clojure :results output :exports both
-(d2l/ps (nd/sum X))
+Summing all the elements in the ndarray yields a ndarray with only one element.
+
+#+begin_src clojure :results value pp :exports both
+(nd/sum X)
 #+end_src
 
 #+RESULTS:

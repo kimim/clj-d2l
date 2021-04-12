@@ -16,3 +16,4 @@ pom.xml.asc
 *.pdf
 *.tex
 *.bib
+_minted*
