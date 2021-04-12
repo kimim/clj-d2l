@@ -224,7 +224,7 @@ pre {
 }
 
 pre.example:before {
-    content: "Properties";
+    content: "Results:";
     display: block;
     border-bottom: 1px dotted;
     margin-bottom: 1em;
