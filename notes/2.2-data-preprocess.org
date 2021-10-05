@@ -142,7 +142,7 @@ Y
 :  [140000],
 : ]
 
-* Summary
+** Summary
 
 - Like many other extension packages in the vast ecosystem of clojure,
   ~clj-djl.dataframe~ can work together with NDArray.
