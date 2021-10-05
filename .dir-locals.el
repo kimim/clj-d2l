@@ -6,10 +6,17 @@
             "Expand BODY according to PARAMS, return the expanded body."
             (let* ((vars (org-babel--get-vars params))
 	               (ns (or (cdr (assq :ns params))
-		                   (org-babel-clojure-cider-current-ns)))
+		                   (if (eq org-babel-clojure-backend 'cider)
+		                       (or cider-buffer-ns
+			                       (let ((repl-buf (cider-current-connection)))
+			                         (and repl-buf (buffer-local-value
+					                                'cider-buffer-ns repl-buf))))
+		                     org-babel-clojure-default-ns)))
 	               (result-params (cdr (assq :result-params params)))
 	               (print-level nil)
 	               (print-length nil)
+	               ;; Remove comments, they break (let [...] ...) bindings
+	               (body (replace-regexp-in-string "^[ 	]*;+.*$" "" body))
 	               (body (org-trim
 		                  (concat
 		                   ;; Source block specified namespace :ns.
@@ -19,7 +26,7 @@
 		                     (format "(let [%s]\n%s)"
 			                         (mapconcat
 			                          (lambda (var)
-			                            (format "%S (quote %S)" (car var) (cdr var)))
+			                            (format "%S %S" (car var) (cdr var)))
 			                          vars
 			                          "\n      ")
 			                         body))))))

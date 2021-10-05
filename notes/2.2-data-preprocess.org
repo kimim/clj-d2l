@@ -5,13 +5,21 @@
 (ns clj-d2l.data-preprocess
   (:require [clj-djl.ndarray :as nd]
             [clj-d2l.core :as d2l]
-            [tablecloth.api :as ds]
+            [clj-djl.dataframe :as df]
+            [clj-djl.dataframe.functional :as functional]
             [clojure.java.io :as io]))
 #+end_src
 
 ** Reading the Dataset
 
-#+begin_src clojure :results output :exports both
+As an example, we begin by creating an artificial dataset that is
+stored in a csv (comma-separated values) file
+../data/house_tiny.csv. Data stored in other formats may be processed
+in similar ways.
+
+Below we write the dataset row by row into a csv file.
+
+#+begin_src clojure :results pp :exports both
 (let [filename "data/house_tiny.csv"
       records ["NumRooms,Alley,Price\n"  ;; Column names
                "NA,Pave,127500\n"        ;;Each row represents a data example
@@ -21,10 +29,20 @@
   (io/make-parents filename)
   (dorun
    (map #(spit filename % :append true) records)))
+#+end_src
 
-(def data (ds/dataset "data/house_tiny.csv"))
+#+RESULTS:
+: true
 
-(d2l/ps data)
+To load the raw dataset from the created csv file, we require the
+~clj-djl.dataframe~ package and invoke the read function to read
+directly from the csv we created. This dataset has four rows and three
+columns, where each row describes the number of rooms (“NumRooms”),
+the alley type (“Alley”), and the price (“Price”) of a house.
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(def data (df/dataframe "data/house_tiny.csv"))
+data
 #+end_src
 
 #+RESULTS:
@@ -37,41 +55,95 @@
 : |        4 |       | 178100 |
 : |          |       | 140000 |
 
-
 ** Handling Missing Data
 
+Note that there are some blank spaces which are missing values. To
+handle missing data, typical methods include imputation and deletion,
+where imputation replaces missing values with substituted ones, while
+deletion ignores missing values. Here we will consider imputation.
+
+We split the data into inputs and outputs by creating new dataframes
+and specifying the columns desired, where the former takes the first
+two columns while the latter only keeps the last column. For numerical
+values in inputs that are missing, we replace the missing data entries
+with the mean value of the same column.
+
 #+begin_src clojure :results silent :exports both
-(def dataset
- (let [data (ds/replace-missing data "NumRooms" :value tech.v2.datatype.functional/mean)
-       data (ds/add-or-replace-columns data {"Alley_nil" (map #(if (nil? %) 1 0)(data "Alley"))
-                                             "Alley" (map #(if (nil? %) 0 1) (data "Alley"))})
-       inputs (ds/select-columns data ["NumRooms" "Alley" "Alley_nil"])
-       outputs (ds/select-columns data "Price")]
-   [inputs outputs]))
+(def dataframe
+  (let [data (df/replace-missing data ["NumRooms"] :value functional/mean)
+        data (df/update-column data "Alley_nan" (map #(if (nil? %) 1 0) (data "Alley")))
+        data (df/update-column data "Alley_Pave" (map #(if (some? %) 1 0) (data "Alley")))
+        inputs (df/select-columns data ["NumRooms" "Alley_Pave" "Alley_nan"])
+        outputs (df/select-columns data ["Price"])]
+    [inputs outputs]))
 #+end_src
 
-** Conversion to the Tensor Format
-
-#+begin_src clojure :results output :exports both
-(def ndm (nd/new-base-manager))
-(def X (nd/create ndm (map vec (ds/rows (get dataset 0)))))
-(def y (nd/create ndm (map vec (ds/rows (get dataset 1)))))
-(d2l/ps X)
-(d2l/ps y)
+#+begin_src clojure :results pp :exports both :eval no-export
+(first dataframe)
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (4, 3) cpu() int32
-[[ 3,  1,  0],
- [ 2,  0,  1],
- [ 4,  0,  1],
- [ 3,  0,  1],
-]
-ND: (4, 1) cpu() int32
-[[127500],
- [106000],
- [178100],
- [140000],
-]
-#+end_example
+: data/house_tiny.csv [4 3]:
+:
+: | NumRooms | Alley_Pave | Alley_nan |
+: |----------|------------|-----------|
+: |        3 |          1 |         0 |
+: |        2 |          0 |         1 |
+: |        4 |          0 |         1 |
+: |        3 |          0 |         1 |
+
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(second dataframe)
+#+end_src
+
+#+RESULTS:
+: data/house_tiny.csv [4 1]:
+:
+: |  Price |
+: |--------|
+: | 127500 |
+: | 106000 |
+: | 178100 |
+: | 140000 |
+
+
+** Conversion to the Tensor Format
+
+Now that all the entries in inputs and outputs are numerical, they can
+be converted to the NDArray format. Once data are in this format, they
+can be further manipulated with those NDArray functionalities that we
+have introduced in Section 2.1.
+
+#+begin_src clojure :results pp :exports both
+(def ndm (nd/new-base-manager))
+(def X (df/->ndarray ndm (first dataframe)))
+(def Y (df/->ndarray ndm (second dataframe)))
+X
+#+end_src
+
+#+RESULTS:
+: ND: (4, 3) cpu() int32
+: [[ 3,  1,  0],
+:  [ 2,  0,  1],
+:  [ 4,  0,  1],
+:  [ 3,  0,  1],
+: ]
+
+#+begin_src clojure :results pp :exports both :eval no-export
+Y
+#+end_src
+
+#+RESULTS:
+: ND: (4, 1) cpu() int64
+: [[127500],
+:  [106000],
+:  [178100],
+:  [140000],
+: ]
+
+* Summary
+
+- Like many other extension packages in the vast ecosystem of clojure,
+  ~clj-djl.dataframe~ can work together with NDArray.
+- Imputation and deletion can be used to handle missing data.

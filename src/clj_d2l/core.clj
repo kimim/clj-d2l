@@ -3,7 +3,7 @@
             [clj-djl.training.dataset :as ds]
             [com.hypirion.clj-xchart :as c])
   (:import [ai.djl.ndarray.types DataType]
-           [ai.djl.basicdataset FashionMnist]
+           [ai.djl.basicdataset.cv.classification FashionMnist]
            [ai.djl.training.dataset Dataset$Usage]
            [java.nio.file Paths]))
 
