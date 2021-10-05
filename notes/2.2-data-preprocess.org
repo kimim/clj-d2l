@@ -48,12 +48,12 @@ data
 #+RESULTS:
 : data/house_tiny.csv [4 3]:
 :
-: | NumRooms | Alley |  Price |
-: |----------|-------|--------|
-: |          |  Pave | 127500 |
-: |        2 |       | 106000 |
-: |        4 |       | 178100 |
-: |          |       | 140000 |
+: | NumRooms |   Alley |  Price |
+: |----------|---------|--------|
+: |          |    Pave | 127500 |
+: |        2 |         | 106000 |
+: |        4 |         | 178100 |
+: |          |         | 140000 |
 
 ** Handling Missing Data
 
@@ -70,7 +70,7 @@ with the mean value of the same column.
 
 #+begin_src clojure :results silent :exports both
 (def dataframe
-  (let [data (df/replace-missing data ["NumRooms"] :value functional/mean)
+  (let [data (df/replace-missing data ["NumRooms"] functional/mean)
         data (df/update-column data "Alley_nan" (map #(if (nil? %) 1 0) (data "Alley")))
         data (df/update-column data "Alley_Pave" (map #(if (some? %) 1 0) (data "Alley")))
         inputs (df/select-columns data ["NumRooms" "Alley_Pave" "Alley_nan"])

@@ -1127,3 +1127,18 @@ If you are eager to learn more about linear algebra, you may refer to
 either the online appendix on linear algebraic operations or other
 excellent resources [Strang, 1993][Kolter, 2008][Petersen et al.,
 2008].
+
+** Summary
+
+- Scalars, vectors, matrices, and NDArrays are basic mathematical
+  objects in linear algebra.
+- Vectors generalize scalars, and matrices generalize vectors.
+- Scalars, vectors, matrices, and NDArrays have zero, one, two, and an
+  arbitrary number of axes, respectively.
+- A NDArray can be reduced along the specified axes by sum and mean.
+- Elementwise multiplication of two matrices is called their Hadamard
+  product. It is different from matrix multiplication.
+- In deep learning, we often work with norms such as the $L_1$ norm,
+  the $L_2$ norm, and the Frobenius norm.
+- We can perform a variety of operations over scalars, vectors,
+  matrices, and NDArrays.
