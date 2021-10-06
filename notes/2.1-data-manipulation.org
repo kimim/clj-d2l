@@ -569,29 +569,22 @@ X, we will find that id(Y) points to a different location. That is because
 Python first evaluates Y + X, allocating new memory for the result and then
 makes Y point to this new location in memory.
 
-#+begin_src clojure :results value :exports both
+#+begin_src clojure :results pp :exports both
 (def original (nd/zeros ndm (nd/get-shape X)))
 (def actual (nd/+ original X))
 (identical? original actual)
 #+end_src
 
 #+RESULTS:
-| #'clj-d2l.data-manipulation/original |
-| #'clj-d2l.data-manipulation/actual   |
-| false                                |
+false
 
 #+begin_src clojure :results value
 (def copy (nd/+! original X))
-original
-copy
 (identical? original copy)
 #+end_src
 
 #+RESULTS:
-| #'clj-d2l.data-manipulation/copy                                                                                                                                    |
-| #object[ai.djl.mxnet.engine.MxNDArray 0x7ad6bc54 "ND: (3, 4) cpu() float32\r\n[[24., 24., 24., 24.],\r\n [24., 24., 24., 24.],\r\n [16., 18., 20., 22.],\r\n]\r\n"] |
-| #object[ai.djl.mxnet.engine.MxNDArray 0x7ad6bc54 "ND: (3, 4) cpu() float32\r\n[[24., 24., 24., 24.],\r\n [24., 24., 24., 24.],\r\n [16., 18., 20., 22.],\r\n]\r\n"] |
-| true                                                                                                                                                                |
+true
 
 Running operations can cause new memory to be allocated to host results. For
 example, if we write y = x.add(y), we will dereference the ndarray that y used
