@@ -1,4 +1,6 @@
 #+PROPERTY: header-args    :tangle src/clj_d2l/linear_algebra.clj
+#+LATEX_CLASS: article
+
 * Linear Algebra
 
 Now that you can store and manipulate data, let us briefly review the
@@ -980,7 +982,7 @@ elements of a vector by a constant factor $\alpha$, its norm also
 scales by the absolute value of the same constant factor:
 
 \begin{equation}
-f(\alhpa \mathbf{x} = |\alpha| f(\mathbf{x}).
+f(\alpha \mathbf{x}) = |\alpha| f(\mathbf{x}).
 \end{equation}
 
 The second property is the familiar triangle inequality:
