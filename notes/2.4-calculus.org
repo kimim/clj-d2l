@@ -1,7 +1,74 @@
 #+PROPERTY: header-args    :tangle src/clj_d2l/calculus.clj
+#+latex_class: article
+
 * Calculus
 
+Finding the area of a polygon had remained mysterious until at least
+2,500 years ago, when ancient Greeks divided a polygon into triangles
+and summed their areas. To find the area of curved shapes, such as a
+circle, ancient Greeks inscribed polygons in such shapes. As shown in
+Section 2.4, an inscribed polygon with more sides of equal length
+better approximates the circle. This process is also known as the
+method of exhaustion.
+
+In fact, the method of exhaustion is where *integral calculus* (will be
+described in sec_integral_calculus) originates from. More than 2,000
+years later, the other branch of calculus, *differential calculus*, was
+invented. Among the most critical applications of differential
+calculus, optimization problems consider how to do something the
+best. As discussed in Section 2.3.10.1, such problems are ubiquitous
+in deep learning.
+
+In deep learning, we train models, updating them successively so that
+they get better and better as they see more and more data. Usually,
+getting better means minimizing a *loss function*, a score that answers
+the question "how bad is our model?" This question is more subtle than
+it appears. Ultimately, what we really care about is producing a model
+that performs well on data that we have never seen before. But we can
+only fit the model to data that we can actually see. Thus we can
+decompose the task of fitting models into two key concerns: i)
+*optimization*: the process of fitting our models to observed data; ii)
+*generalization*: the mathematical principles and practitioners' wisdom
+that guide as to how to produce models whose validity extends beyond
+the exact set of data examples used to train them.
+
+To help you understand optimization problems and methods in later
+chapters, here we give a very brief primer on differential calculus
+that is commonly used in deep learning.
+
 ** Derivatives and Differentiation
+
+We begin by addressing the calculation of derivatives, a crucial step
+in nearly all deep learning optimization algorithms. In deep learning,
+we typically choose loss functions that are differentiable with
+respect to our model's parameters. Put simply, this means that for
+each parameter, we can determine how rapidly the loss would increase
+or decrease, were we to increase or decrease that parameter by an
+infinitesimally small amount.
+
+Suppose that we have a function $f: \mathbb{R} \rightarrow
+\mathbb{R}$, whose input and output are both scalars. The derivative
+of $f$ is defined as
+
+#+name: eq:derivative
+\begin{equation}
+f'(x) = \lim_{h \rightarrow 0} \frac{f(x+h) - f(x)}{h},
+\end{equation}
+
+if this limit exists. If $f'(a)$ exists, $f$ is said to be
+*differentiable* at $a$. If $f$ is differentiable at every number of an
+interval, then this function is differentiable on this interval. We
+can interpret the derivative :$f'(x)$ in [[eq:derivative]] as the
+*instantaneous* rate of change of $f(x)$ with respect to $x$. The
+so-called instantaneous rate of change is based on the variation $h$
+in $x$, which approaches $0$.
+
+To illustrate derivatives, let us experiment with an example. Define
+$u = f(x) = 3x^2-4x$.
+
+*Note: We will be using Double in this section to avoid incorrect
+results since Double provides more decimal precision. Generally though,
+we would use Float as deep learning frameworks by default use Fault.*
 
 #+begin_src clojure :results silent :exports both
 (ns clj-d2l.calculus
@@ -10,16 +77,24 @@
             [clojure.java.io :as io]))
 #+end_src
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results silent :exports both :eval no-export
 (defn f [x]
   (- (* 3 (Math/pow x 2)) (* 4 x)))
+#+end_src
 
+By setting \(x=1\) and letting \(h\) approach \(0\), the numerical
+result of \(\frac{f(x+h) - f(x)}{h}\) in [[eq:derivative]] approaches
+\(2\). Though this experiment is not a mathematical proof, we will see
+later that the derivative \(u'\) is \(2\) when \(x=1\).
+
+#+begin_src clojure :results pp :exports both :eval no-export
 (defn numerical-lim [f x h]
   (/ (- (f (+ x h)) (f x)) h))
 
 (->> (map #(/ 0.1 (Math/pow 10 %)) (range 5))
      (map (fn [h] [h (numerical-lim f 1 h)]))
-     (map #(println "h = " (% 0) ", numerical limit = " (% 1))))
+     (map #(println "h = " (% 0) ", numerical limit = " (% 1)))
+     (dorun))
 #+end_src
 
 #+RESULTS:
@@ -29,16 +104,84 @@
 : h =  1.0E-4 , numerical limit =  2.0002999999979565
 : h =  1.0E-5 , numerical limit =  2.0000300000155846
 
+Let us familiarize ourselves with a few equivalent notations for
+derivatives. Given \(y = f(x)\), where \(x\) and \(y\) are the
+independent variable and the dependent variable of the function \(f\),
+respectively. The following expressions are equivalent:
 
-#+begin_src clojure :results silent :exports both
+#+name: eq:derivative-notation
+\begin{equation}
+f'(x) = y' = \frac{dy}{dx} = \frac{df}{dx} = \frac{d}{dx} f(x) = Df(x) = D_x f(x),
+\end{equation}
+
+where symbols \(\frac{d}{dx}\) and \(D\) are *differentiation operators*
+that indicate operation of *differentiation*. We can use the following
+rules to differentiate common functions:
+
+-  \(DC = 0\) (\(C\) is a constant),
+-  \(Dx^n = nx^{n-1}\) (the *power rule*, \(n\) is any real
+   number),
+-  \(De^x = e^x\),
+-  \(D\ln(x) = 1/x.\)
+
+To differentiate a function that is formed from a few simpler
+functions such as the above common functions, the following rules can
+be handy for us. Suppose that functions \(f\) and \(g\) are both
+differentiable and \(C\) is a constant, we have the *constant multiple
+rule*
+
+#+name: eq:constmultrule
+\begin{equation}
+\frac{d}{dx} [Cf(x)] = C \frac{d}{dx} f(x),
+\end{equation}
+
+the *sum rule*
+
+#+name: eq:sumrule
+\begin{equation}
+\frac{d}{dx} [f(x) + g(x)] = \frac{d}{dx} f(x) + \frac{d}{dx} g(x),
+\end{equation}
+
+and the *quotient rule*
+
+#+name: eq:quotrule
+\begin{equation}
+\frac{d}{dx} \left[\frac{f(x)}{g(x)}\right] = \frac{g(x) \frac{d}{dx} [f(x)] - f(x) \frac{d}{dx} [g(x)]}{[g(x)]^2}.
+\end{equation}
+
+Now we can apply a few of the above rules to find
+\(u' = f'(x) = 3 \frac{d}{dx} x^2-4\frac{d}{dx}x = 6x-4\). Thus, by
+setting \(x = 1\), we have \(u' = 2\): this is supported by our
+earlier experiment in this section where the numerical result approaches
+\(2\). This derivative is also the slope of the tangent line to the
+curve \(u = f(x)\) when \(x = 1\).
+
+To visualize such an interpretation of derivatives, we will use ~xchart~.
+a simple plotting library.
+
+We define ~plot-lines~ which will take as input three arrays.  The first
+array will be the data in the x axis and the next two arrays will
+contain the two functions that we want to plot in the y axis. In
+addition to this data, the function requires us to specify the name of
+the two lines we will be plotting, the label of both axes, and the
+width and height of the figure. This function or a modified version of
+it, will allow us to plot multiple curves succinctly since we will
+need to visualize many curves throughout the book.
+
+Now we can plot the function \(u = f(x)\) and its tangent line \(y =
+2x - 3\) at \(x=1\), where the coefficient \(2\) is the slope of the
+tangent line.
+
+#+begin_src clojure :results file graphics :output-dir figures :file tangent_line.svg :exports both :eval no-export
 (let [x (range 0 3 0.1)
-      y1 (->> x (map f))
-      y2 (->> x (map #(- (* 2 %) 3)))]
+      y1 (map f x)
+      y2 (map #(- (* 2 %) 3) x)]
   (d2l/plot-lines
-   "../figure/tangent_line.svg"
+   "notes/figures/tangent_line.svg"
    ["f(x)" "tangent line (x=1)"]
    x
    [y1 y2]))
 #+end_src
 
-[[../figure/tangent_line.svg]]
+#+RESULTS:
+[[file:figures/tangent_line.svg]]
