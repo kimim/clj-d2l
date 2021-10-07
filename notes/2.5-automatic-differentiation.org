@@ -1,5 +1,21 @@
 #+PROPERTY: header-args    :tangle src/clj_d2l/auto_diff.clj
 * Automatic Differentiation
+
+As we have explained in Section 2.4, differentiation is a crucial step
+in nearly all deep learning optimization algorithms. While the
+calculations for taking these derivatives are straightforward,
+requiring only some basic calculus, for complex models, working out
+the updates by hand can be a pain (and often error-prone).
+
+Deep learning frameworks expedite this work by automatically
+calculating derivatives, i.e., *automatic differentiation*. In practice,
+based on our designed model the system builds a *computational graph*,
+tracking which data combined through which operations to produce the
+output. Automatic differentiation enables the system to subsequently
+backpropagate gradients. Here, *backpropagate* simply means to trace
+through the computational graph, filling in the partial derivatives
+with respect to each parameter.
+
 #+begin_src clojure :results silent :exports both
 (ns clj-d2l.auto-diff
   (:require [clj-djl.ndarray :as nd]
@@ -9,8 +25,14 @@
 
 ** A Simple Example
 
-#+begin_src clojure :results value pp :exports both
-(def ndm (nd/new-base-manager))
+
+As a toy example, say that we are interested in differentiating the
+function \(y = 2\mathbf{x}^{\top}\mathbf{x}\) with respect to the
+column vector \(\mathbf{x}\). To start, let us create the variable
+\(x\) and assign it an initial value.
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(def ndm (nd/base-manager))
 (def x (nd/arange ndm 4.))
 x
 #+end_src
@@ -19,8 +41,17 @@ x
 : ND: (4) cpu() float32
 : [0., 1., 2., 3.]
 
-#+begin_src clojure :results value pp :exports both
-(t/attach-gradient x)
+Before we even calculate the gradient of \(y\) with respect to
+\(\mathbf{x}\), we will need a place to store it. It is important that
+we do not allocate new memory every time we take a derivative with
+respect to a parameter because we will often update the same
+parameters thousands or millions of times and could quickly run out of
+memory. Note that a gradient of a scalar-valued function with respect
+to a vector \(\mathbf{x}\) is itself vector-valued and has the same
+shape as \(\mathbf{x}\).
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(t/set-requires-gradient x true)
 (t/get-gradient x)
 #+end_src
 
@@ -28,16 +59,40 @@ x
 : ND: (4) cpu() float32
 : [0., 0., 0., 0.]
 
-#+begin_src clojure :results value pp :exports both
+We place our code inside a ~with-open~ and declare the
+~gradient-collector~ object that will build the computational graph. Now
+let us calculate \(y\).
+
+Since (\mathbf{x}\) is a vector of length 4, an inner product of
+(\mathbf{x}\) and (\mathbf{x}\) is performed, yielding the scalar
+output that we assign to (\mathbf{y}\). Next, we can automatically
+calculate the gradient of (\mathbf{y}\) with respect to each component
+of (\mathbf{x}\) by calling the function for backpropagation and
+printing the gradient.
+
+#+begin_src clojure :results output :exports both :eval no-export
 (with-open [gc (t/gradient-collector)]
   (let [y (nd/* (nd/dot x x) 2)]
+    (print (str y))
     (t/backward gc y)))
+#+end_src
+
+#+RESULTS:
+: ND: () cpu() float32
+: 28.
+
+#+begin_src clojure :results pp :exports both :eval no-export
 (t/get-gradient x)
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() float32
 : [ 0.,  4.,  8., 12.]
+
+
+The gradient of the function \(y = 2\mathbf{x}^{\top}\mathbf{x}\) with
+respect to \(\mathbf{x}\) should be \(4\mathbf{x}\). Let us quickly
+verify that our desired gradient was calculated correctly.
 
 #+begin_src clojure :results value pp :exports both
 (nd/= (t/get-gradient x) (nd/* x 4))
@@ -47,8 +102,9 @@ x
 : ND: (4) cpu() boolean
 : [ true,  true,  true,  true]
 
+Now let us calculate another function of \(\mathbf{x}\).
 
-#+begin_src clojure :results value pp :exports both
+#+begin_src clojure :results pp :exports both :eval no-export
 (with-open [gc (t/gradient-collector)]
   (let [y (nd/sum x)]
     (t/backward gc y)))
@@ -63,7 +119,21 @@ x
 
 ** Backward for Non-Scalar Variables
 
-#+begin_src clojure :results value pp :exports both
+Technically, when \(y\) is not a scalar, the most natural
+interpretation of the differentiation of a vector \(\mathbf{y}\) with
+respect to a vector \(\mathbf{x}\) is a matrix. For higher-order and
+higher-dimensional \(\mathbf{y}\) and \(\mthbf{x}\), the
+differentiation result could be a high-order tensor.
+
+However, while these more exotic objects do show up in advanced
+machine learning (including in deep learning), more often when we are
+calling backward on a vector, we are trying to calculate the
+derivatives of the loss functions for each constituent of a *batch* of
+training examples.  Here, our intent is not to calculate the
+differentiation matrix but rather the sum of the partial derivatives
+computed individually for each example in the batch.
+
+#+begin_src clojure :results pp :exports both :eval no-export
 (with-open [gc (t/gradient-collector)]
   (let [y (nd/* x x)]
     (t/backward gc y)))
@@ -77,45 +147,66 @@ x
 
 ** Detaching Computation
 
-#+begin_src clojure :results value pp :exports both
+Sometimes, we wish to move some calculations outside of the recorded
+computational graph. For example, say that \(\mathbf{y}\) was
+calculated as a function of \(\mathbf{x}\), and that subsequently
+\(\mathbf{z}\) was calculated as a function of both \(\mathbf{y}\) and
+\(\mathbf{x}\). Now, imagine that we wanted to calculate the gradient
+of \(\mathbf{z}\) with respect to \(\mathbf{x}\), but wanted for some
+reason to treat \(\mathbf{y}\) as a constant, and only take into
+account the role that \(\mathbf{x}\) played after \(\mathbf{y}\) was
+calculated.
+
+Here, we can detach \(\mathbf{y}\) using ~stop-gradient~ to return a new
+variable \(\mathbf{u}\) that has the same value as \(\mathbf{y}\) but
+discards any information about how \(\mathbf{y}\) was computed in the
+computational graph. In other words, the gradient will not flow
+backwards through \(\mathbf{u}\) to \(\mathbf{x}\). Thus, the
+following backpropagation function computes the partial derivative of
+\(\mathbf{z} = \mathbf{u} \times \mathbf{x}\) with respect to
+\(\mathbf{x}\) while treating \(\mathbf{u}\) as a constant, instead of
+the partial derivative of \(\mathbf{z} = \mathbf{x} \times \mathbf{x}
+\times \mathbf{x}\) with respect to \(\mathbf{x}\).
+
+#+begin_src clojure :results pp :exports both :eval no-export
 (with-open [gc (t/gradient-collector)]
   (let [y (nd/* x x)
-        u (nd/create ndm [0. 1. 4. 9.]) ;; TODO: How to detach ndarray from current graph?
-        ;; u (.detach y)
+        u (t/stop-gradient y)
         z (nd/* u x)]
-    (t/backward gc z)))
-(t/get-gradient x)
+    (t/backward gc z)
+    (nd/= u (t/get-gradient x))))
 #+end_src
 
 #+RESULTS:
-: ND: (4) cpu() float32
-: [0., 1., 4., 9.]
+: ND: (4) cpu() boolean
+: [ true,  true,  true,  true]
 
+We can subsequently invoke backpropagation on \(\mathbf{y}\) to get
+the derivative of \(\mathbf{y} = \mathbf{x} \times \mathbf{x}\) with
+respect to \(\mathbf{x}\), which is \(2 \times \mathbf{x}\).
 
-#+begin_src clojure :results value pp :exports both
+#+begin_src clojure :results pp :exports both :eval no-export
 (with-open [gc (t/gradient-collector)]
   (let [y (nd/* x x)
-        u (nd/create ndm [0. 1. 4. 9.])
-        ;;u (.duplicate y)
-        z (nd/* u x)]
-    (t/backward gc y)))
-(t/get-gradient x)
+        y (nd/* x x)]
+    (t/backward gc y)
+    (nd/= (t/get-gradient x) (nd/* x 2))))
 #+end_src
 
 #+RESULTS:
-: ND: (4) cpu() float32
-: [0., 2., 4., 6.]
-
-#+begin_src clojure :results value pp :exports both
-(nd/* x 2)
+: ND: (4) cpu() boolean
+: [ true,  true,  true,  true]
 #+end_src
 
-#+RESULTS:
-: ND: (4) cpu() float32
-: [0., 2., 4., 6.]
+** Computing the Gradient of Clojure Control Flow
 
-
-** Computing the Gradient of Python Control Flow
+One benefit of using automatic differentiation is that even if
+building the computational graph of a function required passing
+through a maze of Clojure control flow (e.g., conditionals, loops, and
+arbitrary function calls), we can still calculate the gradient of the
+resulting variable.  In the following snippet, note that the number of
+iterations of the ~loop~ and the evaluation of the ~if~ statement both
+depend on the value of the input \(\mathbf{a}\).
 
 #+begin_src clojure :results silent :exports both
 (defn f [a]
@@ -127,22 +218,45 @@ x
         (nd/* b 100)))))
 #+end_src
 
-#+begin_src clojure :results output :exports both
+Let us compute the gradient.
+
+We can then analyze the ~f~ function defined above. Note that it is
+piecewise linear in its input \(\mathbf{a}\). In other words, for any
+\(\mathbf{a}\) there exists some constant scalar \(k\) such that
+\(f(\mathbf{a}) = k \times \mathbf{a}\), where the value of \(k\)
+depends on the input \(\mathbf{a}\). Consequently ~(nd// d a)~ allows us
+to verify that the gradient is correct.
+
+#+begin_src clojure :results pp :exports both :eval no-export
 (def a (nd/random-normal ndm [10]))
-
-(t/attach-gradient a)
-
-(with-open [gc (t/gradient-collector)]
-  (let [d (f a)]
-    (t/backward gc d)
-    (println (str (nd// d a)))
-    (println (str (t/get-gradient a)))))
+a
 #+end_src
 
 #+RESULTS:
 : ND: (10) cpu() float32
-: [25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600.]
-:
+: [-1.423 , -0.1475,  0.5799,  0.4026, -0.9635,  1.2715, -1.4396, -1.0244,  0.4675, -0.3938]
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(t/set-requires-gradient a true)
+(with-open [gc (t/gradient-collector)]
+  (let [d (f a)]
+    (t/backward gc d)
+    (println (str (nd// d a)))
+    (println (str (nd/= (t/get-gradient a) (nd// d a))))))
+#+end_src
+
+#+RESULTS:
 : ND: (10) cpu() float32
-: [25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600.]
+: [51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200.]
 :
+: ND: (10) cpu() boolean
+: [ true,  true,  true,  true,  true,  true,  true,  true,  true,  true]
+:
+
+** Summary
+
+- Deep learning frameworks can automate the calculation of
+  derivatives.  To use it, we first attach gradients to those
+  variables with respect to which we desire partial derivatives. We
+  then record the computation of our target value, execute its
+  function for backpropagation, and access the resulting gradient.

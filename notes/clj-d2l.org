@@ -1,9 +1,11 @@
 #+TITLE: CLJ D2L
 #+latex_class: article
 
+#+INCLUDE: "notation.org" :minlevel 1
 #+INCLUDE: "1.0-introduction.org" :minlevel 1
 #+INCLUDE: "2.0-preliminaries.org" :minlevel 1
-#+INCLUDE: "2.1-data-manipulation.org" :minlevel 1
-#+INCLUDE: "2.2-data-preprocess.org" :minlevel 1
-#+INCLUDE: "2.3-linear-algebra.org" :minlevel 1
-#+INCLUDE: "2.4-calculus.org" :minlevel 1
+#+INCLUDE: "2.1-data-manipulation.org" :minlevel 2
+#+INCLUDE: "2.2-data-preprocess.org" :minlevel 2
+#+INCLUDE: "2.3-linear-algebra.org" :minlevel 2
+#+INCLUDE: "2.4-calculus.org" :minlevel 2
+#+INCLUDE: "2.5-automatic-differentiation.org" :minlevel 2

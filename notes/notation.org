@@ -1,8 +1,14 @@
-#+TITLE: Notation
+* Notation
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
 
 The notation used throughout this book is summarized below.
 
-* Numbers
+** Numbers
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
 
 - $x$: A scalar
 - $\mathbf{x}$: A vector
@@ -14,7 +20,10 @@ The notation used throughout this book is summarized below.
 - $x_{ij}$, $[\mathbf{X}]_{ij}$: The element of matrix $\mathbf{X}$
   at row $i$ and column $j$
 
-* Set Theory
+** Set Theory
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
 
 - $\mathcal{X}$: A set
 - $\mathbb{Z}$: The set of integers
@@ -29,7 +38,10 @@ The notation used throughout this book is summarized below.
 - $\mathcal{A}\setminus\mathcal{B}$: Subtraction of set
   $\mathcal{B}$ from set $\mathcal{A}$
 
-* Functions and Operators
+** Functions and Operators
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
 
 - $f(\cdot)$: A function
 - $\log(\cdot)$: The natural logarithm
@@ -47,7 +59,10 @@ The notation used throughout this book is summarized below.
 - $\sum$: Series addition
 - $\prod$: Series multiplication
 
-* Calculus
+** Calculus
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
 
 - $\frac{dy}{dx}$: Derivative of $y$ with respect to $x$
 - $\frac{\partial y}{\partial x}$: Partial derivative of $y$ with
@@ -58,7 +73,10 @@ The notation used throughout this book is summarized below.
   with respect to $x$
 - $\int f(x) \;dx$: Indefinite integral of $f$ with respect to $x$
 
-* Probability and Information Theory
+** Probability and Information Theory
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
 
 - $P(\cdot)$: Probability distribution
 - $z \sim P$: Random variable $z$ has probability distribution $P$
@@ -76,6 +94,9 @@ The notation used throughout this book is summarized below.
 - $D_{\mathrm{KL}}(P\|Q)$: KL-divergence of distributions $P$ and
   $Q$
 
-* Complexity
+** Complexity
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
 
 - $\mathcal{O}$: Big O notation

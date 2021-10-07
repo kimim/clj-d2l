@@ -1,4 +1,3 @@
- #+TITLE: Data Manipulation
 #+PROPERTY: header-args    :tangle src/clj_d2l/data_manipulation.clj
 
 * Data Manipulation
