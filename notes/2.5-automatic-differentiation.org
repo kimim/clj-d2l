@@ -63,11 +63,11 @@ We place our code inside a ~with-open~ and declare the
 ~gradient-collector~ object that will build the computational graph. Now
 let us calculate \(y\).
 
-Since (\mathbf{x}\) is a vector of length 4, an inner product of
-(\mathbf{x}\) and (\mathbf{x}\) is performed, yielding the scalar
-output that we assign to (\mathbf{y}\). Next, we can automatically
-calculate the gradient of (\mathbf{y}\) with respect to each component
-of (\mathbf{x}\) by calling the function for backpropagation and
+Since \(\mathbf{x}\) is a vector of length 4, an inner product of
+\(\mathbf{x}\) and \(\mathbf{x}\) is performed, yielding the scalar
+output that we assign to \(\mathbf{y}\). Next, we can automatically
+calculate the gradient of \(\mathbf{y}\) with respect to each component
+of \(\mathbf{x}\) by calling the function for backpropagation and
 printing the gradient.
 
 #+begin_src clojure :results output :exports both :eval no-export
@@ -122,7 +122,7 @@ Now let us calculate another function of \(\mathbf{x}\).
 Technically, when \(y\) is not a scalar, the most natural
 interpretation of the differentiation of a vector \(\mathbf{y}\) with
 respect to a vector \(\mathbf{x}\) is a matrix. For higher-order and
-higher-dimensional \(\mathbf{y}\) and \(\mthbf{x}\), the
+higher-dimensional \(\mathbf{y}\) and \(\mathbf{x}\), the
 differentiation result could be a high-order tensor.
 
 However, while these more exotic objects do show up in advanced

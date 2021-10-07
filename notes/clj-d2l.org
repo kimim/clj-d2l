@@ -9,3 +9,6 @@
 #+INCLUDE: "2.3-linear-algebra.org" :minlevel 2
 #+INCLUDE: "2.4-calculus.org" :minlevel 2
 #+INCLUDE: "2.5-automatic-differentiation.org" :minlevel 2
+#+INCLUDE: "2.6-probability.org" :minlevel 2
+#+INCLUDE: "3.0-linear-neural-networks.org" :minlevel 1
+#+INCLUDE: "3.1-linear-regression.org" :minlevel 2
