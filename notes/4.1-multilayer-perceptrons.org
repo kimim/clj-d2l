@@ -47,7 +47,7 @@ ReLU(z) = max(z, 0)
 \end{equation}
 #+end_export
 
-#+begin_src clojure :results silent :exports both
+#+begin_src clojure :results file graphics :output-dir figures :file relu.svg :exports both :eval no-export
 (def manager (nd/base-manager))
 (def x (nd/arange manager -8.0 8.0 0.1))
 (nd/attach-gradient x)
@@ -56,15 +56,15 @@ ReLU(z) = max(z, 0)
 (def X (nd/to-vec x))
 (def Y (nd/to-vec y))
 
-(plot "figure/relu.svg" "ReLU" X Y)
+(plot "notes/figures/relu.svg" "ReLU" X Y)
 #+end_src
 
 #+RESULTS:
-[[./figure/relu.svg]]
+[[file:figures/relu.svg]]
 
 The derivative of the relu function is:
 
-#+begin_src clojure :results silent :exports both
+#+begin_src clojure :results file graphics :output-dir figures :file grad_relu.svg :exports both :eval no-export
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/relu x)]
     (training/backward gc y)))
@@ -73,10 +73,11 @@ The derivative of the relu function is:
 (def X (nd/to-vec x))
 (def Y (nd/to-vec res))
 
-(plot "figure/grad_relu.svg" "grad of ReLU" X Y)
+(plot "notes/figures/grad_relu.svg" "grad of ReLU" X Y)
 #+end_src
 
-[[./figure/grad_relu.svg]]
+#+RESULTS:
+[[file:figures/grad_relu.svg]]
 
 ** Sigmoid Function
 
@@ -86,14 +87,14 @@ sigmoid(x) = \frac{1}{1+\exp{-x}}
 \end{equation}
 #+end_export
 
-#+begin_src clojure :results silent :exports both
+#+begin_src clojure :results file graphics :output-dir figures :file sigmoid.svg :exports both :eval no-export
 (def y (nn/sigmoid x))
 (def Y (nd/to-vec y))
-(plot "figure/sigmoid.svg" "Sigmoid" X Y)
+(plot "notes/figures/sigmoid.svg" "Sigmoid" X Y)
 #+end_src
 
 #+RESULTS:
-[[./figure/sigmoid.svg]]
+[[file:figures/sigmoid.svg]]
 
 The derivative of the sigmoid function is:
 
@@ -103,18 +104,18 @@ The derivative of the sigmoid function is:
 \end{equation}
 #+end_export
 
-#+begin_src clojure :results silent :exports both
+#+begin_src clojure :results file graphics :output-dir figures :file grad_sigmoid.svg :exports both :eval no-export
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/sigmoid x)]
     (training/backward gc y)))
 
 (def res (nd/get-gradient x))
 (def Y (nd/to-vec res))
-(plot "figure/grad_sigmoid.svg" "grad of Sigmoid" X Y)
+(plot "notes/figures/grad_sigmoid.svg" "grad of Sigmoid" X Y)
 #+end_src
 
 #+RESULTS:
-[[./figure/grad_sigmoid.svg]]
+[[file:figures/grad_sigmoid.svg]]
 
 ** Tanh Function
 
@@ -142,15 +143,15 @@ The derivative of the Tanh function is:
 \end{equation}
 #+end_export
 
-#+begin_src clojure :results silent :exports both
+#+begin_src clojure :results file graphics :output-dir figures :file grad_tanh.svg :exports both :eval no-export
 (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
   (let [y (nn/tanh x)]
     (training/backward gc y)))
 
 (def res (nd/get-gradient x))
 (def Y (nd/to-vec res))
-(plot "figure/grad_tanh.svg" "grad of Tanh" X Y)
+(plot "notes/figures/grad_tanh.svg" "grad of Tanh" X Y)
 #+end_src
 
 #+RESULTS:
-[[./figure/grad_tanh.svg]]
+[[file:figures/grad_tanh.svg]]

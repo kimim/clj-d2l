@@ -1,4 +1,4 @@
--*- org-babel-clojure-backend: cider; -*-
+* Dataset
 
 #+begin_src clojure :results value pp :exports both
 (require '[tablecloth.api :as api])

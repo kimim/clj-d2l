@@ -1,6 +1,22 @@
 #+PROPERTY: header-args    :tangle src/clj_d2l/linreg.clj
 * Linear Regression Implementation from Scratch
 
+
+
+Now that you understand the key ideas behind linear regression, we can
+begin to work through a hands-on implementation in code. In this
+section, we will implement the entire method from scratch, including
+the data pipeline, the model, the loss function, and the minibatch
+stochastic gradient descent optimizer. While modern deep learning
+frameworks can automate nearly all of this work, implementing things
+from scratch is the only way to make sure that you really know what
+you are doing. Moreover, when it comes time to customize models,
+defining our own layers or loss functions, understanding how things
+work under the hood will prove handy. In this section, we will rely
+only on tensors and auto differentiation. Afterwards, we will
+introduce a more concise implementation, taking advantage of bells and
+whistles of deep learning frameworks.
+
 #+begin_src clojure :results silent
 (ns clj-d2l.linreg
   (:require [clj-djl.ndarray :as nd]
@@ -8,17 +24,42 @@
             [clj-djl.engine :as engine]
             [clj-djl.training :as training]
             [clj-djl.training.dataset :as ds]
-            [clj-d2l.core :as d2l])
-  (:import [ai.djl.ndarray.types DataType]))
+            [clj-d2l.core :as d2l]))
 #+end_src
 
 ** Generating the Dataset
 
-#+begin_src clojure :results output :exports both
+To keep things simple, we will construct an artificial dataset
+according to a linear model with additive noise. Our task will be to
+recover this model's parameters using the finite set of examples
+contained in our dataset. We will keep the data low-dimensional so we
+can visualize it easily. In the following code snippet, we generate a
+dataset containing 1000 examples, each consisting of 2 features
+sampled from a standard normal distribution. Thus our synthetic
+dataset will be a matrix \(\mathbf{X}\in \mathbb{R}^{1000 \times 2}\).
+
+The true parameters generating our dataset will be \(\mathbf{w} = [2,
+-3.4]^\top\) and \(b = 4.2\), and our synthetic labels will be
+assigned according to the following linear model with the noise term
+\(\epsilon\):
+
+\begin{equation}
+\mathbf{y}= \mathbf{X} \mathbf{w} + b + \mathbf\epsilon.
+\end{equation}
+
+
+You could think of \(\epsilon\) as capturing potential measurement
+errors on the features and labels. We will assume that the standard
+assumptions hold and thus that \(\epsilon\) obeys a normal
+distribution with mean of 0. To make our problem easy, we will set its
+standard deviation to 0.01. The following code generates our synthetic
+dataset.
+
+#+begin_src clojure :results silent :exports both :eval no-export
 (defn synthetic-data [ndm w b num]
   (let [X (nd/random-normal ndm [num (nd/size w)])
         y (nd/+ (nd/dot X w) b)
-        noise (nd/random-normal ndm 0 0.01 (nd/get-shape y) DataType/FLOAT32)]
+        noise (nd/random-normal ndm 0 0.01 (nd/shape y) :float32)]
     [X (nd/+ y noise)]))
 
 (def ndm (nd/new-base-manager))
@@ -27,29 +68,36 @@
 (def dp (synthetic-data ndm true-w true-b 1000))
 (def features (get dp 0))
 (def labels (get dp 1))
-(println "features(0): "(nd/to-vec (nd/get features [0])))
-(println "labels(0): " (nd/get-element labels [0]))
+#+end_src
+
+Note that each row in features consists of a 2-dimensional data
+example and that each row in labels consists of a 1-dimensional label
+value (a scalar).
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(str "features(0): " (nd/to-vec (nd/get features [0]))
+     "\nlabels(0): " (nd/get-element labels [0]))
 #+end_src
 
 #+RESULTS:
-: features(0):  [0.2726572 0.046338152]
-: labels(0):  4.5826263
+: features(0): [1.5995362 0.08100491]
+: labels(0): 7.122985
 
+By generating a scatter plot using the second feature and ~labels~, we
+can clearly observe the linear correlation between the two.
 
-Now we can show the data with plotly:
-
-#+begin_src clojure :results silent :exports both
+#+begin_src clojure :results file graphics :output-dir figures :file synthetic_data.svg :exports both :eval no-export
 (let [x (nd/to-vec (nd/get features ":, 1"))
       y (nd/to-vec labels)]
   (d2l/plot-scatter
-   "../figure/synthetic_data.svg"
+   "notes/figures/synthetic_data.svg"
    "data"
    x
    y))
 #+end_src
 
 #+RESULTS:
-[[../figure/synthetic_data.svg]]
+[[file:figures/synthetic_data.svg]]
 
 
 ** Reading the Dataset

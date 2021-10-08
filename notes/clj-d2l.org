@@ -1,5 +1,6 @@
 #+TITLE: CLJ D2L
 #+latex_class: article
+#+options: H:4
 
 #+INCLUDE: "notation.org" :minlevel 1
 #+INCLUDE: "1.0-introduction.org" :minlevel 1

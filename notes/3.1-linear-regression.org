@@ -1,6 +1,5 @@
-#+PROPERTY: header-args    :tangle src/clj_d2l/vec4speed.clj
+#+PROPERTY: header-args    :tangle src/clj_d2l/linear_regression.clj
 * Linear Regression
-
 
 *Regression* refers to a set of methods for modeling the relationship
 between one or more independent variables and a dependent variable. In
@@ -47,7 +46,7 @@ dataset. We index the data examples by \(i\), denoting each input as
 \(\mathbf{x}^{(i)} = [x_1^{(i)}, x_2^{(i)}]^\top\) and the
 corresponding label as \(y^{(i)}\).
 
-** Linear Model
+*** Linear Model
 
 The linearity assumption just says that the target (price) can be
 expressed as a weighted sum of the features (area and age):
@@ -135,7 +134,7 @@ parameters*) \(\mathbf{w}\) and \(b\), we will need two more
 things: (i) a quality measure for some given model; and (ii) a procedure
 for updating the model to improve its quality.
 
-** Loss Function
+*** Loss Function
 
 Before we start thinking about how to *fit* data with our model, we need
 to determine a measure of *fitness*. The *loss function* quantifies the
@@ -180,7 +179,7 @@ b^*\)) that minimize the total loss across all training examples:
 \mathbf{w}^*, b^* = \operatorname*{argmin}_{\mathbf{w}, b}\  L(\mathbf{w}, b).
 \end{equation}
 
-** Analytic Solution
+*** Analytic Solution
 
 Linear regression happens to be an unusually simple optimization
 problem. Unlike most other models that we will encounter in this book,
@@ -204,7 +203,7 @@ analytic solutions allow for nice mathematical analysis, the
 requirement of an analytic solution is so restrictive that it would
 exclude all of deep learning.
 
-** Minibatch Stochastic Gradient Descent
+*** Minibatch Stochastic Gradient Descent
 
 Even in cases where we cannot solve the models analytically, it turns
 out that we can still train models effectively in practice. Moreover,
@@ -287,7 +286,7 @@ find parameters that will achieve low loss on data that we have not
 seen before, a challenge called *generalization*. We return to these
 topics throughout the book.
 
-** Making Predictions with the Learned Model
+*** Making Predictions with the Learned Model
 
 Given the learned linear regression model \(\hat{\mathbf{w}}^\top
 \mathbf{x} + \hat{b}\), we can now estimate the price of a new house
@@ -312,9 +311,11 @@ algebra libraries rather than writing costly loops in Clojure.
 We will use [[https://github.com/dm3/stopwatch][dm3/stopwatch]] to measure the time duration.
 
 #+begin_src clojure :results silent
-(ns clj-d2l.vec4speed
+(ns clj-d2l.linear_regression
   (:require [clj-djl.ndarray :as nd]
-            [stopwatch.core :as stopwatch]))
+            [stopwatch.core :as stopwatch]
+            [clojure.java.io :as io]
+            [clj-d2l.core :as d2l]))
 #+end_src
 
 To illustrate why this matters so much, we can consider two methods
@@ -325,9 +326,9 @@ a single call to ~+~.
 
 #+begin_src clojure :results silent
 (def n 10000)
-(def manager (nd/new-base-manager))
-(def a (nd/ones manager [n]))
-(def b (nd/ones manager [n]))
+(def ndm (nd/base-manager))
+(def a (nd/ones ndm [n]))
+(def b (nd/ones ndm [n]))
 #+end_src
 
 Now we can benchmark the workloads. First, we add them, one coordinate
@@ -360,3 +361,189 @@ than the first. Vectorizing code often yields order-of-magnitude
 speedups.  Moreover, we push more of the mathematics to the library
 and need not write as many calculations ourselves, reducing the
 potential for errors.
+
+** The Normal Distribution and Squared Loss
+
+While you can already get your hands dirty using only the information
+above, in the following we can more formally motivate the squared loss
+objective via assumptions about the distribution of noise.
+
+Linear regression was invented by Gauss in 1795, who also discovered
+the *normal distribution* (also called the *Gaussian*). It turns out that
+the connection between the normal distribution and linear regression
+runs deeper than common parentage. To refresh your memory, the
+probability density of a normal distribution with mean \(\mu\) and
+variance \(\sigma^2\) (standard deviation \(\sigma\)) is given as
+
+\begin{equation}
+p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right).
+\end{equation}
+
+Below we define a Clojure function to compute the normal distribution.
+
+#+begin_src clojure :results silent
+(defn normal [x mu sigma]
+  (let [p (/ 1.0 (Math/sqrt (* 2 Math/PI (Math/pow sigma 2))))]
+    (nd/* (nd/exp (nd/* (nd/pow (nd/- x mu) 2) (/ -0.5 (Math/pow sigma 2))))
+          p)))
+#+end_src
+
+#+begin_src clojure :results file graphics :output-dir figures :file normal-distribution.svg :exports both :eval no-export
+(def x (nd/arange ndm -7. 7. 0.01))
+(def params [[0 1] [0 2] [3 1]])
+(d2l/plot-lines
+ "notes/figures/normal-distribution.svg"
+ (map #(str "mean " (first %) ", std " (second %)) params)
+ (nd/to-vec x)
+ (map #(nd/to-vec (normal x (first %) (second %))) params))
+#+end_src
+
+#+RESULTS:
+[[file:figures/normal-distribution.svg]]
+
+As we can see, changing the mean corresponds to a shift along the
+\(x\)-axis, and increasing the variance spreads the distribution out,
+lowering its peak.
+
+One way to motivate linear regression with the mean squared error loss
+function (or simply squared loss) is to formally assume that
+observations arise from noisy observations, where the noise is normally
+distributed as follows:
+
+\begin{equation}
+y = \mathbf{w}^\top \mathbf{x} + b + \epsilon \text{ where } \epsilon \sim \mathcal{N}(0, \sigma^2).
+\end{equation}
+
+Thus, we can now write out the *likelihood* of seeing a particular \(y\)
+for a given \(\mathbf{x}\) via
+
+\begin{equation}
+P(y \mid \mathbf{x}) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (y - \mathbf{w}^\top \mathbf{x} - b)^2\right).
+\end{equation}
+
+Now, according to the principle of maximum likelihood, the best values
+of parameters \(\mathbf{w}\) and \(b\) are those that maximize the
+*likelihood* of the entire dataset:
+
+\begin{equation}
+P(\mathbf y \mid \mathbf X) = \prod_{i=1}^{n} p(y^{(i)}|\mathbf{x}^{(i)}).
+\end{equation}
+
+
+Estimators chosen according to the principle of maximum likelihood are
+called *maximum likelihood estimators*. While, maximizing the product of
+many exponential functions, might look difficult, we can simplify
+things significantly, without changing the objective, by maximizing
+the log of the likelihood instead. For historical reasons,
+optimizations are more often expressed as minimization rather than
+maximization. So, without changing anything we can minimize the
+*negative log-likelihood* \(-\log P(\mathbf y \mid \mathbf X)\). Working
+out the mathematics gives us:
+
+\begin{equation}
+-\log P(\mathbf y \mid \mathbf X) = \sum_{i=1}^n \frac{1}{2} \log(2 \pi \sigma^2) + \frac{1}{2 \sigma^2} \left(y^{(i)} - \mathbf{w}^\top \mathbf{x}^{(i)} - b\right)^2.
+\end{equation}
+
+Now we just need one more assumption that \(\sigma\) is some fixed
+constant. Thus we can ignore the first term because it does not depend
+on \(\mathbf{w}\) or \(b\). Now the second term is identical to the
+squared error loss introduced earlier, except for the multiplicative
+constant \(\frac{1}{\sigma^2}\). Fortunately, the solution does not
+depend on \(\sigma\). It follows that minimizing the mean squared
+error is equivalent to maximum likelihood estimation of a linear model
+under the assumption of additive Gaussian noise.
+
+
+** From Linear Regression to Deep Networks
+
+So far we only talked about linear models. While neural networks cover
+a much richer family of models, we can begin thinking of the linear
+model as a neural network by expressing it in the language of neural
+networks.  To begin, let us start by rewriting things in a "layer"
+notation.
+
+*** Neural Network Diagram
+
+Deep learning practitioners like to draw diagrams to visualize what is
+happening in their models. In fig [[fig:single-neuron]], we depict our
+linear regression model as a neural network. Note that these diagrams
+highlight the connectivity pattern such as how each input is connected
+to the output, but not the values taken by the weights or biases.
+
+#+name: fig:single-neuron
+#+caption: Linear regression is a single-layer neural network.
+[[file:figures/singleneuron.svg]]
+
+For the neural network shown in fig [[fig:single-neuron]], the inputs are
+\(x_1, \ldots, x_d\), so the *number of inputs* (or *feature
+dimensionality*) in the input layer is \(d\). The output of the network
+in fig [[fig:single-neuron]] is \(o_1\), so the *number of outputs* in the
+output layer is 1. Note that the input values are all *given* and there
+is just a single *computed* neuron. Focusing on where computation takes
+place, conventionally we do not consider the input layer when counting
+layers. That is to say, the *number of layers* for the neural network in
+fig [[fig:single-neuron]] is 1. We can think of linear regression models
+As neural networks consisting of just a single artificial neuron, or
+as single-layer neural networks.
+
+Since for linear regression, every input is connected to every output
+(in this case there is only one output), we can regard this
+transformation (the output layer in fig [[fig:single-neuron]] as a
+*fully-connected layer* or *dense layer*. We will talk a lot more about
+networks composed of such layers in the next chapter.
+
+*** Biology
+
+Since linear regression (invented in 1795) predates computational
+neuroscience, it might seem anachronistic to describe linear
+regression as a neural network. To see why linear models were a
+natural place to begin when the cyberneticists/neurophysiologists
+Warren McCulloch and Walter Pitts began to develop models of
+artificial neurons, consider the cartoonish picture of a biological
+neuron in fig [[fig:neuron]], consisting of *dendrites* (input terminals),
+the *nucleus* (CPU), the *axon* (output wire), and the *axon terminals*
+(output terminals), enabling connections to other neurons via
+*synapses*.
+
+#+name: fig:neuron
+#+caption: The real neuron.
+[[file:figures/neuron.svg]]
+
+
+Information \(x_i\) arriving from other neurons (or environmental
+sensors such as the retina) is received in the dendrites. In particular,
+that information is weighted by *synaptic weights* \(w_i\)
+determining the effect of the inputs (e.g., activation or inhibition via
+the product \(x_i w_i\)). The weighted inputs arriving from multiple
+sources are aggregated in the nucleus as a weighted sum
+\(y = \sum_i x_i w_i + b\), and this information is then sent for
+further processing in the axon \(y\), typically after some nonlinear
+processing via \(\sigma(y)\). From there it either reaches its
+destination (e.g., a muscle) or is fed into another neuron via its
+dendrites.
+
+Certainly, the high-level idea that many such units could be cobbled
+together with the right connectivity and right learning algorithm, to
+produce far more interesting and complex behavior than any one neuron
+alone could express owes to our study of real biological neural systems.
+
+At the same time, most research in deep learning today draws little
+direct inspiration in neuroscience. We invoke Stuart Russell and Peter
+Norvig who, in their classic AI text book *Artificial Intelligence: A
+Modern Approach* [Russell & Norvig, 2016], pointed out that although
+airplanes might have been *inspired* by birds, ornithology has not been
+the primary driver of aeronautics innovation for some
+centuries. Likewise, inspiration in deep learning these days comes in
+equal or greater measure from mathematics, statistics, and computer
+science.
+
+** Summary
+
+- Key ingredients in a machine learning model are training data, a loss
+  function, an optimization algorithm, and quite obviously, the model
+  itself.
+- Vectorizing makes everything better (mostly math) and faster (mostly
+  code).
+- Minimizing an objective function and performing maximum likelihood
+  estimation can mean the same thing.
+- Linear regression models are neural networks, too.
