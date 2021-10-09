@@ -1,7 +1,5 @@
-#+PROPERTY: header-args    :tangle src/clj_d2l/linreg.clj
+#+PROPERTY: header-args    :tangle ../src/clj_d2l/linreg.clj
 * Linear Regression Implementation from Scratch
-
-
 
 Now that you understand the key ideas behind linear regression, we can
 begin to work through a hands-on implementation in code. In this
@@ -22,7 +20,7 @@ whistles of deep learning frameworks.
   (:require [clj-djl.ndarray :as nd]
             [clj-djl.device :as device]
             [clj-djl.engine :as engine]
-            [clj-djl.training :as training]
+            [clj-djl.training :as t]
             [clj-djl.training.dataset :as ds]
             [clj-d2l.core :as d2l]))
 #+end_src
@@ -80,8 +78,8 @@ value (a scalar).
 #+end_src
 
 #+RESULTS:
-: features(0): [1.5995362 0.08100491]
-: labels(0): 7.122985
+: features(0): [1.1630785 2.2122061]
+: labels(0): -1.0015316
 
 By generating a scatter plot using the second feature and ~labels~, we
 can clearly observe the linear correlation between the two.
@@ -102,81 +100,174 @@ can clearly observe the linear correlation between the two.
 
 ** Reading the Dataset
 
-#+begin_src clojure :results silent :exports both
-(def batch-size 10)
-(def dataset (-> (ds/new-array-dataset-builder)
-                 (ds/set-data features)
-                 (ds/opt-labels labels)
-                 (ds/set-sampling batch-size false)
-                 (ds/build)))
+Recall that training models consists of making multiple passes over the
+dataset, grabbing one minibatch of examples at a time, and using them to
+update our model. Since this process is so fundamental to training
+machine learning algorithms, it is worth defining a utility function to
+shuffle the dataset and access it in minibatches.
+
+In the following code, we define the ~data-iter~ function to demonstrate
+one possible implementation of this functionality. The function takes
+a batch size, a matrix of features, and a vector of labels, yielding
+minibatches of the size ~batch-size~. Each minibatch consists of a tuple
+of features and labels.
+
+#+begin_src clojure :results silent :exports both :eval no-export
+(defn data-iter [batch-size features labels]
+  (let [num-examples (nd/size features)
+        indices (range num-examples)
+        indices (shuffle indices)]
+    (for [i (range 0 num-examples batch-size)]
+      [(->> (range i (min (+ i batch-size) num-examples))
+           (map #(nd/get features [%]))
+           (nd/stack))
+       (->> (range i (min (+ i batch-size) num-examples))
+           (map #(nd/get labels [%]))
+           (nd/stack))])))
 #+end_src
 
-#+begin_src clojure :results output :exports both
-(let [batch (.next (ds/get-data dataset ndm))
-      X (-> (ds/get-batch-data batch)
-            (nd/head))
-      y (-> (ds/get-batch-labels batch)
-            (nd/head))]
-  (println (str X))
-  (println (nd/to-vec (nd/+ (nd/dot X true-w) true-b)))
-  (println (nd/to-vec y))
-  (ds/close-batch batch))
+In general, note that we want to use reasonably sized minibatches to
+take advantage of the GPU hardware, which excels at parallelizing
+operations. Because each example can be fed through our models in
+parallel and the gradient of the loss function for each example can also
+be taken in parallel, GPUs allow us to process hundreds of examples in
+scarcely more time than it might take to process just a single example.
+
+To build some intuition, let us read and print the first small batch
+of data examples. The shape of the features in each minibatch tells us
+both the minibatch size and the number of input features. Likewise,
+our minibatch of labels will have a shape given by ~batch-size~.
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(first (first (data-iter 10 features labels)))
 #+end_src
 
 #+RESULTS:
 #+begin_example
 ND: (10, 2) cpu() float32
-[[ 0.2727,  0.0463],
- [ 0.8032,  1.3645],
- [ 0.0895,  0.6368],
- [-0.435 , -1.8171],
- [ 1.6563, -1.197 ],
- [ 0.5207, -1.0564],
- [ 0.1503,  1.0269],
- [ 0.5365,  0.6632],
- [-0.6452,  1.2165],
- [ 2.0424,  0.8562],
+[[ 1.1631,  2.2122],
+ [ 0.4838,  0.774 ],
+ [ 0.2996,  1.0434],
+ [ 0.153 ,  1.1839],
+ [-1.1688,  1.8917],
+ [ 1.5581, -1.2347],
+ [-0.5459, -1.771 ],
+ [-2.3556, -0.4514],
+ [ 0.5414,  0.5794],
+ [ 2.6785, -1.8561],
 ]
-
-[4.5877643 1.1672001 2.213755 9.508151 11.582605 8.833304 1.0091412 3.0179806 -1.2264853 5.3737807]
-[4.5826263 1.178563 2.2149844 9.506688 11.571146 8.845152 1.0214792 3.0197468 -1.2324206 5.3641534]
 #+end_example
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(second (first (data-iter 10 features labels)))
+#+end_src
+
+#+RESULTS:
+: ND: (10) cpu() float32
+: [-1.0015,  2.5281,  1.2197,  0.4807, -4.5658, 11.5155,  9.1389,  1.0271,  3.3058, 15.8548]
+
+As we run the iteration, we obtain distinct minibatches successively
+until the entire dataset has been exhausted (try this). While the
+iteration implemented above is good for didactic purposes, it is
+inefficient in ways that might get us in trouble on real problems. For
+example, it requires that we load all the data in memory and that we
+perform lots of random memory access. The built-in iterators
+implemented in a deep learning framework are considerably more
+efficient and they can deal with both data stored in files and data
+fed via data streams.
 
 ** Initializing Model Parameters
 
-#+begin_src clojure :results output :exports both
-(def w (nd/random-normal ndm 0 0.01 [2 1] DataType/FLOAT32 (device/default-device)))
+Before we can begin optimizing our model's parameters by minibatch
+stochastic gradient descent, we need to have some parameters in the
+first place. In the following code, we initialize weights by sampling
+random numbers from a normal distribution with mean 0 and a standard
+deviation of 0.01, and setting the bias to 0.
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(def w (nd/random-normal ndm 0 0.01 [2 1] :float32))
 (def b (nd/zeros ndm [1]))
+(nd/set-requires-gradient w true)
+(nd/set-requires-gradient b true)
 (println (nd/to-vec w))
 (println (nd/to-vec b))
 #+end_src
 
 #+RESULTS:
-: [8.1814115E-4 -0.016517017]
+: [0.0013263007 0.0072455113]
 : [0.0]
+
+After initializing our parameters, our next task is to update them until
+they fit our data sufficiently well. Each update requires taking the
+gradient of our loss function with respect to the parameters. Given this
+gradient, we can update each parameter in the direction that may reduce
+the loss.
+
+Since nobody wants to compute gradients explicitly (this is tedious
+and error prone), we use automatic differentiation, as introduced in
+Section [[id:8e053d92-8a71-4ddc-a102-0db664f4a377]], to compute the
+gradient.
 
 ** Defining the Model
 
+Next, we must define our model, relating its inputs and parameters to
+its outputs. Recall that to calculate the output of the linear model,
+we simply take the matrix-vector dot product of the input features
+\(\mathbf{X}\) and the model weights \(\mathbf{w}\), and add the
+offset \(b\) to each example. Note that below \(\mathbf{Xw}\) is a
+vector and \(b\) is a scalar. Recall the broadcasting mechanism as
+described in Section [[id:9dcbe412-db7e-485a-bb3c-d7181f2f7f05]]. When
+we add a vector and a scalar, the scalar is added to each component of
+the vector.
+
 #+begin_src clojure :results silent :export both
-(defn linreg [X w b]
+(defn linreg
+  "The linear regression model."
+  [X w b]
   (nd/+ (nd/dot X w) b))
 #+end_src
 
 ** Defining the Loss Function
 
+Since updating our model requires taking the gradient of our loss
+function, we ought to define the loss function first. Here we will use
+the squared loss function as described in Section
+[[id:72a54bf4-b6c6-48d1-ac5d-fe2ee9c691a0]]. In the implementation, we
+need to transform the true value ~y~ into the predicted value's shape
+~y-hat~. The result returned by the following function will also have
+the same shape as ~y-hat~.
+
 #+begin_src clojure :results silent :export both
 (defn squared-loss [y-hat y]
-  (nd// (nd/* (nd/- y-hat (nd/reshape y (nd/get-shape y-hat)))
-              (nd/- y-hat (nd/reshape y (nd/get-shape y-hat))))
+  (nd// (nd/* (nd/- y-hat (nd/reshape y (nd/shape y-hat)))
+              (nd/- y-hat (nd/reshape y (nd/shape y-hat))))
         2))
 #+end_src
 
 ** Defining the Optimization Algorithm
 
-stochastic gradient descent (SGD):
+As we discussed in Section [[id:72a54bf4-b6c6-48d1-ac5d-fe2ee9c691a0]],
+linear regression has a closed-form solution. However, this is not a
+book about linear regression: it is a book about deep learning. Since
+none of the other models that this book introduces can be solved
+analytically, we will take this opportunity to introduce your first
+working example of minibatch stochastic gradient descent.
+
+At each step, using one minibatch randomly drawn from our dataset, we
+will estimate the gradient of the loss with respect to our parameters.
+Next, we will update our parameters in the direction that may reduce
+the loss. The following code applies the minibatch stochastic gradient
+descent update, given a set of parameters, a learning rate, and a
+batch size. The size of the update step is determined by the learning
+rate ~lr~. Because our loss is calculated as a sum over the minibatch of
+examples, we normalize our step size by the batch size (~batch-size~),
+so that the magnitude of a typical step size does not depend heavily
+on our choice of the batch size.
 
 #+begin_src clojure :results silent :export both
-(defn sgd [params lr batch-size]
+(defn sgd
+  "Minibatch stochastic gradient descent."
+  [params lr batch-size]
   (doseq [param params]
     ;; param = param - param.gradient * lr / batchSize
     (nd/-! param (nd// (nd/* (nd/get-gradient param) lr) batch-size))))
@@ -184,33 +275,78 @@ stochastic gradient descent (SGD):
 
 ** Training
 
-#+begin_src clojure :results output :exports both
+Now that we have all of the parts in place, we are ready to implement
+the main training loop. It is crucial that you understand this code
+because you will see nearly identical training loops over and over
+again throughout your career in deep learning.
+
+In each iteration, we will grab a minibatch of training examples, and
+pass them through our model to obtain a set of predictions. After
+calculating the loss, we initiate the backwards pass through the
+network, storing the gradients with respect to each
+parameter. Finally, we will call the optimization algorithm ~sgd~ to
+update the model parameters.
+
+In summary, we will execute the following loop:
+- Initialize parameters \((\mathbf{w}, b)\)
+- Repeat until done
+  - Compute gradient \(\mathbf{g} \leftarrow \partial_{(\mathbf{w},b)}
+    \frac{1}{|\mathcal{B}|} \sum_{i \in \mathcal{B}}
+    l(\mathbf{x}^{(i)}, y^{(i)}, \mathbf{w}, b)\)
+  - Update parameters \((\mathbf{w}, b) \leftarrow (\mathbf{w}, b) -
+    \eta \mathbf{g}\)
+
+In each *epoch*, we will iterate through the entire dataset (using the
+~data-iter~ function) once passing through every example in the training
+dataset (assuming that the number of examples is divisible by the
+batch size). The number of epochs ~num-epochs~ and the learning rate ~lr~
+are both hyperparameters, which we set here to 3 and 0.03,
+respectively. Unfortunately, setting hyperparameters is tricky and
+requires some adjustment by trial and error. We elide these details
+for now but revise them later in Section 11.
+
+#+begin_src clojure :results pp :exports both :eval no-export
 (def lr 0.03)
-(def epochs 3)
-
-(dorun (map #(nd/attach-gradient %) [w b]))
-
-(doseq [epoch (range epochs)]
-  (doseq [batch (training/iter-seq (ds/get-data dataset ndm))]
-    (let [X (-> (ds/get-batch-data batch)
-                (nd/head))
-          y (-> (ds/get-batch-labels batch)
-                (nd/head))]
-      (with-open [gc (-> (engine/get-instance) (engine/new-gradient-collector))]
-        (let [l (-> (linreg X w b) (squared-loss y))]
-          (.backward gc l)))
-      (sgd [w b] lr batch-size)
-      (ds/close-batch batch)))
-  (let [train-loss (squared-loss (linreg features w b) labels)]
-    (println "epoch" (inc epoch) ", loss " (nd/get-element (.mean train-loss)))))
+(def num-epochs 3)
+(def batch-size 10)
+[lr num-epochs batch-size]
 #+end_src
 
 #+RESULTS:
-: epoch 1 , loss  0.037740294
-: epoch 2 , loss  1.4411E-4
-: epoch 3 , loss  4.955114E-5
+: [0.03 3 10]
 
-#+begin_src clojure :results output :exports both
+#+begin_src clojure :results pp :exports both :eval no-export
+(def datasets (data-iter batch-size features labels))
+#+end_src
+
+#+RESULTS:
+: #'clj-d2l.linreg/datasets
+
+#+begin_src clojure :results pp :exports both
+(doseq [epoch (range num-epochs)]
+  (doseq [[X y] datasets]
+    (with-open [gc (t/gradient-collector)]
+      (let [l (-> (linreg X w b) (squared-loss y))]
+        (t/backward gc l)))
+    (sgd [w b] lr batch-size))
+  (println "epoch " epoch
+           (-> (squared-loss (linreg features w b) labels)
+               (nd/mean)
+               (nd/get-element))))
+#+end_src
+
+#+RESULTS:
+: epoch  0 3.3477103E-4
+: epoch  1 5.24727E-5
+: epoch  2 5.1000967E-5
+
+In this case, because we synthesized the dataset ourselves, we know
+precisely what the true parameters are. Thus, we can evaluate our
+success in training by comparing the true parameters with those that
+we learned through our training loop. Indeed they turn out to be very
+close to each other.
+
+#+begin_src clojure :results pp :exports both
 (println (nd/to-vec w))
 (println (nd/to-vec true-w))
 (def w-error (nd/to-vec (nd/- true-w (nd/reshape w (nd/get-shape true-w)))))
@@ -219,7 +355,28 @@ stochastic gradient descent (SGD):
 #+end_src
 
 #+RESULTS:
-: [2.0000813 -3.3988967]
+: [1.999567 -3.400089]
 : [2.0 -3.4]
-: Error in estimating w: [-8.1300735E-5 -0.0011034012]
-: Error in estimating w: 6.200790405275214E-4
+: Error in estimating w: [4.3296814E-4 8.893013E-5]
+: Error in estimating w: 5.704879760743964E-4
+
+Note that we should not take it for granted that we are able to
+recover the parameters perfectly. However, in machine learning, we are
+typically less concerned with recovering true underlying parameters,
+and more concerned with parameters that lead to highly accurate
+prediction. Fortunately, even on difficult optimization problems,
+stochastic gradient descent can often find remarkably good solutions,
+owing partly to the fact that, for deep networks, there exist many
+configurations of the parameters that lead to highly accurate
+prediction.
+
+
+** Summary
+
+- We saw how a deep network can be implemented and optimized from
+  scratch, using just tensors and auto differentiation, without any
+  need for defining layers or fancy optimizers.
+- This section only scratches the surface of what is possible. In the
+  following sections, we will describe additional models based on the
+  concepts that we have just introduced and learn how to implement
+  them more concisely.

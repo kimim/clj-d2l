@@ -1,5 +1,8 @@
-#+PROPERTY: header-args    :tangle src/clj_d2l/auto_diff.clj
+#+PROPERTY: header-args    :tangle ../src/clj_d2l/auto_diff.clj
 * Automatic Differentiation
+:PROPERTIES:
+:ID:       8e053d92-8a71-4ddc-a102-0db664f4a377
+:END:
 
 As we have explained in Section 2.4, differentiation is a crucial step
 in nearly all deep learning optimization algorithms. While the
@@ -21,7 +24,6 @@ with respect to each parameter.
   (:require [clj-djl.ndarray :as nd]
             [clj-djl.training :as t]))
 #+end_src
-
 
 ** A Simple Example
 
@@ -78,8 +80,7 @@ printing the gradient.
 #+end_src
 
 #+RESULTS:
-: ND: () cpu() float32
-: 28.
+: class java.lang.IllegalStateException
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (t/get-gradient x)
