@@ -197,7 +197,6 @@ respect to \(\mathbf{x}\), which is \(2 \times \mathbf{x}\).
 #+RESULTS:
 : ND: (4) cpu() boolean
 : [ true,  true,  true,  true]
-#+end_src
 
 ** Computing the Gradient of Clojure Control Flow
 

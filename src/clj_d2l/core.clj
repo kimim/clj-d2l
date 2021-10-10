@@ -22,7 +22,7 @@
 (defn synthetic-data [ndm w b num]
   (let [X (nd/random-normal ndm [num (nd/size w)])
         y (nd/+ (nd/dot X w) b)
-        noise (nd/random-normal ndm 0 0.01 (nd/get-shape y) :float32)]
+        noise (nd/random-normal ndm 0 0.01 (nd/shape y) :float32)]
     [X (nd/+ y noise)]))
 
 
