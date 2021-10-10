@@ -14,3 +14,4 @@
 #+INCLUDE: "3.0-linear-neural-networks.org" :minlevel 1
 #+INCLUDE: "3.1-linear-regression.org" :minlevel 2
 #+INCLUDE: "3.2-linear-reg-impl-from-scratch.org" :minlevel 2
+#+INCLUDE: "3.3-concise-impl-of-linear-reg.org" :minlevel 2
