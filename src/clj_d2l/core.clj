@@ -2,9 +2,7 @@
   (:require [clj-djl.ndarray :as nd]
             [clj-djl.training.dataset :as ds]
             [com.hypirion.clj-xchart :as c])
-  (:import [ai.djl.ndarray.types DataType]
-           [ai.djl.basicdataset.cv.classification FashionMnist]
-           [ai.djl.training.dataset Dataset$Usage]
+  (:import [ai.djl.basicdataset.cv.classification FashionMnist]
            [java.nio.file Paths]))
 
 (defn linreg [X w b]
@@ -83,12 +81,12 @@
 
 (defn load-data-fashion-mnist [batchsize]
   [(-> (FashionMnist/builder)
-       (ds/opt-usage Dataset$Usage/TRAIN)
+       (ds/opt-usage :train)
        (ds/set-sampling batchsize true)
        (ds/build)
        (ds/prepare))
    (-> (FashionMnist/builder)
-       (ds/opt-usage Dataset$Usage/TEST)
+       (ds/opt-usage :test)
        (ds/set-sampling batchsize true)
        (ds/build)
        (ds/prepare))])

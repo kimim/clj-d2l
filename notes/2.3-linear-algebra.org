@@ -86,7 +86,7 @@ division, and exponentiation.
 : ND: () cpu() float64
 : 9.
 
-**  Vectors
+** Vectors
 
 You can think of a vector as simply a list of scalar values. We call
 these values the elements (entries or components) of the vector. When
@@ -485,6 +485,9 @@ ND: (2, 3, 4) cpu() float32
 
 
 ** Reduction
+:PROPERTIES:
+:CUSTOM_ID: lin-alg-reduction
+:END:
 
 One useful operation that we can perform with arbitrary NDArrays is to
 calculate the sum of their elements. In mathematical notation, we
@@ -632,7 +635,10 @@ NDArray along the specified axes.
 : [ 8.,  9., 10., 11.]
 
 
-** Non-Reduction Sum
+*** Non-Reduction Sum
+:PROPERTIES:
+:CUSTOM_ID: lin-alg-non-reduction
+:END:
 
 However, sometimes it can be useful to keep the number of axes
 unchanged when invoking the function for calculating the sum or mean.

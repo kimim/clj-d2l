@@ -35,7 +35,7 @@ build-in functions in the framework.
 #+begin_src clojure :results pp :exports both
 (def batch-size 256)
 (def random-shuffle true)
-
+;; defn d2l/load-data-fashion-mnist in clj-d2l.core
 (def mnist-train (-> (FashionMnist/builder)
                      (ds/opt-usage :train)
                      (ds/set-sampling batch-size random-shuffle)
