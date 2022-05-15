@@ -25,12 +25,12 @@ number at a time. And, if you ever balanced a checkbook or even paid
 for dinner at a restaurant then you already know how to do basic
 things like adding and multiplying pairs of numbers. For example, the
 temperature in Palo Alto is $52$ degrees Fahrenheit. Formally, we call
-values consisting of just one numerical quantity scalars. If you
+values consisting of just one numerical quantity /scalars/. If you
 wanted to convert this value to Celsius (the metric system's more
 sensible temperature scale), you would evaluate the expression
 $c=\frac{5}{9}(f−32)$, setting $f$ to $52$. In this equation, each of
 the terms — $5$, $9$, and $32$ — are scalar values. The placeholders
-$c$ and $f$ are called variables and they represent unknown scalar
+$c$ and $f$ are called /variables/ and they represent unknown scalar
 values. We denote the space of all (continuous) real-valued scalars by
 $\mathbb{R}$.
 
@@ -38,8 +38,8 @@ In this book, we adopt the mathematical notation where scalar
 variables are denoted by ordinary lower-cased letters (e.g., $x$, $y$,
 and $z$). For expedience, we will punt on rigorous definitions of what
 precisely *space* is, but just remember for now that the expression $x
-\in \mathbb{R}$ is a formal way to say that $x$ is a real-valued
-scalar. The symbol $\in$ can be pronounced "in" and simply denotes
+\in \mathbb{R}$ is a formal way to say that $x$ is a /real-valued
+scalar/. The symbol $\in$ can be pronounced "in" and simply denotes
 membership in a set. Analogously, we could write $x, y \in \{0,1\}$ to
 state that $x$ and $y$ are numbers whose value can only be $0$ or $1$.
 
@@ -89,7 +89,7 @@ division, and exponentiation.
 ** Vectors
 
 You can think of a vector as simply a list of scalar values. We call
-these values the elements (entries or components) of the vector. When
+these values the /elements/ (/entries/ or /components/) of the vector. When
 our vectors represent examples from our dataset, their values hold
 some real-world significance. For example, if we were training a model
 to predict the risk that a loan defaults, we might associate each
@@ -116,7 +116,7 @@ x
 : [0., 1., 2., 3.]
 
 We can refer to any element of a vector by using a subscript. For
-example, we can refer to the ith element of $\mathbf{x}$ by
+example, we can refer to the i^{th} element of $\mathbf{x}$ by
 $x_i$. Note that the element $x_i$ is a scalar, so we do not bold-face
 the font when referring to it. Extensive literature considers column
 vectors to be the default orientation of vectors, so does this
@@ -127,9 +127,8 @@ book. In math, a vector $\mathbf{x}$ can be written as
 \end{equation}
 
 
-where :math: $x_1, \ldots, x_n$ are elements of the vector. In code,
-we access any element by indexing into the NDArray.
-
+where $x_1, \ldots, x_n$ are elements of the vector. In code, we
+access any element by indexing into the NDArray.
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (nd/get x 3)
@@ -141,8 +140,7 @@ we access any element by indexing into the NDArray.
 
 ** Length, Dimensionality, and Shape
 
-
-Let us revisit some concepts from Section 2.1. A vector is just an
+Let us revisit some concepts from [[file:2.1-data-manipulation.org][Section 2.1]]. A vector is just an
 array of numbers. And just as every array has a length, so does every
 vector. In math notation, if we want to say that a vector $\mathbf{x}$
 consists of $n$ real-valued scalars, we can express this as
@@ -150,8 +148,8 @@ $\mathbf{x} \in \mathbb{R}^n$. The length of a vector is commonly
 called the *dimension* of the vector.
 
 As with an ordinary Java array, we can access the length. In the case
-of a NDArray we can achieve this by using the ~(size ndarray 0)~ function.
-
+of a NDArray we can achieve this by using the ~(size ndarray 0)~
+function, where $0$ means the axis-0.
 
 #+begin_src clojure :results pp :exports both
 (nd/size x)
@@ -161,9 +159,9 @@ of a NDArray we can achieve this by using the ~(size ndarray 0)~ function.
 : 4
 
 When a NDArray represents a vector (with precisely one axis), we can
-also access its length via the getShape() function. The shape lists
-the length (dimensionality) along each axis of the NDArray. For
-NDArrays with just one axis, the shape has just one element.
+also access its length via the ~shape~ function. The shape lists the
+length (dimensionality) along each axis of the NDArray. For NDArrays
+with just one axis, the shape has just one element.
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (nd/shape x)
@@ -172,9 +170,18 @@ NDArrays with just one axis, the shape has just one element.
 #+RESULTS:
 : (4)
 
+or we can use ~get-shape~ function:
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(nd/get-shape x)
+#+end_src
+
+#+RESULTS:
+: (4)
+
 Note that the word "dimension" tends to get overloaded in these
 contexts and this tends to confuse people. To clarify, we use the
-dimensionality of a vector or an axis to refer to its length, i.e.,
+dimensionality of a /vector/ or an /axis/ to refer to its length, i.e.,
 the number of elements of a vector or an axis. However, we use the
 dimensionality of a NDArray to refer to the number of axes that a
 NDArray has. In this sense, the dimensionality of some axis of a
@@ -423,7 +430,7 @@ B
 : ]
 
 Specifically, elementwise multiplication of two matrices is called
-their Hadamard product (math notation $\odot$). Consider matrix
+their /Hadamard product/ (math notation $\odot$). Consider matrix
 $\mathbf{B} \in \mathbb{R}^{m \times n}$ whose element of row $i$ and
 column $j$ is $b_{ij}$. The Hadamard product of matrices $\mathbf{A}$
 (defined in (2.3.2)) and $\mathbf{B}$
@@ -531,7 +538,7 @@ $\mathbf{A}$ could be written $\sum^m_{i=1} \sum^n_{j=1} a_{ij}$.
 : ND: () cpu() float32
 : 190.
 
-By default, invoking the function for calculating the sum reduces a
+By default, invoking the function for calculating the sum /reduces/ a
 NDArray along all its axes to a scalar. We can also specify the axes
 along which the NDArray is reduced via summation. Take matrices as an
 example. To reduce the row dimension (axis 0) by summing up elements
@@ -731,6 +738,9 @@ $x^\top y = \sum^d_{i=1} x_i y_i$.
 #+begin_src clojure :results pp :exports both :eval no-export
 (def y (nd/ones ndm [4]))
 #+end_src
+
+#+RESULTS:
+: #'clj-d2l.linear-algebra/y
 
 #+begin_src clojure :results pp :exports both :eval no-export
 x
@@ -1080,7 +1090,7 @@ general $L_p$ norm:
 \|\mathbf{x}\|_p = \left(\sum_{i=1}^n \left|x_i \right|^p \right)^{1/p}.
 \end{equation}
 
-Analogous to $L_2$ norms of vectors, the Frobenius norm of a matrix
+Analogous to $L_2$ norms of vectors, the /Frobenius norm/ of a matrix
 $\mathbf{X} \in \mathbb{R}^{m \times n}$ is the square root of the sum
 of the squares of the matrix elements:
 

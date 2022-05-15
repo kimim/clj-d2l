@@ -1,0 +1,22 @@
+{:paths
+ ["src" "target/classes"]
+
+ :deps
+ {
+  org.clojure/clojure           {:mvn/version "1.10.3"}
+  clj-djl/clj-djl               {:mvn/version "0.1.9"}
+  clj-djl/dataframe             {:mvn/version "0.1.9"}
+  io.github.kimim/clj-chart     {:mvn/version "0.1.9"}
+  dm3/stopwatch                 {:mvn/version "0.1.1"}
+  }
+ :aliases
+ {
+  :test
+  {
+   :extra-paths ["test"]
+   :extra-deps {io.github.cognitect-labs/test-runner
+                {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+   :main-opts ["-m" "cognitect.test-runner"]
+   }
+  }
+ }

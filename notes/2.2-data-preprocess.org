@@ -28,11 +28,16 @@ Below we write the dataset row by row into a csv file.
                "NA,NA,140000\n"]]
   (io/make-parents filename)
   (dorun
-   (map #(spit filename % :append true) records)))
+   (map #(spit filename % :append true) records))
+  (slurp filename))
 #+end_src
 
 #+RESULTS:
-: true
+: NumRooms,Alley,Price
+: NA,Pave,127500
+: 2,NA,106000
+: 4,NA,178100
+: NA,NA,140000
 
 To load the raw dataset from the created csv file, we require the
 ~clj-djl.dataframe~ package and invoke the read function to read
@@ -48,12 +53,12 @@ data
 #+RESULTS:
 : data/house_tiny.csv [4 3]:
 :
-: | NumRooms |   Alley |  Price |
-: |----------|---------|--------|
-: |          |    Pave | 127500 |
-: |        2 |         | 106000 |
-: |        4 |         | 178100 |
-: |          |         | 140000 |
+: | NumRooms | Alley |  Price |
+: |---------:|-------|-------:|
+: |          |  Pave | 127500 |
+: |        2 |       | 106000 |
+: |        4 |       | 178100 |
+: |          |       | 140000 |
 
 ** Handling Missing Data
 
@@ -70,11 +75,18 @@ with the mean value of the same column.
 
 #+begin_src clojure :results silent :exports both
 (def dataframe
-  (let [data (df/replace-missing data ["NumRooms"] functional/mean)
-        data (df/update-column data "Alley_nan" (map #(if (nil? %) 1 0) (data "Alley")))
-        data (df/update-column data "Alley_Pave" (map #(if (some? %) 1 0) (data "Alley")))
-        inputs (df/select-columns data ["NumRooms" "Alley_Pave" "Alley_nan"])
-        outputs (df/select-columns data ["Price"])]
+  (let [data (df/replace-missing
+              data ["NumRooms"] functional/mean)
+        data (df/update-column
+              data "Alley_nan"
+              (map #(if (nil? %) 1 0) (data "Alley")))
+        data (df/update-column
+              data "Alley_Pave"
+              (map #(if (some? %) 1 0) (data "Alley")))
+        inputs (df/select-columns
+                data ["NumRooms" "Alley_Pave" "Alley_nan"])
+        outputs (df/select-columns
+                 data ["Price"])]
     [inputs outputs]))
 #+end_src
 
@@ -86,7 +98,7 @@ with the mean value of the same column.
 : data/house_tiny.csv [4 3]:
 :
 : | NumRooms | Alley_Pave | Alley_nan |
-: |----------|------------|-----------|
+: |---------:|-----------:|----------:|
 : |        3 |          1 |         0 |
 : |        2 |          0 |         1 |
 : |        4 |          0 |         1 |
@@ -101,7 +113,7 @@ with the mean value of the same column.
 : data/house_tiny.csv [4 1]:
 :
 : |  Price |
-: |--------|
+: |-------:|
 : | 127500 |
 : | 106000 |
 : | 178100 |
