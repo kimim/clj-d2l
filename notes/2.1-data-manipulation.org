@@ -78,7 +78,7 @@ inspecting its shape property.
 If we just want to know the total number of elements in an ndarray,
 i.e., the product of all of the shape elements, we can inspect its
 size. Because we are dealing with a vector here, the single element
-of its shape is same to its size. The difference is that =get-shape=
+of its shape is same to its size. The difference is that ~shape~
 will return a /Shape/ object.
 
 #+begin_src clojure :results pp :exports both :eval no-export
@@ -89,9 +89,9 @@ will return a /Shape/ object.
 : 12
 
 To change the shape of an ndarray without altering either the number
-of elements or their values, we can invoke the reshape function. For
+of elements or their values, we can invoke the ~reshape~ function. For
 example, we can transform our ndarray, x, from a row vector with
-shape (12,) to a matrix with shape (3, 4). This new ndarray contains
+shape (12) to a matrix with shape (3, 4). This new ndarray contains
 the exact same values, but views them as a matrix organized as 3
 rows and 4 columns. To reiterate, although the shape has changed,
 the elements have not. Note that the size is unaltered by reshaping.
@@ -191,12 +191,13 @@ ND: (2, 3, 4) cpu() float32
 ]
 #+end_example
 
-Often, we want to randomly sample the values for each element in an ndarray from
-some probability distribution. For example, when we construct arrays to serve as
-parameters in a neural network, we will typically initialize their values
-randomly. The following snippet creates an ndarray with shape (3, 4). Each of
-its elements is randomly sampled from a standard Gaussian (normal) distribution
-with a mean of 0 and a standard deviation of 1.
+Often, we want to randomly sample the values for each element in an
+ndarray from some probability distribution. For example, when we
+construct arrays to serve as parameters in a neural network, we will
+typically initialize their values randomly. The following snippet
+creates an ndarray with shape (3, 4). Each of its elements is randomly
+sampled from a standard Gaussian (normal) distribution with a mean of
+0 and a standard deviation of 1.
 
 #+begin_src clojure :results value pp :exports both
 (nd/random-normal ndm 0 1 (nd/shape [3 4]))
@@ -264,37 +265,41 @@ outermost list corresponds to axis 0, and the inner list to axis 1.
 
 ** Operations
 
-This book is not about software engineering. Our interests are not limited to
-simply reading and writing data from/to arrays. We want to perform mathematical
-operations on those arrays. Some of the simplest and most useful operations are
-the elementwise operations. These apply a standard scalar operation to each
-element of an array. For functions that take two arrays as inputs, elementwise
-operations apply some standard binary operator on each pair of corresponding
-elements from the two arrays. We can create an elementwise function from any
+This book is not about software engineering. Our interests are not
+limited to simply reading and writing data from/to arrays. We want to
+perform mathematical operations on those arrays. Some of the simplest
+and most useful operations are the elementwise operations. These apply
+a standard scalar operation to each element of an array. For functions
+that take two arrays as inputs, elementwise operations apply some
+standard binary operator on each pair of corresponding elements from
+the two arrays. We can create an elementwise function from any
 function that maps from a scalar to a scalar.
 
-In mathematical notation, we would denote such a unary scalar operator (taking
-one input) by the signature $f: \mathbb{R} \ rightarrow \mathbb{R}$. This just
-means that the function is mapping from any real number ($\mathbb{R}$) onto
-another. Likewise, we denote a binary scalar operator (taking two real inputs,
-and yielding one output) by the signature $f: \mathbb{R}, \mathbb{R} \rightarrow
-\mathbb{R}$. Given any two vectors $\mathbf{u}$ and $\mathbf{v}$ *of the same
-shape*, and a binary operator $f$, we can produce a vector $\mathbf{c} =
-F(\mathbf{u}, \mathbf{v})$ by setting $c_i \gets f(u_i, v_i)$ for all $i$, where
-$c_i, u_i$, and $v_i$ are the $i^\mathrm{th}$ elements of vectors $\mathbf{c}$,
-$\mathbf{u}$, and $\mathbf{v}$. Here, we produced the vector-valued $F:
-\mathbb{R}^d, \mathbb{R}^d \rightarrow \mathbb{R}^d$ by *lifting* the scalar
-function to an elementwise vector operation.
+In mathematical notation, we would denote such a unary scalar operator
+(taking one input) by the signature $f: \mathbb{R} \ rightarrow
+\mathbb{R}$. This just means that the function is mapping from any
+real number ($\mathbb{R}$) onto another. Likewise, we denote a binary
+scalar operator (taking two real inputs, and yielding one output) by
+the signature $f: \mathbb{R}, \mathbb{R} \rightarrow
+\mathbb{R}$. Given any two vectors $\mathbf{u}$ and $\mathbf{v}$ *of
+the same shape*, and a binary operator $f$, we can produce a vector
+$\mathbf{c} = F(\mathbf{u}, \mathbf{v})$ by setting $c_i \gets f(u_i,
+v_i)$ for all $i$, where $c_i, u_i$, and $v_i$ are the $i^\mathrm{th}$
+elements of vectors $\mathbf{c}$, $\mathbf{u}$, and
+$\mathbf{v}$. Here, we produced the vector-valued $F: \mathbb{R}^d,
+\mathbb{R}^d \rightarrow \mathbb{R}^d$ by *lifting* the scalar function
+to an elementwise vector operation.
 
-The common standard arithmetic operators (=+=, =-=, =*=, =/=, and =**=) have all
-been *lifted* to elementwise operations for any identically-shaped ndarrays of
-arbitrary shape. We can call elementwise operations on any two ndarrays of the
-same shape. In the following example, we use commas to formulate a 5-element
-tuple, where each element is the result of an elementwise operation.
+The common standard arithmetic operators (=+=, =-=, =*=, =/=) have all been
+*lifted* to elementwise operations for any identically-shaped ndarrays
+of arbitrary shape. We can call elementwise operations on any two
+ndarrays of the same shape. In the following example, we use commas to
+formulate a 5-element tuple, where each element is the result of an
+elementwise operation.
 
 *** Operations
 
-The common standard arithmetic operators (=+=, =-=, =*=, =/=, and =**=) have all been
+The common standard arithmetic operators (=+=, =-=, =*=, =/=) have all been
 lifted to elementwise operations.
 
 #+begin_src clojure :results pp :exports both
@@ -331,8 +336,8 @@ lifted to elementwise operations.
 : ND: (4) cpu() float64
 : [ 1.,  4., 16., 64.]
 
-Many more operations can be applied elementwise, including unary operators like
-exponentiation.
+Many more operations can be applied elementwise, including unary
+operators like exponentiation.
 
 #+begin_src clojure :results value pp :exports both
 (nd/exp x)
@@ -342,19 +347,21 @@ exponentiation.
 : ND: (4) cpu() float64
 : [ 2.71828183e+00,  7.38905610e+00,  5.45981500e+01,  2.98095799e+03]
 
-In addition to elementwise computations, we can also perform linear algebra
-operations, including vector dot products and matrix multiplication. We will
-explain the crucial bits of linear algebra (with no assumed prior knowledge) in
--Section 2.3-.
+In addition to elementwise computations, we can also perform linear
+algebra operations, including vector dot products and matrix
+multiplication. We will explain the crucial bits of linear algebra
+(with no assumed prior knowledge) in -Section 2.3-.
 
-We can also concatenate multiple ndarrays together, stacking them end-to-end to
-form a larger ndarray. We just need to provide a list of ndarrays and tell the
-system along which axis to concatenate. The example below shows what happens
-when we concatenate two matrices along rows (axis 0, the first element of the
-shape) vs. columns (axis 1, the second element of the shape). We can see that
-the first output ndarray's axis-0 length (6 ) is the sum of the two input
-ndarrays' axis-0 lengths $(3+3)$; while the second output ndarray's axis-1
-length (8) is the sum of the two input ndarrays' axis-1 lengths $(4+4)$.
+We can also concatenate multiple ndarrays together, stacking them
+end-to-end to form a larger ndarray. We just need to provide a list of
+ndarrays and tell the system along which axis to concatenate. The
+example below shows what happens when we concatenate two matrices
+along rows (axis 0, the first element of the shape) vs. columns (axis
+1, the second element of the shape). We can see that the first output
+ndarray's shape is (6, 4), its axis-0 length (6) is the sum of the two
+input ndarrays' axis-0 lengths $(3+3)$; while the second output
+ndarray's shape is (3, 8), its axis-1 length (8) is the sum of the two
+input ndarrays' axis-1 lengths $(4+4)$.
 
 #+begin_src clojure :results value pp :exports both
 (def X (-> (nd/arange ndm 12)
@@ -408,11 +415,14 @@ Y
 :  [ 8,  9, 10, 11,  4,  3,  2,  1],
 : ]
 
-Sometimes, we want to construct a binary ndarray via logical statements. Take
-~(nd/= X Y)~ as an example. For each position, if X and Y are equal at that
-position, the corresponding entry in the new tensor takes a value of 1, meaning
-that the logical statement ~(nd/= X Y)~ is true at that position; otherwise that
-position takes 0.
+The third argument of ~nd/concat~ is to specify the axis to concatenate,
+default is axis-0.
+
+Sometimes, we want to construct a binary ndarray via logical
+statements. Take ~(nd/= X Y)~ as an example. For each position, if X and
+Y are equal at that position, the corresponding entry in the new
+tensor takes a value of ~true~, meaning that the logical statement ~(nd/=
+X Y)~ is true at that position; otherwise that position takes ~false~.
 
 #+begin_src clojure :results output pp :exports both
 (nd/= X Y)
@@ -425,7 +435,8 @@ position takes 0.
 :  [false, false, false, false],
 : ]
 
-Summing all the elements in the ndarray yields a ndarray with only one element.
+Summing all the elements in the ndarray yields a ndarray with only one
+element.
 
 #+begin_src clojure :results value pp :exports both
 (nd/sum X)
@@ -473,11 +484,41 @@ b
 : [[ 0,  1],
 : ]
 
-Since a and b are $3 \times 1$ and $1 \times 2$ matrices respectively, their
-shapes do not match up if we want to add them. We broadcast the entries of both
-matrices into a larger $3 \times 2$ matrix as follows: for matrix a it
-replicates the columns and for matrix b it replicates the rows before adding up
-both elementwise.
+Since a and b are $3 \times 1$ and $1 \times 2$ matrices respectively,
+their shapes do not match up if we want to add them. We broadcast the
+entries of both matrices into a larger $3 \times 2$ matrix as follows:
+for matrix a it replicates the columns and for matrix b it replicates
+the rows before adding up both elementwise.
+
+The result of $a$ broadcasted is:
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(nd/concat a a 1)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 2) cpu() int32
+: [[ 0,  0],
+:  [ 1,  1],
+:  [ 2,  2],
+: ]
+
+The result of $b$ broadcasted is:
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(->> b
+     (nd/concat b)
+     (nd/concat b))
+#+end_src
+
+#+RESULTS:
+: ND: (3, 2) cpu() int32
+: [[ 0,  1],
+:  [ 0,  1],
+:  [ 0,  1],
+: ]
+
+Thus the result is:
 
 #+begin_src clojure :results pp
 (nd/+ a b)
@@ -492,11 +533,15 @@ both elementwise.
 
 ** Indexing and Slicing
 
-Just as in any other Python array, elements in a ndarray can be accessed by
-index. As in any Python array, the first element has index 0 and ranges are
-specified to include the first but before the last element. As in standard
-Python lists, we can access elements according to their relative position to the
-end of the list by using negative indices.
+Just as in any other Python array, elements in a ndarray can be
+accessed by index. As in any Python array, the first element has index
+0 and ranges are specified to include the first but before the last
+element. As in standard Python lists, we can access elements according
+to their relative position to the end of the list by using negative
+indices.
+
+Java and Clojure do not support ~operator[]~ overload, a simulation is
+done with index and slice string.
 
 #+begin_src clojure :results pp
 X
@@ -533,14 +578,14 @@ elements as follows:
 Beyond reading, we can also set elements of a matrix by specifying indices.
 
 #+begin_src clojure :results pp
-(nd/set X "1,2" 9)
+(nd/set X "1,2" 999)
 #+end_src
 
 #+RESULTS:
 : ND: (3, 4) cpu() int32
-: [[ 0,  1,  2,  3],
-:  [ 4,  5,  9,  7],
-:  [ 8,  9, 10, 11],
+: [[  0,   1,   2,   3],
+:  [  4,   5, 999,   7],
+:  [  8,   9,  10,  11],
 : ]
 
 If we want to assign multiple elements the same value, we simply index all of
@@ -562,155 +607,124 @@ tensors of more than 2 dimensions.
 
 ** Saving Memory
 
-Running operations can cause new memory to be allocated to host results. For
-example, if we write ~(def Y2 (nd/+! X Y)~, we will dereference the ndarray that Y
-used to point to and instead point Y at the newly allocated memory. In the
-following example, we demonstrate this with Python’s id() function, which gives
-us the exact address of the referenced object in memory. After running Y = Y +
-X, we will find that id(Y) points to a different location. That is because
-Python first evaluates Y + X, allocating new memory for the result and then
-makes Y point to this new location in memory.
+Running operations can cause new memory to be allocated to host
+results. For example, if we write ~(def Y2 (nd/+! X Y)~, we will
+dereference the ndarray that Y used to point to and instead point Y at
+the newly allocated memory. In the following example, we demonstrate
+this with Clojure's ~identical?~ function, which results ~true~ if the two
+object are exactly the same. After running Y' = Y + X, we will find
+that Y and Y' are different objects. That is because Clojure first
+evaluates Y + X, allocating new memory for the result and then makes Y
+point to this new location in memory.
 
 #+begin_src clojure :results pp :exports both
-(def original (nd/zeros ndm (nd/get-shape X)))
-(def actual (nd/+ original X))
-(identical? original actual)
+(def Y (nd/zeros ndm (nd/get-shape X)))
+(def Y' (nd/+ Y X))
+(identical? Y Y')
 #+end_src
 
 #+RESULTS:
-false
-
-#+begin_src clojure :results value
-(def copy (nd/+! original X))
-(identical? original copy)
-#+end_src
-
-#+RESULTS:
-true
-
-Running operations can cause new memory to be allocated to host results. For
-example, if we write y = x.add(y), we will dereference the ndarray that y used
-to point to and instead point y at the newly allocated memory.
-
-This might be undesirable for two reasons. First, we do not want to run around
-allocating memory unnecessarily all the time. In machine learning, we might have
-hundreds of megabytes of parameters and update all of them multiple times per
-second. Typically, we will want to perform these updates in place. Second, we
-might point at the same parameters from multiple variables. If we do not update
-in place, other references will still point to the old memory location, making
-it possible for parts of our code to inadvertently reference stale parameters.
-
-Fortunately, performing in-place operations in DJL is easy. We can assign the
-result of an operation to a previously allocated array using inplace operators
-like addi, subi, muli, and divi.
+: false
 
 #+begin_src clojure :results pp :exports both
-(def original (nd/zeros ndm (nd/get-shape X)))
-(def actual (nd/+ original X))
-(d2l/ps original)
-(d2l/ps actual)
-(d2l/psl (identical? original actual))
-(def copy (nd/+! original X))
-(d2l/ps original)
-(d2l/ps copy)
-(d2l/psl (identical? original copy))
+(def Y'' (nd/+! Y X))
+(identical? Y Y'')
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (3, 4) cpu() float32
-[[0., 0., 0., 0.],
- [0., 0., 0., 0.],
- [0., 0., 0., 0.],
-]
-ND: (3, 4) cpu() float32
-[[12., 12., 12., 12.],
- [12., 12., 12., 12.],
- [ 8.,  9., 10., 11.],
-]
-false
-ND: (3, 4) cpu() float32
-[[12., 12., 12., 12.],
- [12., 12., 12., 12.],
- [ 8.,  9., 10., 11.],
-]
-ND: (3, 4) cpu() float32
-[[12., 12., 12., 12.],
- [12., 12., 12., 12.],
- [ 8.,  9., 10., 11.],
-]
-true
-#+end_example
+: true
 
+Running operations can cause new memory to be allocated to host
+results. For example, if we write y = x.add(y), we will dereference
+the ndarray that y used to point to and instead point y at the newly
+allocated memory.
+
+This might be undesirable for two reasons. First, we do not want to
+run around allocating memory unnecessarily all the time. In machine
+learning, we might have hundreds of megabytes of parameters and update
+all of them multiple times per second. Typically, we will want to
+perform these updates in place. Second, we might point at the same
+parameters from multiple variables. If we do not update in place,
+other references will still point to the old memory location, making
+it possible for parts of our code to inadvertently reference stale
+parameters.
+
+Fortunately, performing in-place operations in DJL is easy. We can
+assign the result of an operation to a previously allocated array
+using inplace operators like addi, subi, muli, and divi.
 
 #+begin_src clojure :results pp :exports both
-(def original (nd/zeros-like X))
-(def actual (nd/+ original X))
-(d2l/ps original)
-(d2l/ps actual)
-(println (identical? original actual))
-(def copy (nd/+! original X))
-(d2l/ps original)
-(d2l/ps copy)
-(println (identical? original copy))
+(def Y (nd/zeros ndm (nd/get-shape X)))
+(def Y' (nd/+ Y X))
+(identical? Y Y')
 #+end_src
 
 #+RESULTS:
-#+begin_example
-ND: (3, 4) cpu() int32
-[[ 0,  0,  0,  0],
- [ 0,  0,  0,  0],
- [ 0,  0,  0,  0],
-]
-ND: (3, 4) cpu() int32
-[[12, 12, 12, 12],
- [12, 12, 12, 12],
- [ 8,  9, 10, 11],
-]
-false
-ND: (3, 4) cpu() int32
-[[12, 12, 12, 12],
- [12, 12, 12, 12],
- [ 8,  9, 10, 11],
-]
-ND: (3, 4) cpu() int32
-[[12, 12, 12, 12],
- [12, 12, 12, 12],
- [ 8,  9, 10, 11],
-]
-true
-#+end_example
+: false
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(def Y'' (nd/+! Y X))
+(identical? Y Y'')
+#+end_src
+
+#+RESULTS:
+: true
 
 ** Conversion to Other Clojure Objects
 
-#+begin_src clojure :results pp :exports both
-(d2l/psl (type (nd/to-vec X)))
-(d2l/psl (nd/to-vec X))
-(d2l/psl (type (nd/to-array X)))
-(d2l/psl (type X))
-(d2l/ps X)
+#+begin_src clojure :results pp :exports both :eval no-export
+(type (nd/to-vec X))
 #+end_src
 
 #+RESULTS:
 : class clojure.lang.PersistentVector
-: [12 12 12 12 12 12 12 12 8 9 10 11]
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(nd/to-vec X)
+#+end_src
+
+#+RESULTS:
+: [0 1 2 3 4 5 999 7 8 9 10 11]
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(type (nd/to-array X))
+#+end_src
+
+#+RESULTS:
 : class [Ljava.lang.Integer;
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(type X)
+#+end_src
+
+#+RESULTS:
 : class ai.djl.mxnet.engine.MxNDArray
+
+#+begin_src clojure :results pp :exports both :eval no-export
+X
+#+end_src
+
+#+RESULTS:
 : ND: (3, 4) cpu() int32
-: [[12, 12, 12, 12],
-:  [12, 12, 12, 12],
-:  [ 8,  9, 10, 11],
+: [[  0,   1,   2,   3],
+:  [  4,   5, 999,   7],
+:  [  8,   9,  10,  11],
 : ]
 
 To convert a size-1 tensor to a scalar
 
 #+begin_src clojure :results pp :exports both
 (def a (nd/create ndm [3.5]))
-(d2l/ps a)
-(println (nd/get-element a))
+a
 #+end_src
 
 #+RESULTS:
 : ND: (1) cpu() float64
 : [3.5]
+
+#+begin_src clojure :results pp :exports both :eval no-export
+(nd/get-element a)
+#+end_src
+
+#+RESULTS:
 : 3.5
