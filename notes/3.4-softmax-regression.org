@@ -1,0 +1,33 @@
+* Softmax Regression
+:PROPERTIES:
+:CUSTOM_ID: sec-softmax
+:END:
+
+In Section 3.1, we introduced linear regression, working through
+implementations from scratch in Section 3.2 and again using high-level
+APIs of a deep learning framework in Section 3.3 to do the heavy
+lifting.
+
+Regression is the hammer we reach for when we want to answer *how much*?
+or *how many*? questions. If you want to predict the number of dollars
+(price) at which a house will be sold, or the number of wins a
+baseball team might have, or the number of days that a patient will
+remain hospitalized before being discharged, then you are probably
+looking for a regression model.
+
+In practice, we are more often interested in *classification*: asking
+not "how much" but "which one":
+
+- Does this email belong in the spam folder or the inbox?
+- Is this customer more likely to sign up or not to sign up for a subscription service?
+- Does this image depict a donkey, a dog, a cat, or a rooster?
+- Which movie is Aston most likely to watch next?
+
+Colloquially, machine learning practitioners overload the word
+classification to describe two subtly different problems: (i) those
+where we are interested only in hard assignments of examples to
+categories (classes); and (ii) those where we wish to make soft
+assignments, i.e., to assess the probability that each category
+applies. The distinction tends to get blurred, in part, because often,
+even when we only care about hard assignments, we still use models
+that make soft assignments.
