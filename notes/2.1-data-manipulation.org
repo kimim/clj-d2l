@@ -684,7 +684,7 @@ using inplace operators like addi, subi, muli, and divi.
 #+end_src
 
 #+RESULTS:
-: [0 1 2 3 4 5 999 7 8 9 10 11]
+: [12 12 12 12 12 12 12 12 8 9 10 11]
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (type (nd/to-array X))
@@ -706,9 +706,9 @@ X
 
 #+RESULTS:
 : ND: (3, 4) cpu() int32
-: [[  0,   1,   2,   3],
-:  [  4,   5, 999,   7],
-:  [  8,   9,  10,  11],
+: [[12, 12, 12, 12],
+:  [12, 12, 12, 12],
+:  [ 8,  9, 10, 11],
 : ]
 
 To convert a size-1 tensor to a scalar

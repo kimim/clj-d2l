@@ -73,6 +73,8 @@ we would use Float as deep learning frameworks by default use Fault.*
 #+begin_src clojure :results silent :exports both
 (ns clj-d2l.calculus
   (:require [clj-djl.ndarray :as nd]
+            [clj-chart.chart :as chart]
+            [clj-chart.plot :as plot]
             [clj-d2l.core :as d2l]
             [clojure.java.io :as io]))
 #+end_src
@@ -175,12 +177,15 @@ tangent line.
 #+begin_src clojure :results file graphics :output-dir figures :file tangent_line.svg :exports both :eval no-export
 (let [x (range 0 3 0.1)
       y1 (map f x)
-      y2 (map #(- (* 2 %) 3) x)]
-  (d2l/plot-lines
-   "notes/figures/tangent_line.svg"
-   ["f(x)" "tangent line (x=1)"]
-   x
-   [y1 y2]))
+      y2 (map #(- (* 2 %) 3) x)
+      chart (chart/line {:title "tangent line (x=1)"
+                         :series [{:name "y1"
+                                   :xs x
+                                   :ys y1}
+                                  {:name "y2"
+                                   :xs x
+                                   :ys y2}]})]
+  (plot/store! chart nil "notes/figures/tangent_line.svg"))
 #+end_src
 
 #+RESULTS:
@@ -317,12 +322,15 @@ for any \(i = 1, 2, \ldots, n\).
    #+begin_src clojure :results file graphics :output-dir figures :file exercise-2.4-1.svg :exports both :eval no-export
 (let [x (range 0.1 3 0.01)
       y1 (map f x)
-      y2 (map #(- (* 4 %) 4) x)]
-  (d2l/plot-lines
-   "notes/figures/exercise-2.4-1.svg"
-   ["f(x)" "tangent line"]
-   x
-   [y1 y2]))
+      y2 (map #(- (* 4 %) 4) x)
+      chart (chart/line {:title "tangent line"
+                         :series [{:name "y1"
+                                   :xs x
+                                   :ys y1}
+                                  {:name "y2"
+                                   :xs x
+                                   :ys y2}]})]
+  (plot/store! chart nil "notes/figures/exercise-2.4-1.svg"))
    #+end_src
 
    #+RESULTS:

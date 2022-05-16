@@ -1,7 +1,6 @@
 (ns clj-d2l.core
   (:require [clj-djl.ndarray :as nd]
-            [clj-djl.training.dataset :as ds]
-            [com.hypirion.clj-xchart :as c])
+            [clj-djl.training.dataset :as ds])
   (:import [ai.djl.basicdataset.cv.classification FashionMnist]
            [java.nio.file Paths]))
 
@@ -42,42 +41,12 @@
     ;; param = param - param.gradient * lr / batchSize
     (nd/-! param (nd// (nd/* (nd/get-gradient param) lr) batch-size))))
 
-(defn plot-scatter [filename title x y]
-  (-> (c/xy-chart
-       {title
-        {:x x
-         :y y
-         :style {:marker-type :circle}}}
-       {:title title
-        :render-style :scatter})
-      (c/spit filename)))
-
-
-(defn plot-line [filename title x y]
-  (-> (c/xy-chart
-     {title
-      {:x x
-       :y y
-       :style {:marker-type :none}}})
-    (c/spit filename)))
-
-(def plot plot-line)
-
-(defn plot-lines [filename titles x ys]
-  (-> (c/xy-chart
-       (reduce #(assoc %1 (get %2 0) {:x x :y (get %2 1) :style {:marker-type :none}})
-               {} (zipmap titles ys)))
-      (c/spit filename)))
 
 (defmacro ps [expr]
   `(print (str ~expr)))
 
 (defmacro psl [expr]
   `(println (str ~expr)))
-
-(defn -main
-  [& args]
-  (println "clj-d2l"))
 
 (defn load-data-fashion-mnist [batchsize]
   [(-> (FashionMnist/builder)
@@ -90,3 +59,7 @@
        (ds/set-sampling batchsize true)
        (ds/build)
        (ds/prepare))])
+
+(defn -main
+  [& args]
+  (println "clj-d2l"))

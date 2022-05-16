@@ -17,3 +17,6 @@ pom.xml.asc
 *.tex
 *.bib
 _minted*
+/.cpcache/
+/.clj-kondo/
+/data/
