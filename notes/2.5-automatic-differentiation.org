@@ -75,12 +75,18 @@ printing the gradient.
 #+begin_src clojure :results output :exports both :eval no-export
 (with-open [gc (t/gradient-collector)]
   (let [y (nd/* (nd/dot x x) 2)]
-    (print (str y))
+    (println (str x))
+    (println (str y))
     (t/backward gc y)))
 #+end_src
 
 #+RESULTS:
-: class java.lang.IllegalStateException
+: ND: (4) cpu() float32 hasGradient
+: [0., 1., 2., 3.]
+:
+: ND: () cpu() float32
+: 28.
+:
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (t/get-gradient x)
@@ -108,12 +114,16 @@ Now let us calculate another function of \(\mathbf{x}\).
 #+begin_src clojure :results pp :exports both :eval no-export
 (with-open [gc (t/gradient-collector)]
   (let [y (nd/sum x)]
+    (println (str x))
     (t/backward gc y)))
 
 (t/get-gradient x)
 #+end_src
 
 #+RESULTS:
+: ND: (4) cpu() float32 hasGradient
+: [0., 1., 2., 3.]
+:
 : ND: (4) cpu() float32
 : [1., 1., 1., 1.]
 
@@ -188,8 +198,7 @@ respect to \(\mathbf{x}\), which is \(2 \times \mathbf{x}\).
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (with-open [gc (t/gradient-collector)]
-  (let [y (nd/* x x)
-        y (nd/* x x)]
+  (let [y (nd/* x x)]
     (t/backward gc y)
     (nd/= (t/get-gradient x) (nd/* x 2))))
 #+end_src
@@ -234,7 +243,7 @@ a
 
 #+RESULTS:
 : ND: (10) cpu() float32
-: [-1.423 , -0.1475,  0.5799,  0.4026, -0.9635,  1.2715, -1.4396, -1.0244,  0.4675, -0.3938]
+: [-1.475 ,  1.5194, -0.5241,  1.9041,  1.2663, -1.5734,  0.8951, -0.1401, -0.6016,  0.2967]
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (t/set-requires-gradient a true)
@@ -247,7 +256,7 @@ a
 
 #+RESULTS:
 : ND: (10) cpu() float32
-: [51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200., 51200.]
+: [512., 512., 512., 512., 512., 512., 512., 512., 512., 512.]
 :
 : ND: (10) cpu() boolean
 : [ true,  true,  true,  true,  true,  true,  true,  true,  true,  true]

@@ -1,3 +1,5 @@
+#+PROPERTY: header-args    :tangle ../src/clj_d2l/probability.clj
+
 * Probability
 
 In some form or another, machine learning is all about making
@@ -30,17 +32,17 @@ problem may depend on the resolution of the image.
 ** Basic Probability Theory
 
 Say that we cast a die and want to know what the chance is of seeing a
-1 rather than another digit. If the die is fair, all the six outcomes
-\(\{1, \ldots, 6\}\) are equally likely to occur, and thus we would
-see a \(1\) in one out of six cases. Formally we state that
+\(1\) rather than another digit. If the die is fair, all the six
+outcomes \(\{1, \ldots, 6\}\) are equally likely to occur, and thus we
+would see a \(1\) in one out of six cases. Formally we state that
 \(1\) occurs with probability \(\frac{1}{6}\).
 
 For a real die that we receive from a factory, we might not know those
 proportions and we would need to check whether it is tainted. The only
-way to investigate the die is by casting it many times and recording the
-outcomes. For each cast of the die, we will observe a value in
-:math:`\{1, \ldots, 6\}`. Given these outcomes, we want to investigate
-the probability of observing each outcome.
+way to investigate the die is by casting it many times and recording
+the outcomes. For each cast of the die, we will observe a value in
+\(\{1, \ldots, 6\}\). Given these outcomes, we want to investigate the
+probability of observing each outcome.
 
 One natural approach for each value is to take the individual count for
 that value and to divide it by the total number of tosses. This gives us
@@ -55,6 +57,8 @@ To start, let us import the necessary packages.
 (ns clj-d2l.probability
   (:require [clj-djl.ndarray :as nd]
             [clj-djl.training :as t]
+            [clj-chart.chart :as chart]
+            [clj-chart.plot :as plot]
             [clojure.java.io :as io]
             [clj-d2l.core :as d2l]))
 #+end_src
@@ -74,6 +78,7 @@ The output is another vector of the same length: its value at index
 #+begin_src clojure :results value pp :exports both
 (def ndm (nd/new-base-manager))
 (def fair-probs (nd/create ndm (repeat 6 (/ 1.0 6))))
+;=> [1/6 1/6 1/6 1/6 1/6 1/6]
 (nd/random-multinomial ndm 1 fair-probs)
 #+end_src
 
@@ -124,23 +129,26 @@ where each group draws 10 samples.
 (def counts (nd/random-multinomial ndm 10 fair-probs [500]))
 (def cum-counts (nd/cumsum counts 0))
 (def estimates (nd// cum-counts (nd/sum cum-counts 1 true)))
-
 (let [x (range 0 500)
       dies (range 0 6)
-      ys (mapv #(nd/to-vec (nd/get (nd/transpose estimates) %)) dies)]
-  (d2l/plot-lines
-   "notes/figures/probability_dies.svg"
-   (conj (mapv #(str "P(die=" %) dies) "0.167")
-   x
-   (conj ys (repeat 500 0.167))))
+      names (mapv #(str "P(die=" % ")") dies)
+      ys (mapv #(nd/to-vec (nd/get (nd/transpose estimates) %)) dies)
+      series (concat [{:name "0.167"
+                       :xs x
+                       :ys (repeat 500 0.167)}]
+                     (map (fn [n y] {:name n :xs x :ys y})
+                          names ys))
+      c (chart/line {:series series})]
+  (plot/store! c nil "notes/figures/probability_dies.svg"))
 #+end_src
 
 #+RESULTS:
 [[file:figures/probability_dies.svg]]
 
+
 Each solid curve corresponds to one of the six values of the die and
 gives our estimated probability that the die turns up that value as
-assessed after each group of experiments. The dashed black line gives
+assessed after each group of experiments. The blue line gives
 the true underlying probability. As we get more data by conducting
 more experiments, the \(6\) solid curves converge towards the true
 probability.

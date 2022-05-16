@@ -175,7 +175,7 @@ Now we can plot the function \(u = f(x)\) and its tangent line \(y =
 tangent line.
 
 #+begin_src clojure :results file graphics :output-dir figures :file tangent_line.svg :exports both :eval no-export
-(let [x (range 0 3 0.1)
+(let [x (range 0 3 1/32)
       y1 (map f x)
       y2 (map #(- (* 2 %) 3) x)
       chart (chart/line {:title "tangent line (x=1)"
@@ -301,27 +301,27 @@ for any \(i = 1, 2, \ldots, n\).
    tangent line when \(x = 1\).
 
    #+begin_src clojure :results silent
-(defn f [x]
+(defn f2 [x]
   (- (Math/pow x 3) (/ 1 x)))
    #+end_src
 
    #+begin_src clojure :results pp :exports both :eval no-export
-(numerical-lim f 1 0.000001)
+(numerical-lim f2 1 0.000001)
    #+end_src
 
    #+RESULTS:
    : 4.000001999737712
 
    #+begin_src clojure :results pp :exports both :eval no-export
-(- (* 4 1) (f 1))
+(- (* 4 1) (f2 1))
    #+end_src
 
    #+RESULTS:
    : 4.0
 
    #+begin_src clojure :results file graphics :output-dir figures :file exercise-2.4-1.svg :exports both :eval no-export
-(let [x (range 0.1 3 0.01)
-      y1 (map f x)
+(let [x (map #(* 1/100 %) (range 10 300))
+      y1 (map f2 x)
       y2 (map #(- (* 4 %) 4) x)
       chart (chart/line {:title "tangent line"
                          :series [{:name "y1"

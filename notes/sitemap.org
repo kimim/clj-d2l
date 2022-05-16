@@ -13,6 +13,7 @@
 - [[file:3.1-linear-regression.org][3.1-linear-regression]]
 - [[file:3.2-linear-reg-impl-from-scratch.org][3.2-linear-reg-impl-from-scratch]]
 - [[file:3.3-concise-impl-of-linear-reg.org][3.3-concise-impl-of-linear-reg]]
+- [[file:3.4-softmax-regression.org][3.4-softmax-regression]]
 - [[file:3.5-the-image-classification-dataset.org][3.5-the-image-classification-dataset]]
 - [[file:3.6-implementation-of-softmax-regression-from-scratch.org][3.6-implementation-of-softmax-regression-from-scratch]]
 - [[file:3.7-concise-impl-of-softmax-regression.org][3.7-concise-impl-of-softmax-regression]]
