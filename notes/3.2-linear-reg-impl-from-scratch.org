@@ -1,7 +1,7 @@
 #+PROPERTY: header-args    :tangle ../src/clj_d2l/linreg.clj
 * Linear Regression Implementation from Scratch
 :PROPERTIES:
-:ID:       88932444-6698-410b-8af2-0ede52c6ad2d
+:CUSTOM_ID:       lin-reg-scratch
 :END:
 
 Now that you understand the key ideas behind linear regression, we can
@@ -208,8 +208,9 @@ the loss.
 
 Since nobody wants to compute gradients explicitly (this is tedious
 and error prone), we use automatic differentiation, as introduced in
-Section [[id:8e053d92-8a71-4ddc-a102-0db664f4a377]], to compute the
-gradient.
+Section
+[[file:2.5-automatic-differentiation.org::#automatic_differentiation]],
+to compute the gradient.
 
 ** Defining the Model
 
@@ -219,7 +220,8 @@ we simply take the matrix-vector dot product of the input features
 \(\mathbf{X}\) and the model weights \(\mathbf{w}\), and add the
 offset \(b\) to each example. Note that below \(\mathbf{Xw}\) is a
 vector and \(b\) is a scalar. Recall the broadcasting mechanism as
-described in Section [[id:9dcbe412-db7e-485a-bb3c-d7181f2f7f05]]. When
+described in Section
+[[file:2.1-data-manipulation.org::#9dcbe412-db7e-485a-bb3c-d7181f2f7f05]]. When
 we add a vector and a scalar, the scalar is added to each component of
 the vector.
 
@@ -235,8 +237,8 @@ the vector.
 Since updating our model requires taking the gradient of our loss
 function, we ought to define the loss function first. Here we will use
 the squared loss function as described in Section
-[[id:72a54bf4-b6c6-48d1-ac5d-fe2ee9c691a0]]. In the implementation, we
-need to transform the true value ~y~ into the predicted value's shape
+[[file:3.1-linear-regression.org::#lin_reg]]. In the implementation,
+we need to transform the true value ~y~ into the predicted value's shape
 ~y-hat~. The result returned by the following function will also have
 the same shape as ~y-hat~.
 
@@ -249,12 +251,13 @@ the same shape as ~y-hat~.
 
 ** Defining the Optimization Algorithm
 
-As we discussed in Section [[id:72a54bf4-b6c6-48d1-ac5d-fe2ee9c691a0]],
-linear regression has a closed-form solution. However, this is not a
-book about linear regression: it is a book about deep learning. Since
-none of the other models that this book introduces can be solved
-analytically, we will take this opportunity to introduce your first
-working example of minibatch stochastic gradient descent.
+As we discussed in Section
+[[file:3.1-linear-regression.org::#lin_reg]], linear regression has a
+closed-form solution. However, this is not a book about linear
+regression: it is a book about deep learning. Since none of the other
+models that this book introduces can be solved analytically, we will
+take this opportunity to introduce your first working example of
+minibatch stochastic gradient descent.
 
 At each step, using one minibatch randomly drawn from our dataset, we
 will estimate the gradient of the loss with respect to our parameters.

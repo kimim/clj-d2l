@@ -3,13 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 20:59 -->
+<!-- 2022-05-17 Tue 08:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
-<meta name="generator" content="Org mode" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="author" content="Kimi Ma" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -30,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -39,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,80 +192,74 @@
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { width: 90%; }
-  /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
 
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="org-div-home-and-up">
  <a accesskey="h" href="sitemap.html"> UP </a>
  |
  <a accesskey="H" href="index.html"> HOME </a>
-</div><div id="content">
-<div id="table-of-contents">
+</div><div id="content" class="content">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9fc3a77">1. Automatic Differentiation</a>
+<li><a href="#orga0bdfb9">1. Automatic Differentiation</a>
 <ul>
-<li><a href="#org1d1ccf2">1.1. A Simple Example</a></li>
-<li><a href="#org91244a8">1.2. Backward for Non-Scalar Variables</a></li>
-<li><a href="#org50bc1d1">1.3. Detaching Computation</a></li>
-<li><a href="#org30b5243">1.4. Computing the Gradient of Python Control Flow</a></li>
+<li><a href="#orgd909357">1.1. A Simple Example</a></li>
+<li><a href="#org1bc5fb0">1.2. Backward for Non-Scalar Variables</a></li>
+<li><a href="#orgd63d971">1.3. Detaching Computation</a></li>
+<li><a href="#org247ab43">1.4. Computing the Gradient of Clojure Control Flow</a></li>
+<li><a href="#orge4676ab">1.5. Summary</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org9fc3a77" class="outline-2">
-<h2 id="org9fc3a77"><span class="section-number-2">1</span> Automatic Differentiation</h2>
+<div id="outline-container-orga0bdfb9" class="outline-2">
+<h2 id="orga0bdfb9"><span class="section-number-2">1.</span> Automatic Differentiation</h2>
 <div class="outline-text-2" id="text-1">
+<p>
+As we have explained in Section 2.4, differentiation is a crucial step
+in nearly all deep learning optimization algorithms. While the
+calculations for taking these derivatives are straightforward,
+requiring only some basic calculus, for complex models, working out
+the updates by hand can be a pain (and often error-prone).
+</p>
+
+<p>
+Deep learning frameworks expedite this work by automatically
+calculating derivatives, i.e., <b>automatic differentiation</b>. In practice,
+based on our designed model the system builds a <b>computational graph</b>,
+tracking which data combined through which operations to produce the
+output. Automatic differentiation enables the system to subsequently
+backpropagate gradients. Here, <b>backpropagate</b> simply means to trace
+through the computational graph, filling in the partial derivatives
+with respect to each parameter.
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.auto-diff</span>
   <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
@@ -272,12 +268,18 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-
-<div id="outline-container-org1d1ccf2" class="outline-3">
-<h3 id="org1d1ccf2"><span class="section-number-3">1.1</span> A Simple Example</h3>
+<div id="outline-container-orgd909357" class="outline-3">
+<h3 id="orgd909357"><span class="section-number-3">1.1.</span> A Simple Example</h3>
 <div class="outline-text-3" id="text-1-1">
+<p>
+As a toy example, say that we are interested in differentiating the
+function \(y = 2\mathbf{x}^{\top}\mathbf{x}\) with respect to the
+column vector \(\mathbf{x}\). To start, let us create the variable
+\(x\) and assign it an initial value.
+</p>
+
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">x</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 4.<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 x
 </pre>
@@ -289,8 +291,19 @@ ND: (4) cpu() float32
 </pre>
 
 
+<p>
+Before we even calculate the gradient of \(y\) with respect to
+\(\mathbf{x}\), we will need a place to store it. It is important that
+we do not allocate new memory every time we take a derivative with
+respect to a parameter because we will often update the same
+parameters thousands or millions of times and could quickly run out of
+memory. Note that a gradient of a scalar-valued function with respect
+to a vector \(\mathbf{x}\) is itself vector-valued and has the same
+shape as \(\mathbf{x}\).
+</p>
+
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/attach-gradient x<span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/set-requires-gradient x <span style="color: #110099;">true</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
 </pre>
 </div>
@@ -301,11 +314,42 @@ ND: (4) cpu() float32
 </pre>
 
 
+<p>
+We place our code inside a <code>with-open</code> and declare the
+<code>gradient-collector</code> object that will build the computational graph. Now
+let us calculate \(y\).
+</p>
+
+<p>
+Since \(\mathbf{x}\) is a vector of length 4, an inner product of
+\(\mathbf{x}\) and \(\mathbf{x}\) is performed, yielding the scalar
+output that we assign to \(\mathbf{y}\). Next, we can automatically
+calculate the gradient of \(\mathbf{y}\) with respect to each component
+of \(\mathbf{x}\) by calling the function for backpropagation and
+printing the gradient.
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/dot x x<span style="color: #907373;">)</span> 2<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> x<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> y<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (4) cpu() float32 hasGradient
+[0., 1., 2., 3.]
+
+ND: () cpu() float32
+28.
+
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -314,6 +358,13 @@ ND: (4) cpu() float32
 [ 0.,  4.,  8., 12.]
 </pre>
 
+
+
+<p>
+The gradient of the function \(y = 2\mathbf{x}^{\top}\mathbf{x}\) with
+respect to \(\mathbf{x}\) should be \(4\mathbf{x}\). Let us quickly
+verify that our desired gradient was calculated correctly.
+</p>
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/= <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #7388d6;">)</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x 4<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
@@ -326,10 +377,14 @@ ND: (4) cpu() boolean
 </pre>
 
 
+<p>
+Now let us calculate another function of \(\mathbf{x}\).
+</p>
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/sum x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> x<span style="color: #709870;">)</span><span style="color: #909183;">)</span>
     <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 
 <span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
@@ -337,6 +392,9 @@ ND: (4) cpu() boolean
 </div>
 
 <pre class="example">
+ND: (4) cpu() float32 hasGradient
+[0., 1., 2., 3.]
+
 ND: (4) cpu() float32
 [1., 1., 1., 1.]
 </pre>
@@ -344,9 +402,27 @@ ND: (4) cpu() float32
 </div>
 
 
-<div id="outline-container-org91244a8" class="outline-3">
-<h3 id="org91244a8"><span class="section-number-3">1.2</span> Backward for Non-Scalar Variables</h3>
+<div id="outline-container-org1bc5fb0" class="outline-3">
+<h3 id="org1bc5fb0"><span class="section-number-3">1.2.</span> Backward for Non-Scalar Variables</h3>
 <div class="outline-text-3" id="text-1-2">
+<p>
+Technically, when \(y\) is not a scalar, the most natural
+interpretation of the differentiation of a vector \(\mathbf{y}\) with
+respect to a vector \(\mathbf{x}\) is a matrix. For higher-order and
+higher-dimensional \(\mathbf{y}\) and \(\mathbf{x}\), the
+differentiation result could be a high-order tensor.
+</p>
+
+<p>
+However, while these more exotic objects do show up in advanced
+machine learning (including in deep learning), more often when we are
+calling backward on a vector, we are trying to calculate the
+derivatives of the loss functions for each constituent of a <b>batch</b> of
+training examples.  Here, our intent is not to calculate the
+differentiation matrix but rather the sum of the partial derivatives
+computed individually for each example in the batch.
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
@@ -363,60 +439,84 @@ ND: (4) cpu() float32
 </div>
 
 
-<div id="outline-container-org50bc1d1" class="outline-3">
-<h3 id="org50bc1d1"><span class="section-number-3">1.3</span> Detaching Computation</h3>
+<div id="outline-container-orgd63d971" class="outline-3">
+<h3 id="orgd63d971"><span class="section-number-3">1.3.</span> Detaching Computation</h3>
 <div class="outline-text-3" id="text-1-3">
+<p>
+Sometimes, we wish to move some calculations outside of the recorded
+computational graph. For example, say that \(\mathbf{y}\) was
+calculated as a function of \(\mathbf{x}\), and that subsequently
+\(\mathbf{z}\) was calculated as a function of both \(\mathbf{y}\) and
+\(\mathbf{x}\). Now, imagine that we wanted to calculate the gradient
+of \(\mathbf{z}\) with respect to \(\mathbf{x}\), but wanted for some
+reason to treat \(\mathbf{y}\) as a constant, and only take into
+account the role that \(\mathbf{x}\) played after \(\mathbf{y}\) was
+calculated.
+</p>
+
+<p>
+Here, we can detach \(\mathbf{y}\) using <code>stop-gradient</code> to return a new
+variable \(\mathbf{u}\) that has the same value as \(\mathbf{y}\) but
+discards any information about how \(\mathbf{y}\) was computed in the
+computational graph. In other words, the gradient will not flow
+backwards through \(\mathbf{u}\) to \(\mathbf{x}\). Thus, the
+following backpropagation function computes the partial derivative of
+\(\mathbf{z} = \mathbf{u} \times \mathbf{x}\) with respect to
+\(\mathbf{x}\) while treating \(\mathbf{u}\) as a constant, instead of
+the partial derivative of \(\mathbf{z} = \mathbf{x} \times \mathbf{x}
+\times \mathbf{x}\) with respect to \(\mathbf{x}\).
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #709870;">)</span>
-        u <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #907373;">[</span>0. 1. 4. 9.<span style="color: #907373;">]</span><span style="color: #709870;">)</span> <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">TODO: How to detach ndarray from current graph?</span>
-        <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">u (.detach y)</span>
+        u <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/stop-gradient y<span style="color: #709870;">)</span>
         z <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* u x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
-    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc z<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc z<span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/= u <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
-ND: (4) cpu() float32
-[0., 1., 4., 9.]
+ND: (4) cpu() boolean
+[ true,  true,  true,  true]
 </pre>
 
 
+<p>
+We can subsequently invoke backpropagation on \(\mathbf{y}\) to get
+the derivative of \(\mathbf{y} = \mathbf{x} \times \mathbf{x}\) with
+respect to \(\mathbf{x}\), which is \(2 \times \mathbf{x}\).
+</p>
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #709870;">)</span>
-        u <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #907373;">[</span>0. 1. 4. 9.<span style="color: #907373;">]</span><span style="color: #709870;">)</span>
-        <span style="color: #3F7F5F;">;;</span><span style="color: #3F7F5F;">u (.duplicate y)</span>
-        z <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* u x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
-    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #707183;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>y <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x x<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc y<span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/= <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient x<span style="color: #709870;">)</span> <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x 2<span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
-ND: (4) cpu() float32
-[0., 2., 4., 6.]
-</pre>
-
-
-<div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* x 2<span style="color: #707183;">)</span>
-</pre>
-</div>
-
-<pre class="example">
-ND: (4) cpu() float32
-[0., 2., 4., 6.]
+ND: (4) cpu() boolean
+[ true,  true,  true,  true]
 </pre>
 </div>
 </div>
 
-
-<div id="outline-container-org30b5243" class="outline-3">
-<h3 id="org30b5243"><span class="section-number-3">1.4</span> Computing the Gradient of Python Control Flow</h3>
+<div id="outline-container-org247ab43" class="outline-3">
+<h3 id="org247ab43"><span class="section-number-3">1.4.</span> Computing the Gradient of Clojure Control Flow</h3>
 <div class="outline-text-3" id="text-1-4">
+<p>
+One benefit of using automatic differentiation is that even if
+building the computational graph of a function required passing
+through a maze of Clojure control flow (e.g., conditionals, loops, and
+arbitrary function calls), we can still calculate the gradient of the
+resulting variable.  In the following snippet, note that the number of
+iterations of the <code>loop</code> and the evaluation of the <code>if</code> statement both
+depend on the value of the input \(\mathbf{a}\).
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">f</span> <span style="color: #7388d6;">[</span>a<span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">loop</span> <span style="color: #909183;">[</span>b <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* a 2<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
@@ -428,33 +528,69 @@ ND: (4) cpu() float32
 </pre>
 </div>
 
+<p>
+Let us compute the gradient.
+</p>
+
+<p>
+We can then analyze the <code>f</code> function defined above. Note that it is
+piecewise linear in its input \(\mathbf{a}\). In other words, for any
+\(\mathbf{a}\) there exists some constant scalar \(k\) such that
+\(f(\mathbf{a}) = k \times \mathbf{a}\), where the value of \(k\)
+depends on the input \(\mathbf{a}\). Consequently <code>(nd// d a)</code> allows us
+to verify that the gradient is correct.
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">a</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/random-normal ndm <span style="color: #909183;">[</span>10<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/attach-gradient a<span style="color: #707183;">)</span>
-
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>d <span style="color: #709870;">(</span>f a<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
-    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc d<span style="color: #909183;">)</span>
-    <span style="color: #909183;">(</span>println <span style="color: #709870;">(</span>str <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>// d a<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
-    <span style="color: #909183;">(</span>println <span style="color: #709870;">(</span>str <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient a<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+a
 </pre>
 </div>
 
 <pre class="example">
 ND: (10) cpu() float32
-[25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600.]
+[-1.475 ,  1.5194, -0.5241,  1.9041,  1.2663, -1.5734,  0.8951, -0.1401, -0.6016,  0.2967]
+</pre>
 
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/set-requires-gradient a <span style="color: #110099;">true</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">with-open</span> <span style="color: #7388d6;">[</span>gc <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/gradient-collector<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>d <span style="color: #709870;">(</span>f a<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/backward gc d<span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>// d a<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span>
+    <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/= <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">t</span>/get-gradient a<span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>// d a<span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
 ND: (10) cpu() float32
-[25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600., 25600.]
+[512., 512., 512., 512., 512., 512., 512., 512., 512., 512.]
+
+ND: (10) cpu() boolean
+[ true,  true,  true,  true,  true,  true,  true,  true,  true,  true]
 
 </pre>
+</div>
+</div>
+
+<div id="outline-container-orge4676ab" class="outline-3">
+<h3 id="orge4676ab"><span class="section-number-3">1.5.</span> Summary</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>Deep learning frameworks can automate the calculation of
+derivatives.  To use it, we first attach gradients to those
+variables with respect to which we desire partial derivatives. We
+then record the computation of our target value, execute its
+function for backpropagation, and access the resulting gradient.</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 20:59</p>
+<p class="author">Author: Kimi Ma</p>
+<p class="date">Created: 2022-05-17 Tue 08:06</p>
 </div>
 </body>
 </html>

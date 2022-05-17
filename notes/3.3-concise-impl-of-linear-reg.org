@@ -12,13 +12,14 @@ functions, optimizers, and neural network layers are so common, modern
 libraries implement these components for us as well.
 
 In this section, we will show you how to implement the linear
-regression model from Section [[id:88932444-6698-410b-8af2-0ede52c6ad2d]]
+regression model from Section
+[[file:3.2-linear-reg-impl-from-scratch.org::#lin-reg-scratch]]
 concisely by using high-level APIs of deep learning frameworks.
 
 ** Generating the Dataset
 
 To start, we will generate the same dataset as in Section
-[[id:88932444-6698-410b-8af2-0ede52c6ad2d]].
+[[file:3.2-linear-reg-impl-from-scratch.org::#lin-reg-scratch]].
 
 #+begin_src clojure :results silent :eval no-export
 (ns clj-d2l.linreg-easy
@@ -78,10 +79,12 @@ we want the data iterator object to shuffle the data on each epoch
 
 Now we can use ~get-data-iterator~ in much the same way as we called the
 ~data-iter~ function in Section
-[[id:88932444-6698-410b-8af2-0ede52c6ad2d]]. To verify that it is working,
-we can read and print the first minibatch of examples. Comparing with
-Section [[id:88932444-6698-410b-8af2-0ede52c6ad2d]], here we use Clojure
-function ~first~ to obtain the first item from the iterator.
+[[file:3.2-linear-reg-impl-from-scratch.org::#lin-reg-scratch]]. To
+verify that it is working, we can read and print the first minibatch
+of examples. Comparing with Section
+[[file:3.2-linear-reg-impl-from-scratch.org::#lin-reg-scratch]], here
+we use Clojure function ~first~ to obtain the first item from the
+iterator.
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (-> datasets
@@ -125,15 +128,15 @@ ND: (10, 2) cpu() float32
 
 
 When we implemented linear regression from scratch in Section
-[[id:88932444-6698-410b-8af2-0ede52c6ad2d]], we defined our model
-parameters explicitly and coded up the calculations to produce output
-using basic linear algebra operations. You *should* know how to do
-this. But once your models get more complex, and once you have to do
-this nearly every day, you will be glad for the assistance. The
-situation is similar to coding up your own blog from scratch. Doing it
-once or twice is rewarding and instructive, but you would be a lousy
-web developer if every time you needed a blog you spent a month
-reinventing the wheel.
+[[file:3.2-linear-reg-impl-from-scratch.org::#lin-reg-scratch]], we
+defined our model parameters explicitly and coded up the calculations
+to produce output using basic linear algebra operations. You *should*
+know how to do this. But once your models get more complex, and once
+you have to do this nearly every day, you will be glad for the
+assistance. The situation is similar to coding up your own blog from
+scratch. Doing it once or twice is rewarding and instructive, but you
+would be a lousy web developer if every time you needed a blog you
+spent a month reinventing the wheel.
 
 For standard operations, we can use a framework's predefined layers,
 which allow us to focus especially on the layers used to construct the
@@ -149,9 +152,9 @@ models will involve multiple layers, we will use it anyway just to
 familiarize you with the most standard workflow.
 
 Recall the architecture of a single-layer network as shown in Fig
-[[fig:single-neuron]]. The layer is said to be *fully-connected* because
-each of its inputs is connected to each of its outputs by means of a
-matrix-vector multiplication.
+[[file:3.1-linear-regression.org::fig:single-neuron]]. The layer is
+said to be *fully-connected* because each of its inputs is connected to
+each of its outputs by means of a matrix-vector multiplication.
 
 Now we define a model with name "lin-reg" and create a
 ~sequential-block~ with a ~linear-block~ inside it. And finally, set the

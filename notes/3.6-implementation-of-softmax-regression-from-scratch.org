@@ -72,15 +72,17 @@ the initial value 0.
 
 Before implementing the softmax regression model, let us briefly
 review how the sum operator works along specific dimensions in a
-tensor, as discussed in Section [[#lin-alg-reduction]] and Section
-[[#lin-alg-non-reduction]]. Given a matrix ~X~ we can sum over all elements
-(by default) or only over elements in the same axis, i.e., the same
-column (axis 0) or the same row (axis 1). Note that if ~X~ is a tensor
-with shape (2, 3) and we sum over the columns, the result will be a
-vector with shape (3,). When invoking the sum operator, we can specify
-to keep the number of axes in the original tensor, rather than
-collapsing out the dimension that we summed over. This will result in
-a two-dimensional tensor with shape (1, 3).
+tensor, as discussed in Section
+[[file:2.3-linear-algebra.org::#lin-alg-reduction]] and Section
+[[file:2.3-linear-algebra.org::#lin-alg-non-reduction]]. Given a matrix ~X~
+we can sum over all elements (by default) or only over elements in the
+same axis, i.e., the same column (axis 0) or the same row (axis
+1). Note that if ~X~ is a tensor with shape (2, 3) and we sum over the
+columns, the result will be a vector with shape (3,). When invoking
+the sum operator, we can specify to keep the number of axes in the
+original tensor, rather than collapsing out the dimension that we
+summed over. This will result in a two-dimensional tensor with shape
+(1, 3).
 
 #+begin_src clojure :results silent :exports both :eval no-export
 (def X (nd/create ndm [[1 2 3] [4 5 6]]))
@@ -209,9 +211,10 @@ before passing the data through our model.
 ** Defining the Loss Function
 
 Next, we need to implement the cross-entropy loss function, as
-introduced in Section [[#sec-softmax]]. This may be the most common loss
-function in all of deep learning because, at the moment,
-classification problems far outnumber regression problems.
+introduced in Section
+[[file:3.4-softmax-regression.org::#sec-softmax]]. This may be the
+most common loss function in all of deep learning because, at the
+moment, classification problems far outnumber regression problems.
 
 Recall that cross-entropy takes the negative log-likelihood of the
 predicted probability assigned to the true label. Rather than

@@ -1,7 +1,7 @@
 #+PROPERTY: header-args    :tangle src/clj_d2l/linear_regression.clj
 * Linear Regression
 :PROPERTIES:
-:ID:       72a54bf4-b6c6-48d1-ac5d-fe2ee9c691a0
+:CUSTOM_ID:       lin_reg
 :END:
 
 *Regression* refers to a set of methods for modeling the relationship
@@ -113,7 +113,7 @@ matrix-vector product:
 {\hat{\mathbf{y}}} = \mathbf{X} \mathbf{w} + b,
 \end{equation}
 
-where broadcasting (see [[id:9dcbe412-db7e-485a-bb3c-d7181f2f7f05]]) is
+where broadcasting (see [[file:2.1-data-manipulation.org::#9dcbe412-db7e-485a-bb3c-d7181f2f7f05]]) is
 applied during the summation. Given features of a training dataset
 \(\mathbf{X}\) and corresponding (known) labels \(\mathbf{y}\), the
 goal of linear regression is to find the weight vector \(\mathbf{w}\)
@@ -317,6 +317,8 @@ We will use [[https://github.com/dm3/stopwatch][dm3/stopwatch]] to measure the t
 (ns clj-d2l.linear_regression
   (:require [clj-djl.ndarray :as nd]
             [stopwatch.core :as stopwatch]
+            [clj-chart.chart :as chart]
+            [clj-chart.plot :as plot]
             [clojure.java.io :as io]
             [clj-d2l.core :as d2l]))
 #+end_src
@@ -332,6 +334,7 @@ a single call to ~+~.
 (def ndm (nd/base-manager))
 (def a (nd/ones ndm [n]))
 (def b (nd/ones ndm [n]))
+(def c (nd/zeros ndm [n]))
 #+end_src
 
 Now we can benchmark the workloads. First, we add them, one coordinate
@@ -345,7 +348,8 @@ at a time, using a ~doseq~.
 #+end_src
 
 #+RESULTS:
-: Elapsed:  10.531492801 sec
+: Elapsed:  4.044424873 sec
+
 
 Alternatively, we rely on the ~clj-djl.ndarray/+~ operator to compute
 the elementwise sum.
@@ -357,7 +361,7 @@ the elementwise sum.
 #+end_src
 
 #+RESULTS:
-: Elapsed:  3.21498E-4 sec
+: Elapsed:  1.64916E-4 sec
 
 You probably noticed that the second method is dramatically faster
 than the first. Vectorizing code often yields order-of-magnitude
@@ -387,18 +391,20 @@ Below we define a Clojure function to compute the normal distribution.
 #+begin_src clojure :results silent
 (defn normal [x mu sigma]
   (let [p (/ 1.0 (Math/sqrt (* 2 Math/PI (Math/pow sigma 2))))]
-    (nd/* (nd/exp (nd/* (nd/pow (nd/- x mu) 2) (/ -0.5 (Math/pow sigma 2))))
+    (nd/* (nd/exp (nd/* (nd/pow (nd/- x mu) 2)
+                        (/ -0.5 (Math/pow sigma 2))))
           p)))
 #+end_src
 
 #+begin_src clojure :results file graphics :output-dir figures :file normal-distribution.svg :exports both :eval no-export
 (def x (nd/arange ndm -7. 7. 0.01))
 (def params [[0 1] [0 2] [3 1]])
-(d2l/plot-lines
- "notes/figures/normal-distribution.svg"
- (map #(str "mean " (first %) ", std " (second %)) params)
- (nd/to-vec x)
- (map #(nd/to-vec (normal x (first %) (second %))) params))
+(let [titles (map #(str "mean " (first %) ", std " (second %)) params)
+      yss (map #(nd/to-vec (normal x (first %) (second %))) params)
+      xs (nd/to-vec x)
+      series (map (fn [t ys-] {:name t :xs xs :ys ys-}) titles yss)
+      c (chart/line {:series series})]
+  (plot/store! c nil "notes/figures/normal-distribution.svg"))
 #+end_src
 
 #+RESULTS:

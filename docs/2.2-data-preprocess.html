@@ -3,13 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 20:59 -->
+<!-- 2022-05-17 Tue 08:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
-<meta name="generator" content="Org mode" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="author" content="Kimi Ma" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -30,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -39,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,106 +192,92 @@
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { width: 90%; }
-  /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
 <div id="org-div-home-and-up">
  <a accesskey="h" href="sitemap.html"> UP </a>
  |
  <a accesskey="H" href="index.html"> HOME </a>
-</div><div id="content">
-<div id="table-of-contents">
+</div><div id="content" class="content">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org979d33c">1. Data Preprocessing</a>
+<li><a href="#org7ffc73e">1. Data Preprocessing</a>
 <ul>
-<li><a href="#org85bb302">1.1. Reading the Dataset</a></li>
-<li><a href="#orgf374de8">1.2. Handling Missing Data</a></li>
-<li><a href="#org134b95e">1.3. Conversion to the Tensor Format</a></li>
+<li><a href="#org7de0e4f">1.1. Reading the Dataset</a></li>
+<li><a href="#org5b618c1">1.2. Handling Missing Data</a></li>
+<li><a href="#org2e7d4d1">1.3. Conversion to the Tensor Format</a></li>
+<li><a href="#org6bda3db">1.4. Summary</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org979d33c" class="outline-2">
-<h2 id="org979d33c"><span class="section-number-2">1</span> Data Preprocessing</h2>
+<div id="outline-container-org7ffc73e" class="outline-2">
+<h2 id="org7ffc73e"><span class="section-number-2">1.</span> Data Preprocessing</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.data-preprocess</span>
   <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
             <span style="color: #909183;">[</span>clj-d2l.core <span style="color: #110099;">:as</span> d2l<span style="color: #909183;">]</span>
-            <span style="color: #909183;">[</span>tablecloth.api <span style="color: #110099;">:as</span> ds<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.dataframe <span style="color: #110099;">:as</span> df<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-djl.dataframe.functional <span style="color: #110099;">:as</span> functional<span style="color: #909183;">]</span>
             <span style="color: #909183;">[</span>clojure.java.io <span style="color: #110099;">:as</span> io<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org85bb302" class="outline-3">
-<h3 id="org85bb302"><span class="section-number-3">1.1</span> Reading the Dataset</h3>
+<div id="outline-container-org7de0e4f" class="outline-3">
+<h3 id="org7de0e4f"><span class="section-number-3">1.1.</span> Reading the Dataset</h3>
 <div class="outline-text-3" id="text-1-1">
+<p>
+As an example, we begin by creating an artificial dataset that is
+stored in a csv (comma-separated values) file
+../data/house<sub>tiny.csv</sub>. Data stored in other formats may be processed
+in similar ways.
+</p>
+
+<p>
+Below we write the dataset row by row into a csv file.
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>filename <span style="color: #2A00FF;">"data/house_tiny.csv"</span>
-      records <span style="color: #909183;">[</span><span style="color: #2A00FF;">"NumRooms,Alley,Price</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>  <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">Column names</span>
-               <span style="color: #2A00FF;">"NA,Pave,127500</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>        <span style="color: #3F7F5F;">;;</span><span style="color: #3F7F5F;">Each row represents a data example</span>
-               <span style="color: #2A00FF;">"2,NA,106000</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>
-               <span style="color: #2A00FF;">"4,NA,178100</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>
-               <span style="color: #2A00FF;">"NA,NA,140000</span><span style="color: #2A00FF; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span><span style="color: #909183;">]</span><span style="color: #7388d6;">]</span>
+      records <span style="color: #909183;">[</span><span style="color: #2A00FF;">"NumRooms,Alley,Price</span><span style="color: #000000; background-color: #f8f8f8; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>  <span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">Column names</span>
+               <span style="color: #2A00FF;">"NA,Pave,127500</span><span style="color: #000000; background-color: #f8f8f8; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>        <span style="color: #3F7F5F;">;;</span><span style="color: #3F7F5F;">Each row represents a data example</span>
+               <span style="color: #2A00FF;">"2,NA,106000</span><span style="color: #000000; background-color: #f8f8f8; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>
+               <span style="color: #2A00FF;">"4,NA,178100</span><span style="color: #000000; background-color: #f8f8f8; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span>
+               <span style="color: #2A00FF;">"NA,NA,140000</span><span style="color: #000000; background-color: #f8f8f8; font-weight: bold;">\n</span><span style="color: #2A00FF;">"</span><span style="color: #909183;">]</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">io</span>/make-parents filename<span style="color: #7388d6;">)</span>
   <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">dorun</span>
-   <span style="color: #909183;">(</span>map #<span style="color: #709870;">(</span>spit filename <span style="color: #000000;">%</span> <span style="color: #110099;">:append</span> <span style="color: #110099;">true</span><span style="color: #709870;">)</span> records<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+   <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">spit</span> filename <span style="color: #000000;">%</span> <span style="color: #110099;">:append</span> <span style="color: #110099;">true</span><span style="color: #709870;">)</span> records<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">slurp</span> filename<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+</pre>
+</div>
 
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">data</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/dataset <span style="color: #2A00FF;">"data/house_tiny.csv"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="example">
+NumRooms,Alley,Price
+NA,Pave,127500
+2,NA,106000
+4,NA,178100
+NA,NA,140000
+</pre>
 
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps data<span style="color: #707183;">)</span>
+
+<p>
+To load the raw dataset from the created csv file, we require the
+<code>clj-djl.dataframe</code> package and invoke the read function to read
+directly from the csv we created. This dataset has four rows and three
+columns, where each row describes the number of rooms (“NumRooms”),
+the alley type (“Alley”), and the price (“Price”) of a house.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">data</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">df</span>/dataframe <span style="color: #2A00FF;">"data/house_tiny.csv"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+data
 </pre>
 </div>
 
@@ -297,7 +285,7 @@ for the JavaScript code in this tag.
 data/house_tiny.csv [4 3]:
 
 | NumRooms | Alley |  Price |
-|----------|-------|--------|
+|---------:|-------|-------:|
 |          |  Pave | 127500 |
 |        2 |       | 106000 |
 |        4 |       | 178100 |
@@ -306,32 +294,94 @@ data/house_tiny.csv [4 3]:
 </div>
 </div>
 
-
-<div id="outline-container-orgf374de8" class="outline-3">
-<h3 id="orgf374de8"><span class="section-number-3">1.2</span> Handling Missing Data</h3>
+<div id="outline-container-org5b618c1" class="outline-3">
+<h3 id="org5b618c1"><span class="section-number-3">1.2.</span> Handling Missing Data</h3>
 <div class="outline-text-3" id="text-1-2">
+<p>
+Note that there are some blank spaces which are missing values. To
+handle missing data, typical methods include imputation and deletion,
+where imputation replaces missing values with substituted ones, while
+deletion ignores missing values. Here we will consider imputation.
+</p>
+
+<p>
+We split the data into inputs and outputs by creating new dataframes
+and specifying the columns desired, where the former takes the first
+two columns while the latter only keeps the last column. For numerical
+values in inputs that are missing, we replace the missing data entries
+with the mean value of the same column.
+</p>
+
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">dataset</span>
- <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/replace-missing data <span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #110099;">:value</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">tech.v2.datatype.functional</span>/mean<span style="color: #709870;">)</span>
-       data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/add-or-replace-columns data <span style="color: #907373;">{</span><span style="color: #2A00FF;">"Alley_nil"</span> <span style="color: #6276ba;">(</span>map #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span>nil? <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 1 0<span style="color: #858580;">)(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span>
-                                             <span style="color: #2A00FF;">"Alley"</span> <span style="color: #6276ba;">(</span>map #<span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #80a880;">(</span>nil? <span style="color: #000000;">%</span><span style="color: #80a880;">)</span> 0 1<span style="color: #858580;">)</span> <span style="color: #858580;">(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">}</span><span style="color: #709870;">)</span>
-       inputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #907373;">[</span><span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #2A00FF;">"Alley"</span> <span style="color: #2A00FF;">"Alley_nil"</span><span style="color: #907373;">]</span><span style="color: #709870;">)</span>
-       outputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/select-columns data <span style="color: #2A00FF;">"Price"</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
-   <span style="color: #909183;">[</span>inputs outputs<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">dataframe</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">df</span>/replace-missing
+              data <span style="color: #907373;">[</span><span style="color: #2A00FF;">"NumRooms"</span><span style="color: #907373;">]</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">functional</span>/mean<span style="color: #709870;">)</span>
+        data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">df</span>/update-column
+              data <span style="color: #2A00FF;">"Alley_nan"</span>
+              <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">nil?</span> <span style="color: #000000;">%</span><span style="color: #858580;">)</span> 1 0<span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+        data <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">df</span>/update-column
+              data <span style="color: #2A00FF;">"Alley_Pave"</span>
+              <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">if</span> <span style="color: #858580;">(</span><span style="color: #7F0055; font-weight: bold;">some?</span> <span style="color: #000000;">%</span><span style="color: #858580;">)</span> 1 0<span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span>data <span style="color: #2A00FF;">"Alley"</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+        inputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">df</span>/select-columns
+                data <span style="color: #907373;">[</span><span style="color: #2A00FF;">"NumRooms"</span> <span style="color: #2A00FF;">"Alley_Pave"</span> <span style="color: #2A00FF;">"Alley_nan"</span><span style="color: #907373;">]</span><span style="color: #709870;">)</span>
+        outputs <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">df</span>/select-columns
+                 data <span style="color: #907373;">[</span><span style="color: #2A00FF;">"Price"</span><span style="color: #907373;">]</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">[</span>inputs outputs<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">first</span> dataframe<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+data/house_tiny.csv [4 3]:
+
+| NumRooms | Alley_Pave | Alley_nan |
+|---------:|-----------:|----------:|
+|        3 |          1 |         0 |
+|        2 |          0 |         1 |
+|        4 |          0 |         1 |
+|        3 |          0 |         1 |
+</pre>
+
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">second</span> dataframe<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+data/house_tiny.csv [4 1]:
+
+|  Price |
+|-------:|
+| 127500 |
+| 106000 |
+| 178100 |
+| 140000 |
 </pre>
 </div>
 </div>
-</div>
 
-<div id="outline-container-org134b95e" class="outline-3">
-<h3 id="org134b95e"><span class="section-number-3">1.3</span> Conversion to the Tensor Format</h3>
+
+<div id="outline-container-org2e7d4d1" class="outline-3">
+<h3 id="org2e7d4d1"><span class="section-number-3">1.3.</span> Conversion to the Tensor Format</h3>
 <div class="outline-text-3" id="text-1-3">
+<p>
+Now that all the entries in inputs and outputs are numerical, they can
+be converted to the NDArray format. Once data are in this format, they
+can be further manipulated with those NDArray functionalities that we
+have introduced in Section 2.1.
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>map vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span>get dataset 0<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">(</span>map vec <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">ds</span>/rows <span style="color: #907373;">(</span>get dataset 1<span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps X<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps y<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">X</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">df</span>/-&gt;ndarray ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">first</span> dataframe<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">df</span>/-&gt;ndarray ndm <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">second</span> dataframe<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+X
 </pre>
 </div>
 
@@ -342,7 +392,16 @@ ND: (4, 3) cpu() int32
  [ 4,  0,  1],
  [ 3,  0,  1],
 ]
-ND: (4, 1) cpu() int32
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure">Y
+</pre>
+</div>
+
+<pre class="example">
+ND: (4, 1) cpu() int64
 [[127500],
  [106000],
  [178100],
@@ -351,10 +410,22 @@ ND: (4, 1) cpu() int32
 </pre>
 </div>
 </div>
+
+<div id="outline-container-org6bda3db" class="outline-3">
+<h3 id="org6bda3db"><span class="section-number-3">1.4.</span> Summary</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>Like many other extension packages in the vast ecosystem of clojure,
+<code>clj-djl.dataframe</code> can work together with NDArray.</li>
+<li>Imputation and deletion can be used to handle missing data.</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 20:59</p>
+<p class="author">Author: Kimi Ma</p>
+<p class="date">Created: 2022-05-17 Tue 08:06</p>
 </div>
 </body>
 </html>

@@ -3,13 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-14 Wed 19:38 -->
+<!-- 2022-05-17 Tue 08:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Data Manipulation</title>
-<meta name="generator" content="Org mode" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<title>&lrm;</title>
+<meta name="author" content="Kimi Ma" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -30,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -39,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,55 +192,8 @@
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { width: 90%; }
-  /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         displayAlign: "center",
@@ -259,40 +214,38 @@ for the JavaScript code in this tag.
              }
 });
 </script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="org-div-home-and-up">
  <a accesskey="h" href="sitemap.html"> UP </a>
  |
  <a accesskey="H" href="index.html"> HOME </a>
-</div><div id="content">
-<h1 class="title">Data Manipulation</h1>
-<div id="table-of-contents">
+</div><div id="content" class="content">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9664326">1. Data Manipulation</a>
+<li><a href="#org1002a1b">1. Data Manipulation</a>
 <ul>
-<li><a href="#org3a01b8d">1.1. Getting Started</a></li>
-<li><a href="#orgd6199c0">1.2. Operations</a>
+<li><a href="#org761ea4a">1.1. Getting Started</a></li>
+<li><a href="#org6f4bf44">1.2. Operations</a>
 <ul>
-<li><a href="#org9a5c442">1.2.1. Operations</a></li>
+<li><a href="#orgcbc24fd">1.2.1. Operations</a></li>
 </ul>
 </li>
-<li><a href="#org2b8a4d0">1.3. Broadcasting Mechanism</a></li>
-<li><a href="#org84a8821">1.4. Indexing and Slicing</a></li>
-<li><a href="#orgdfa9b28">1.5. Saving Memory</a></li>
-<li><a href="#orgf23a17e">1.6. Conversion to Other Clojure Objects</a></li>
+<li><a href="#org7d15ed0">1.3. Broadcasting Mechanism</a></li>
+<li><a href="#org61b17a7">1.4. Indexing and Slicing</a></li>
+<li><a href="#org54f7ef4">1.5. Saving Memory</a></li>
+<li><a href="#org8ebfc39">1.6. Conversion to Other Clojure Objects</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org9664326" class="outline-2">
-<h2 id="org9664326"><span class="section-number-2">1</span> Data Manipulation</h2>
+<div id="outline-container-org1002a1b" class="outline-2">
+<h2 id="org1002a1b"><span class="section-number-2">1.</span> Data Manipulation</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In order to get anything done, we need some way to store and
@@ -309,7 +262,7 @@ If you have worked with NumPy, the most widely-used scientific
 computing package in Python, then you will find this section
 familiar. No matter which framework you use, its tensor class
 (<i>ndarray</i> in MXNet, DJL and clj-djl, <i>Tensor</i> in both PyTorch and
-TensorFlow) is similar to NumPy's ndarray with a few killer
+TensorFlow) is similar to NumPy&rsquo;s ndarray with a few killer
 features. First, GPU is well-supported to accelerate the computation
 whereas NumPy only supports CPU computation. Second, the tensor
 class supports automatic differentiation. These properties make the
@@ -319,8 +272,8 @@ unless otherwise stated.
 </p>
 </div>
 
-<div id="outline-container-org3a01b8d" class="outline-3">
-<h3 id="org3a01b8d"><span class="section-number-3">1.1</span> Getting Started</h3>
+<div id="outline-container-org761ea4a" class="outline-3">
+<h3 id="org761ea4a"><span class="section-number-3">1.1.</span> Getting Started</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 In this section, we aim to get you up and running, equipping you
@@ -340,7 +293,8 @@ ndarray namespace includes functions supported by clj-djl.
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.data-manipulation</span>
-  <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-d2l.core <span style="color: #110099;">:as</span> d2l<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -362,7 +316,7 @@ computation.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">x</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm 0 12<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 x
 </pre>
@@ -375,12 +329,12 @@ ND: (12) cpu() int32
 
 
 <p>
-We can access an ndarray's shape (the length along each axis) by
+We can access an ndarray&rsquo;s shape (the length along each axis) by
 inspecting its shape property.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-shape x<span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape x<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -393,7 +347,7 @@ inspecting its shape property.
 If we just want to know the total number of elements in an ndarray,
 i.e., the product of all of the shape elements, we can inspect its
 size. Because we are dealing with a vector here, the single element
-of its shape is same to its size. The difference is that <code>get-shape</code>
+of its shape is same to its size. The difference is that <code>shape</code>
 will return a <i>Shape</i> object.
 </p>
 
@@ -409,9 +363,9 @@ will return a <i>Shape</i> object.
 
 <p>
 To change the shape of an ndarray without altering either the number
-of elements or their values, we can invoke the reshape function. For
+of elements or their values, we can invoke the <code>reshape</code> function. For
 example, we can transform our ndarray, x, from a row vector with
-shape (12,) to a matrix with shape (3, 4). This new ndarray contains
+shape (12) to a matrix with shape (3, 4). This new ndarray contains
 the exact same values, but views them as a matrix organized as 3
 rows and 4 columns. To reiterate, although the shape has changed,
 the elements have not. Note that the size is unaltered by reshaping.
@@ -434,16 +388,15 @@ ND: (3, 4) cpu() int32
 
 <p>
 Reshaping by manually specifying every dimension is unnecessary. If
-our target shape is a matrix with shape (height, width), then after
-we know the width, the height is given implicitly. Why should we
-have to perform the division ourselves? In the example above, to get
-a matrix with 3 rows, we specified both that it should have 3 rows
-and 4 columns. Fortunately, ndarrays can automatically work out one
-dimension given the rest. We invoke this capability by placing -1
-for the dimension that we would like ndarrays to automatically
-infer. In our case, instead of calling x.reshape(3, 4), we could
-have equivalently called <code>(nd/reshape x [-1 4])</code> or <code>(nd/reshape x [3
--1])</code>.
+our target shape is a matrix with shape (height, width), then after we
+know the width, the height is given implicitly. Why should we have to
+perform the division ourselves? In the example above, to get a matrix
+with 3 rows, we specified both that it should have 3 rows and 4
+columns. Fortunately, ndarrays can automatically work out one
+dimension given the rest. We invoke this capability by placing -1 for
+the dimension that we would like ndarrays to automatically infer. In
+our case, instead of calling <code>(reshape x [3 4])</code>, we could have
+equivalently called <code>(nd/reshape x [-1 4])</code> or <code>(nd/reshape x [3 -1])</code>.
 </p>
 
 <div class="org-src-container">
@@ -461,24 +414,25 @@ ND: (3, 4) cpu() int32
 </pre>
 
 
+<p>
+Passing create method with only Shape will grab a chunk of memory and
+hands us back a matrix without bothering to change the value of any of
+its entries. This is remarkably efficient but we must be careful
+because the entries might take arbitrary values, including very big
+ones!
+</p>
+
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape 2 3<span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/shape <span style="color: #909183;">[</span>3 4<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
-(2, 3)
-</pre>
-
-
-<div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #7388d6;">(</span>int-array <span style="color: #909183;">[</span>2 3<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-</pre>
-</div>
-
-<pre class="example">
-ND: (2) cpu() int32
-[ 2,  3]
+ND: (3, 4) cpu() float32
+[[ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00],
+ [ 1.21782351e+29,  0.00000000e+00,  1.21783258e+29,  0.00000000e+00],
+ [ 1.19888078e+29,  0.00000000e+00,  1.21744119e+29,  0.00000000e+00],
+]
 </pre>
 
 
@@ -494,7 +448,7 @@ with all elements set to 0 and a shape of <code>[2 3 4]</code> as follows:
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="orgcaefbe4">
 ND: (2, 3, 4) cpu() float32
 [[[0., 0., 0., 0.],
   [0., 0., 0., 0.],
@@ -516,7 +470,7 @@ Similarly, we can create ndarrays with each element set to 1 as follows:
 </pre>
 </div>
 
-<pre class="example">
+<pre class="example" id="org5005ac7">
 ND: (2, 3, 4) cpu() float32
 [[[1., 1., 1., 1.],
   [1., 1., 1., 1.],
@@ -530,12 +484,13 @@ ND: (2, 3, 4) cpu() float32
 </pre>
 
 <p>
-Often, we want to randomly sample the values for each element in an ndarray from
-some probability distribution. For example, when we construct arrays to serve as
-parameters in a neural network, we will typically initialize their values
-randomly. The following snippet creates an ndarray with shape (3, 4). Each of
-its elements is randomly sampled from a standard Gaussian (normal) distribution
-with a mean of 0 and a standard deviation of 1.
+Often, we want to randomly sample the values for each element in an
+ndarray from some probability distribution. For example, when we
+construct arrays to serve as parameters in a neural network, we will
+typically initialize their values randomly. The following snippet
+creates an ndarray with shape (3, 4). Each of its elements is randomly
+sampled from a standard Gaussian (normal) distribution with a mean of
+0 and a standard deviation of 1.
 </p>
 
 <div class="org-src-container">
@@ -545,9 +500,9 @@ with a mean of 0 and a standard deviation of 1.
 
 <pre class="example">
 ND: (3, 4) cpu() float32
-[[-1.7376,  0.0664,  0.0473,  0.8487],
- [ 0.1458, -0.8004,  0.326 , -0.1688],
- [ 0.4579,  0.9363, -0.8943,  0.3574],
+[[ 1.1631,  2.2122,  0.4838,  0.774 ],
+ [ 0.2996,  1.0434,  0.153 ,  1.1839],
+ [-1.1688,  1.8917,  1.5581, -1.2347],
 ]
 </pre>
 
@@ -563,9 +518,9 @@ We can directly use a clojure vec as the shape:
 
 <pre class="example">
 ND: (3, 4) cpu() float32
-[[ 0.4938,  0.7793, -0.9043, -1.0103],
- [-1.2141, -0.3916,  2.1564,  1.3166],
- [ 1.0938, -0.4329,  1.8271,  0.7154],
+[[-0.5459, -1.771 , -2.3556, -0.4514],
+ [ 0.5414,  0.5794,  2.6785, -1.8561],
+ [ 1.2546, -1.9769, -0.5488, -0.208 ],
 ]
 </pre>
 
@@ -582,9 +537,9 @@ standard deviation (0 and 1).
 
 <pre class="example">
 ND: (3, 4) cpu() float32
-[[-0.7922,  0.2415,  0.9321,  0.479 ],
- [-3.1558,  0.9689,  2.1935, -1.0218],
- [-0.5386, -0.0681, -0.8611, -0.3187],
+[[-0.6811,  0.2444, -0.1353, -0.0372],
+ [ 0.3772, -0.4877,  0.4102, -0.0226],
+ [ 0.5713,  0.5746, -2.758 ,  1.4661],
 ]
 </pre>
 
@@ -594,6 +549,20 @@ We can also specify the exact values for each element in the desired ndarray by
 supplying a clojure vec (or list) containing the numerical values. Here, the
 outermost list corresponds to axis 0, and the inner list to axis 1.
 </p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #7388d6;">[</span>2 1 4 3 1 2 3 4 4 3 2 1<span style="color: #7388d6;">]</span> <span style="color: #7388d6;">[</span>3 4<span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (3, 4) cpu() int64
+[[ 2,  1,  4,  3],
+ [ 1,  2,  3,  4],
+ [ 4,  3,  2,  1],
+]
+</pre>
+
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #7388d6;">[</span><span style="color: #909183;">[</span>2 1 4 3<span style="color: #909183;">][</span>1 2 3 4<span style="color: #909183;">][</span>4 3 2 1<span style="color: #909183;">]</span><span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
@@ -610,49 +579,53 @@ ND: (3, 4) cpu() int64
 </div>
 </div>
 
-<div id="outline-container-orgd6199c0" class="outline-3">
-<h3 id="orgd6199c0"><span class="section-number-3">1.2</span> Operations</h3>
+<div id="outline-container-org6f4bf44" class="outline-3">
+<h3 id="org6f4bf44"><span class="section-number-3">1.2.</span> Operations</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-This book is not about software engineering. Our interests are not limited to
-simply reading and writing data from/to arrays. We want to perform mathematical
-operations on those arrays. Some of the simplest and most useful operations are
-the elementwise operations. These apply a standard scalar operation to each
-element of an array. For functions that take two arrays as inputs, elementwise
-operations apply some standard binary operator on each pair of corresponding
-elements from the two arrays. We can create an elementwise function from any
+This book is not about software engineering. Our interests are not
+limited to simply reading and writing data from/to arrays. We want to
+perform mathematical operations on those arrays. Some of the simplest
+and most useful operations are the elementwise operations. These apply
+a standard scalar operation to each element of an array. For functions
+that take two arrays as inputs, elementwise operations apply some
+standard binary operator on each pair of corresponding elements from
+the two arrays. We can create an elementwise function from any
 function that maps from a scalar to a scalar.
 </p>
 
 <p>
-In mathematical notation, we would denote such a unary scalar operator (taking
-one input) by the signature \(f: \mathbb{R} \ rightarrow \mathbb{R}\). This just
-means that the function is mapping from any real number (\(\mathbb{R}\)) onto
-another. Likewise, we denote a binary scalar operator (taking two real inputs,
-and yielding one output) by the signature \(f: \mathbb{R}, \mathbb{R} \rightarrow
-\mathbb{R}\). Given any two vectors \(\mathbf{u}\) and \(\mathbf{v}\) <b>of the same
-shape</b>, and a binary operator \(f\), we can produce a vector \(\mathbf{c} =
-F(\mathbf{u}, \mathbf{v})\) by setting \(c_i \gets f(u_i, v_i)\) for all \(i\), where
-\(c_i, u_i\), and \(v_i\) are the \(i^\mathrm{th}\) elements of vectors \(\mathbf{c}\),
-\(\mathbf{u}\), and \(\mathbf{v}\). Here, we produced the vector-valued \(F:
-\mathbb{R}^d, \mathbb{R}^d \rightarrow \mathbb{R}^d\) by <b>lifting</b> the scalar
-function to an elementwise vector operation.
+In mathematical notation, we would denote such a unary scalar operator
+(taking one input) by the signature \(f: \mathbb{R} \ rightarrow
+\mathbb{R}\). This just means that the function is mapping from any
+real number (\(\mathbb{R}\)) onto another. Likewise, we denote a binary
+scalar operator (taking two real inputs, and yielding one output) by
+the signature \(f: \mathbb{R}, \mathbb{R} \rightarrow
+\mathbb{R}\). Given any two vectors \(\mathbf{u}\) and \(\mathbf{v}\) <b>of
+the same shape</b>, and a binary operator \(f\), we can produce a vector
+\(\mathbf{c} = F(\mathbf{u}, \mathbf{v})\) by setting \(c_i \gets f(u_i,
+v_i)\) for all \(i\), where \(c_i, u_i\), and \(v_i\) are the \(i^\mathrm{th}\)
+elements of vectors \(\mathbf{c}\), \(\mathbf{u}\), and
+\(\mathbf{v}\). Here, we produced the vector-valued \(F: \mathbb{R}^d,
+\mathbb{R}^d \rightarrow \mathbb{R}^d\) by <b>lifting</b> the scalar function
+to an elementwise vector operation.
 </p>
 
 <p>
-The common standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, and <code>**</code>) have all
-been <b>lifted</b> to elementwise operations for any identically-shaped ndarrays of
-arbitrary shape. We can call elementwise operations on any two ndarrays of the
-same shape. In the following example, we use commas to formulate a 5-element
-tuple, where each element is the result of an elementwise operation.
+The common standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>) have all been
+<b>lifted</b> to elementwise operations for any identically-shaped ndarrays
+of arbitrary shape. We can call elementwise operations on any two
+ndarrays of the same shape. In the following example, we use commas to
+formulate a 5-element tuple, where each element is the result of an
+elementwise operation.
 </p>
 </div>
 
-<div id="outline-container-org9a5c442" class="outline-4">
-<h4 id="org9a5c442"><span class="section-number-4">1.2.1</span> Operations</h4>
+<div id="outline-container-orgcbc24fd" class="outline-4">
+<h4 id="orgcbc24fd"><span class="section-number-4">1.2.1.</span> Operations</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
-The common standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, and <code>**</code>) have all been
+The common standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>) have all been
 lifted to elementwise operations.
 </p>
 
@@ -692,7 +665,7 @@ ND: (4) cpu() float64
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/** x y<span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/pow x y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -703,8 +676,8 @@ ND: (4) cpu() float64
 
 
 <p>
-Many more operations can be applied elementwise, including unary operators like
-exponentiation.
+Many more operations can be applied elementwise, including unary
+operators like exponentiation.
 </p>
 
 <div class="org-src-container">
@@ -719,21 +692,23 @@ ND: (4) cpu() float64
 
 
 <p>
-In addition to elementwise computations, we can also perform linear algebra
-operations, including vector dot products and matrix multiplication. We will
-explain the crucial bits of linear algebra (with no assumed prior knowledge) in
--Section 2.3-.
+In addition to elementwise computations, we can also perform linear
+algebra operations, including vector dot products and matrix
+multiplication. We will explain the crucial bits of linear algebra
+(with no assumed prior knowledge) in -Section 2.3-.
 </p>
 
 <p>
-We can also concatenate multiple ndarrays together, stacking them end-to-end to
-form a larger ndarray. We just need to provide a list of ndarrays and tell the
-system along which axis to concatenate. The example below shows what happens
-when we concatenate two matrices along rows (axis 0, the first element of the
-shape) vs. columns (axis 1, the second element of the shape). We can see that
-the first output ndarray's axis-0 length (6 ) is the sum of the two input
-ndarrays' axis-0 lengths \((3+3)\); while the second output ndarray's axis-1
-length (8) is the sum of the two input ndarrays' axis-1 lengths \((4+4)\).
+We can also concatenate multiple ndarrays together, stacking them
+end-to-end to form a larger ndarray. We just need to provide a list of
+ndarrays and tell the system along which axis to concatenate. The
+example below shows what happens when we concatenate two matrices
+along rows (axis 0, the first element of the shape) vs. columns (axis
+1, the second element of the shape). We can see that the first output
+ndarray&rsquo;s shape is (6, 4), its axis-0 length (6) is the sum of the two
+input ndarrays&rsquo; axis-0 lengths \((3+3)\); while the second output
+ndarray&rsquo;s shape is (3, 8), its axis-1 length (8) is the sum of the two
+input ndarrays&rsquo; axis-1 lengths \((4+4)\).
 </p>
 
 <div class="org-src-container">
@@ -770,15 +745,15 @@ ND: (3, 4) cpu() int64
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #3F7F5F;">;; </span><span style="color: #3F7F5F;">concat only support int32 and float32 datatype</span>
 <span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-type Y <span style="color: #110099;">:int32</span> <span style="color: #110099;">false</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/concat X Y<span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">concat</span> Y Y<span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
 ND: (6, 4) cpu() int32
-[[ 0,  1,  2,  3],
- [ 4,  5,  6,  7],
- [ 8,  9, 10, 11],
+[[ 2,  1,  4,  3],
+ [ 1,  2,  3,  4],
+ [ 4,  3,  2,  1],
  [ 2,  1,  4,  3],
  [ 1,  2,  3,  4],
  [ 4,  3,  2,  1],
@@ -787,7 +762,7 @@ ND: (6, 4) cpu() int32
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/concat X Y 1<span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">concat</span> X Y 1<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -801,11 +776,16 @@ ND: (3, 8) cpu() int32
 
 
 <p>
-Sometimes, we want to construct a binary ndarray via logical statements. Take
-<code>(nd/= X Y)</code> as an example. For each position, if X and Y are equal at that
-position, the corresponding entry in the new tensor takes a value of 1, meaning
-that the logical statement <code>(nd/= X Y)</code> is true at that position; otherwise that
-position takes 0.
+The third argument of <code>nd/concat</code> is to specify the axis to concatenate,
+default is axis-0.
+</p>
+
+<p>
+Sometimes, we want to construct a binary ndarray via logical
+statements. Take <code>(nd/= X Y)</code> as an example. For each position, if X and
+Y are equal at that position, the corresponding entry in the new
+tensor takes a value of <code>true</code>, meaning that the logical statement <code>(nd/=
+X Y)</code> is true at that position; otherwise that position takes <code>false</code>.
 </p>
 
 <div class="org-src-container">
@@ -823,7 +803,8 @@ ND: (3, 4) cpu() boolean
 
 
 <p>
-Summing all the elements in the ndarray yields a ndarray with only one element.
+Summing all the elements in the ndarray yields a ndarray with only one
+element.
 </p>
 
 <div class="org-src-container">
@@ -839,8 +820,8 @@ ND: () cpu() int32
 </div>
 </div>
 
-<div id="outline-container-org2b8a4d0" class="outline-3">
-<h3 id="org2b8a4d0"><span class="section-number-3">1.3</span> Broadcasting Mechanism</h3>
+<div id="outline-container-org7d15ed0" class="outline-3">
+<h3 id="org7d15ed0"><span class="section-number-3">1.3.</span> Broadcasting Mechanism</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 In the above section, we saw how to perform elementwise operations on two
@@ -886,11 +867,53 @@ ND: (1, 2) cpu() int32
 
 
 <p>
-Since a and b are \(3 \times 1\) and \(1 \times 2\) matrices respectively, their
-shapes do not match up if we want to add them. We broadcast the entries of both
-matrices into a larger \(3 \times 2\) matrix as follows: for matrix a it
-replicates the columns and for matrix b it replicates the rows before adding up
-both elementwise.
+Since a and b are \(3 \times 1\) and \(1 \times 2\) matrices respectively,
+their shapes do not match up if we want to add them. We broadcast the
+entries of both matrices into a larger \(3 \times 2\) matrix as follows:
+for matrix a it replicates the columns and for matrix b it replicates
+the rows before adding up both elementwise.
+</p>
+
+<p>
+The result of \(a\) broadcasted is:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">concat</span> a a 1<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (3, 2) cpu() int32
+[[ 0,  0],
+ [ 1,  1],
+ [ 2,  2],
+]
+</pre>
+
+
+<p>
+The result of \(b\) broadcasted is:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">-&gt;&gt;</span> b
+     <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">concat</span> b<span style="color: #7388d6;">)</span>
+     <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">concat</span> b<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+ND: (3, 2) cpu() int32
+[[ 0,  1],
+ [ 0,  1],
+ [ 0,  1],
+]
+</pre>
+
+
+<p>
+Thus the result is:
 </p>
 
 <div class="org-src-container">
@@ -908,15 +931,21 @@ ND: (3, 2) cpu() int32
 </div>
 </div>
 
-<div id="outline-container-org84a8821" class="outline-3">
-<h3 id="org84a8821"><span class="section-number-3">1.4</span> Indexing and Slicing</h3>
+<div id="outline-container-org61b17a7" class="outline-3">
+<h3 id="org61b17a7"><span class="section-number-3">1.4.</span> Indexing and Slicing</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
-Just as in any other Python array, elements in a ndarray can be accessed by
-index. As in any Python array, the first element has index 0 and ranges are
-specified to include the first but before the last element. As in standard
-Python lists, we can access elements according to their relative position to the
-end of the list by using negative indices.
+Just as in any other Python array, elements in a ndarray can be
+accessed by index. As in any Python array, the first element has index
+0 and ranges are specified to include the first but before the last
+element. As in standard Python lists, we can access elements according
+to their relative position to the end of the list by using negative
+indices.
+</p>
+
+<p>
+Java and Clojure do not support <code>operator[]</code> overload, a simulation is
+done with index and slice string.
 </p>
 
 <div class="org-src-container">
@@ -939,7 +968,7 @@ elements as follows:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get X <span style="color: #2A00FF;">"-1"</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> X <span style="color: #2A00FF;">"-1"</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -950,7 +979,7 @@ ND: (4) cpu() int32
 
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get X <span style="color: #2A00FF;">"1:3"</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">get</span> X <span style="color: #2A00FF;">"1:3"</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -967,15 +996,15 @@ Beyond reading, we can also set elements of a matrix by specifying indices.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/set X <span style="color: #2A00FF;">"1,2"</span> 9<span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">set</span> X <span style="color: #2A00FF;">"1,2"</span> 999<span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
 ND: (3, 4) cpu() int32
-[[ 0,  1,  2,  3],
- [ 4,  5,  9,  7],
- [ 8,  9, 10, 11],
+[[  0,   1,   2,   3],
+ [  4,   5, 999,   7],
+ [  8,   9,  10,  11],
 ]
 </pre>
 
@@ -989,7 +1018,7 @@ tensors of more than 2 dimensions.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/set X <span style="color: #2A00FF;">"0:2,:"</span> 12<span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">set</span> X <span style="color: #2A00FF;">"0:2,:"</span> 12<span style="color: #707183;">)</span>
 </pre>
 </div>
 
@@ -1003,105 +1032,142 @@ ND: (3, 4) cpu() int32
 </div>
 </div>
 
-<div id="outline-container-orgdfa9b28" class="outline-3">
-<h3 id="orgdfa9b28"><span class="section-number-3">1.5</span> Saving Memory</h3>
+<div id="outline-container-org54f7ef4" class="outline-3">
+<h3 id="org54f7ef4"><span class="section-number-3">1.5.</span> Saving Memory</h3>
 <div class="outline-text-3" id="text-1-5">
+<p>
+Running operations can cause new memory to be allocated to host
+results. For example, if we write <code>(def Y2 (nd/+! X Y)</code>, we will
+dereference the ndarray that Y used to point to and instead point Y at
+the newly allocated memory. In the following example, we demonstrate
+this with Clojure&rsquo;s <code>identical?</code> function, which results <code>true</code> if the two
+object are exactly the same. After running Y&rsquo; = Y + X, we will find
+that Y and Y&rsquo; are different objects. That is because Clojure first
+evaluates Y + X, allocating new memory for the result and then makes Y
+point to this new location in memory.
+</p>
+
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">original</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-shape X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">actual</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ original X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps original<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps actual<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>identical? original actual<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">copy</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+! original X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps original<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps copy<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>identical? original copy<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-shape X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span>' <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ Y X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">identical?</span> Y Y'<span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
-ND: (3, 4) cpu() float32
-[[0., 0., 0., 0.],
- [0., 0., 0., 0.],
- [0., 0., 0., 0.],
-]
-ND: (3, 4) cpu() float32
-[[12., 12., 12., 12.],
- [12., 12., 12., 12.],
- [ 8.,  9., 10., 11.],
-]
 false
-ND: (3, 4) cpu() float32
-[[12., 12., 12., 12.],
- [12., 12., 12., 12.],
- [ 8.,  9., 10., 11.],
-]
-ND: (3, 4) cpu() float32
-[[12., 12., 12., 12.],
- [12., 12., 12., 12.],
- [ 8.,  9., 10., 11.],
-]
-true
 </pre>
 
+
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">original</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros-like X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">actual</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ original X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps original<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps actual<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span>identical? original actual<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">copy</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+! original X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps original<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps copy<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span>identical? original copy<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span>'' <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+! Y X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">identical?</span> Y Y''<span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
-ND: (3, 4) cpu() int32
-[[ 0,  0,  0,  0],
- [ 0,  0,  0,  0],
- [ 0,  0,  0,  0],
-]
-ND: (3, 4) cpu() int32
-[[12, 12, 12, 12],
- [12, 12, 12, 12],
- [ 8,  9, 10, 11],
-]
+true
+</pre>
+
+
+<p>
+Running operations can cause new memory to be allocated to host
+results. For example, if we write y = x.add(y), we will dereference
+the ndarray that y used to point to and instead point y at the newly
+allocated memory.
+</p>
+
+<p>
+This might be undesirable for two reasons. First, we do not want to
+run around allocating memory unnecessarily all the time. In machine
+learning, we might have hundreds of megabytes of parameters and update
+all of them multiple times per second. Typically, we will want to
+perform these updates in place. Second, we might point at the same
+parameters from multiple variables. If we do not update in place,
+other references will still point to the old memory location, making
+it possible for parts of our code to inadvertently reference stale
+parameters.
+</p>
+
+<p>
+Fortunately, performing in-place operations in DJL is easy. We can
+assign the result of an operation to a previously allocated array
+using inplace operators like addi, subi, muli, and divi.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-shape X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span>' <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ Y X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">identical?</span> Y Y'<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
 false
-ND: (3, 4) cpu() int32
-[[12, 12, 12, 12],
- [12, 12, 12, 12],
- [ 8,  9, 10, 11],
-]
-ND: (3, 4) cpu() int32
-[[12, 12, 12, 12],
- [12, 12, 12, 12],
- [ 8,  9, 10, 11],
-]
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">Y</span>'' <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+! Y X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">identical?</span> Y Y''<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
 true
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgf23a17e" class="outline-3">
-<h3 id="orgf23a17e"><span class="section-number-3">1.6</span> Conversion to Other Clojure Objects</h3>
+<div id="outline-container-org8ebfc39" class="outline-3">
+<h3 id="org8ebfc39"><span class="section-number-3">1.6.</span> Conversion to Other Clojure Objects</h3>
 <div class="outline-text-3" id="text-1-6">
 <div class="org-src-container">
-<pre class="src src-clojure">
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>type <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>type <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-array X<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/psl <span style="color: #7388d6;">(</span>type X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps X<span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">type</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
 class clojure.lang.PersistentVector
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec X<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
 [12 12 12 12 12 12 12 12 8 9 10 11]
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span>type <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">to-array</span> X<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
 class [Ljava.lang.Integer;
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">type</span> X<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
 class ai.djl.mxnet.engine.MxNDArray
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure">X
+</pre>
+</div>
+
+<pre class="example">
 ND: (3, 4) cpu() int32
 [[12, 12, 12, 12],
  [12, 12, 12, 12],
@@ -1116,14 +1182,22 @@ To convert a size-1 tensor to a scalar
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">a</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/create ndm <span style="color: #909183;">[</span>3.5<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">d2l</span>/ps a<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span>println <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element a<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+a
 </pre>
 </div>
 
 <pre class="example">
 ND: (1) cpu() float64
 [3.5]
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element a<span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
 3.5
 </pre>
 </div>
@@ -1131,7 +1205,8 @@ ND: (1) cpu() float64
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-14 Wed 19:38</p>
+<p class="author">Author: Kimi Ma</p>
+<p class="date">Created: 2022-05-17 Tue 08:06</p>
 </div>
 </body>
 </html>

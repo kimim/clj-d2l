@@ -1,7 +1,7 @@
 #+PROPERTY: header-args    :tangle ../src/clj_d2l/auto_diff.clj
 * Automatic Differentiation
 :PROPERTIES:
-:ID:       8e053d92-8a71-4ddc-a102-0db664f4a377
+:CUSOME_ID:       automatic_differentiation
 :END:
 
 As we have explained in Section 2.4, differentiation is a crucial step

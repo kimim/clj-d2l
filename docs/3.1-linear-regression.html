@@ -3,13 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-11 Sun 20:59 -->
+<!-- 2022-05-17 Tue 08:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lrm;</title>
-<meta name="generator" content="Org mode" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="author" content="Kimi Ma" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -30,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -39,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,132 +192,796 @@
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { width: 90%; }
-  /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
 
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="org-div-home-and-up">
  <a accesskey="h" href="sitemap.html"> UP </a>
  |
  <a accesskey="H" href="index.html"> HOME </a>
-</div><div id="content">
-<div id="table-of-contents">
+</div><div id="content" class="content">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc1c6dfd">1. Linear Regression</a>
+<li><a href="#lin_reg">1. Linear Regression</a>
 <ul>
-<li><a href="#orgf552818">1.1. Vectorization for Speed</a></li>
-<li><a href="#org74aab41">1.2. The Normal Distribution and Squared Loss</a></li>
+<li><a href="#orgfffa065">1.1. Basic Elements of Linear Regression</a>
+<ul>
+<li><a href="#org66d30ce">1.1.1. Linear Model</a></li>
+<li><a href="#orgeee45b9">1.1.2. Loss Function</a></li>
+<li><a href="#org1f0417c">1.1.3. Analytic Solution</a></li>
+<li><a href="#org407482a">1.1.4. Minibatch Stochastic Gradient Descent</a></li>
+<li><a href="#org2ad5267">1.1.5. Making Predictions with the Learned Model</a></li>
+</ul>
+</li>
+<li><a href="#orgd07e8b5">1.2. Vectorization for Speed</a></li>
+<li><a href="#org66c4bfd">1.3. The Normal Distribution and Squared Loss</a></li>
+<li><a href="#org34ea020">1.4. From Linear Regression to Deep Networks</a>
+<ul>
+<li><a href="#org10c931a">1.4.1. Neural Network Diagram</a></li>
+<li><a href="#org9e516c6">1.4.2. Biology</a></li>
+</ul>
+</li>
+<li><a href="#org5aac620">1.5. Summary</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc1c6dfd" class="outline-2">
-<h2 id="orgc1c6dfd"><span class="section-number-2">1</span> Linear Regression</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-lin_reg" class="outline-2">
+<h2 id="lin_reg"><span class="section-number-2">1.</span> Linear Regression</h2>
+<div class="outline-text-2" id="text-lin_reg">
+<p>
+<b>Regression</b> refers to a set of methods for modeling the relationship
+between one or more independent variables and a dependent variable. In
+the natural sciences and social sciences, the purpose of regression is
+most often to <b>characterize</b> the relationship between the inputs and
+outputs. Machine learning, on the other hand, is most often concerned
+with <b>prediction</b>.
+</p>
+
+<p>
+Regression problems pop up whenever we want to predict a numerical
+value. Common examples include predicting prices (of homes, stocks,
+etc.), predicting length of stay (for patients in the hospital), demand
+forecasting (for retail sales), among countless others. Not every
+prediction problem is a classic regression problem. In subsequent
+sections, we will introduce <b>classification problems</b>, where the goal is
+to predict membership among a set of categories.
+</p>
 </div>
-<div id="outline-container-orgf552818" class="outline-3">
-<h3 id="orgf552818"><span class="section-number-3">1.1</span> Vectorization for Speed</h3>
+
+<div id="outline-container-orgfffa065" class="outline-3">
+<h3 id="orgfffa065"><span class="section-number-3">1.1.</span> Basic Elements of Linear Regression</h3>
 <div class="outline-text-3" id="text-1-1">
+<p>
+<b>Linear regression</b> may be both the simplest and most popular among the
+standard tools to regression. Dating back to the dawn of the 19th
+century, linear regression flows from a few simple assumptions. First,
+we assume that the relationship between the independent variables
+\(\mathbf{x}\) and the dependent variable \(y\) is linear, i.e., that
+\(y\) can be expressed as a weighted sum of the elements in
+\(\mathbf{x}\), given some noise on the observations. Second, we
+assume that any noise is well-behaved (following a Gaussian
+distribution).
+</p>
+
+<p>
+To motivate the approach, let us start with a running example. Suppose
+that we wish to estimate the prices of houses (in dollars) based on
+their area (in square feet) and age (in years). To actually develop a
+model for predicting house prices, we would need to get our hands on a
+dataset consisting of sales for which we know the sale price, area, and
+age for each home. In the terminology of machine learning, the dataset
+is called a <b>training dataset</b> or <b>training set</b>, and each row (here the
+data corresponding to one sale) is called an <b>example</b> (or <b>data point</b>,
+<b>data instance</b>, <b>sample</b>). The thing we are trying to predict (price)
+is called a <b>label</b> (or <b>target</b>). The independent variables (age and
+area) upon which the predictions are based are called <b>features</b> (or
+<b>covariates</b>).
+</p>
+
+<p>
+Typically, we will use \(n\) to denote the number of examples in our
+dataset. We index the data examples by \(i\), denoting each input as
+\(\mathbf{x}^{(i)} = [x_1^{(i)}, x_2^{(i)}]^\top\) and the
+corresponding label as \(y^{(i)}\).
+</p>
+</div>
+
+<div id="outline-container-org66d30ce" class="outline-4">
+<h4 id="org66d30ce"><span class="section-number-4">1.1.1.</span> Linear Model</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+The linearity assumption just says that the target (price) can be
+expressed as a weighted sum of the features (area and age):
+</p>
+
+\begin{equation}
+\label{orgd72036a}
+\mathrm{price} = w_{\mathrm{area}} \cdot \mathrm{area} + w_{\mathrm{age}} \cdot \mathrm{age} + b.
+\end{equation}
+
+<p>
+In equation \eqref{orgd72036a}, \(w_{\mathrm{area}}\) and
+\(w_{\mathrm{age}}\) are called <b>weights</b>, and \(b\) is called a <b>bias</b>
+(also called an <b>offset</b> or <b>intercept</b>). The weights determine the
+influence of each feature on our prediction and the bias just says
+what value the predicted price should take when all of the features
+take value 0. Even if we will never see any homes with zero area, or
+that are precisely zero years old, we still need the bias or else we
+will limit the expressivity of our model. Strictly speaking, equation
+\eqref{orgd72036a} is an <b>affine transformation</b> of input features, which is
+characterized by a <b>linear transformation</b> of features via weighted sum,
+combined with a <b>translation</b> via the added bias.
+</p>
+
+<p>
+Given a dataset, our goal is to choose the weights \(\mathbf{w}\)
+and the bias \(b\) such that on average, the predictions made
+according to our model best fit the true prices observed in the data.
+Models whose output prediction is determined by the affine
+transformation of input features are <b>linear models</b>, where the affine
+transformation is specified by the chosen weights and bias.
+</p>
+
+<p>
+In disciplines where it is common to focus on datasets with just a few
+features, explicitly expressing models long-form like this is common. In
+machine learning, we usually work with high-dimensional datasets, so it
+is more convenient to employ linear algebra notation. When our inputs
+consist of \(d\) features, we express our prediction \(\hat{y}\)
+(in general the &ldquo;hat&rdquo; symbol denotes estimates) as
+</p>
+
+\begin{equation}
+\hat{y} = w_1  x_1 + ... + w_d  x_d + b.
+\end{equation}
+
+<p>
+Collecting all features into a vector \(\mathbf{x} \in \mathbb{R}^d\)
+and all weights into a vector \(\mathbf{w} \in \mathbb{R}^d\), we can
+express our model compactly using a dot product:
+</p>
+
+\begin{equation}
+\label{org610e8df}
+\hat{y} = \mathbf{w}^\top \mathbf{x} + b.
+\end{equation}
+
+<p>
+In equation \eqref{org610e8df}, the vector \(\mathbf{x}\) corresponds to
+features of a single data example. We will often find it convenient to
+refer to features of our entire dataset of \(n\) examples via the
+<b>design matrix</b> \(\mathbf{X} \in \mathbb{R}^{n \times d}\). Here,
+\(\mathbf{X}\) contains one row for every example and one column for
+every feature.
+</p>
+
+<p>
+For a collection of features \(\mathbf{X}\), the predictions
+\(\hat{\mathbf{y}} \in \mathbb{R}^n\) can be expressed via the
+matrix-vector product:
+</p>
+
+\begin{equation}
+{\hat{\mathbf{y}}} = \mathbf{X} \mathbf{w} + b,
+\end{equation}
+
+<p>
+where broadcasting (see <a href="2.1-data-manipulation.html#9dcbe412-db7e-485a-bb3c-d7181f2f7f05">2.1-data-manipulation.html#9dcbe412-db7e-485a-bb3c-d7181f2f7f05</a>) is
+applied during the summation. Given features of a training dataset
+\(\mathbf{X}\) and corresponding (known) labels \(\mathbf{y}\), the
+goal of linear regression is to find the weight vector \(\mathbf{w}\)
+and the bias term \(b\) that given features of a new data example
+sampled from the same distribution as \(\mathbf{X}\), the new
+example&rsquo;s label will (in expectation) be predicted with the lowest
+error.
+</p>
+
+<p>
+Even if we believe that the best model for predicting \(y\) given
+\(\mathbf{x}\) is linear, we would not expect to find a real-world
+dataset of \(n\) examples where \(y^{(i)}\) exactly equals
+\(\mathbf{w}^\top \mathbf{x}^{(i)}+b\) for all
+\(1 \leq i \leq n\). For example, whatever instruments we use to
+observe the features \(\mathbf{X}\) and labels \(\mathbf{y}\)
+might suffer small amount of measurement error. Thus, even when we are
+confident that the underlying relationship is linear, we will
+incorporate a noise term to account for such errors.
+</p>
+
+<p>
+Before we can go about searching for the best <b>parameters</b> (or <b>model
+parameters</b>) \(\mathbf{w}\) and \(b\), we will need two more
+things: (i) a quality measure for some given model; and (ii) a procedure
+for updating the model to improve its quality.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgeee45b9" class="outline-4">
+<h4 id="orgeee45b9"><span class="section-number-4">1.1.2.</span> Loss Function</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+Before we start thinking about how to <b>fit</b> data with our model, we need
+to determine a measure of <b>fitness</b>. The <b>loss function</b> quantifies the
+distance between the <b>real</b> and <b>predicted</b> value of the target. The loss
+will usually be a non-negative number where smaller values are better
+and perfect predictions incur a loss of 0. The most popular loss
+function in regression problems is the squared error. When our
+prediction for an example \(i\) is \(\hat{y}^{(i)}\) and the
+corresponding true label is \(y^{(i)}\), the squared error is given
+by:
+</p>
+
+\begin{equation}
+l^{(i)}(\mathbf{w}, b) = \frac{1}{2} \left(\hat{y}^{(i)} - y^{(i)}\right)^2.
+\end{equation}
+
+<p>
+The constant \(\frac{1}{2}\) makes no real difference but will prove
+notationally convenient, canceling out when we take the derivative of
+the loss. Since the training dataset is given to us, and thus out of
+our control, the empirical error is only a function of the model
+parameters.  To make things more concrete, consider the example below
+where we plot a regression problem for a one-dimensional case as shown
+in Fig <a href="#org6587d0e">1</a>.
+</p>
+
+
+<div id="org6587d0e" class="figure">
+<p><img src="http://d2l.ai/_images/fit-linreg.svg" alt="fit-linreg.svg" class="org-svg" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Fit data with a linear model.</p>
+</div>
+
+<p>
+Note that large differences between estimates \(\hat{y}^{(i)}\) and
+observations \(y^{(i)}\) lead to even larger contributions to the
+loss, due to the quadratic dependence. To measure the quality of a
+model on the entire dataset of \(n\) examples, we simply average (or
+equivalently, sum) the losses on the training set.
+</p>
+
+\begin{equation}
+L(\mathbf{w}, b) =\frac{1}{n}\sum_{i=1}^n l^{(i)}(\mathbf{w}, b) =\frac{1}{n} \sum_{i=1}^n \frac{1}{2}\left(\mathbf{w}^\top \mathbf{x}^{(i)} + b - y^{(i)}\right)^2.
+\end{equation}
+
+<p>
+When training the model, we want to find parameters (\(\mathbf{w}^*,
+b^*\)) that minimize the total loss across all training examples:
+</p>
+
+\begin{equation}
+\mathbf{w}^*, b^* = \operatorname*{argmin}_{\mathbf{w}, b}\  L(\mathbf{w}, b).
+\end{equation}
+</div>
+</div>
+
+<div id="outline-container-org1f0417c" class="outline-4">
+<h4 id="org1f0417c"><span class="section-number-4">1.1.3.</span> Analytic Solution</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+Linear regression happens to be an unusually simple optimization
+problem. Unlike most other models that we will encounter in this book,
+linear regression can be solved analytically by applying a simple
+formula. To start, we can subsume the bias \(b\) into the parameter
+\(\mathbf{w}\) by appending a column to the design matrix consisting
+of all ones. Then our prediction problem is to minimize
+\(\|\mathbf{y} - \mathbf{X}\mathbf{w}\|^2\). There is just one
+critical point on the loss surface and it corresponds to the minimum
+of the loss over the entire domain. Taking the derivative of the loss
+with respect to \(\mathbf{w}\) and setting it equal to zero yields the
+analytic (closed-form) solution:
+</p>
+
+\begin{equation}
+\mathbf{w}^* = (\mathbf X^\top \mathbf X)^{-1}\mathbf X^\top \mathbf{y}.
+\end{equation}
+
+<p>
+While simple problems like linear regression may admit analytic
+solutions, you should not get used to such good fortune. Although
+analytic solutions allow for nice mathematical analysis, the
+requirement of an analytic solution is so restrictive that it would
+exclude all of deep learning.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org407482a" class="outline-4">
+<h4 id="org407482a"><span class="section-number-4">1.1.4.</span> Minibatch Stochastic Gradient Descent</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+Even in cases where we cannot solve the models analytically, it turns
+out that we can still train models effectively in practice. Moreover,
+for many tasks, those difficult-to-optimize models turn out to be so
+much better that figuring out how to train them ends up being well worth
+the trouble.
+</p>
+
+<p>
+The key technique for optimizing nearly any deep learning model, and
+which we will call upon throughout this book, consists of iteratively
+reducing the error by updating the parameters in the direction that
+incrementally lowers the loss function. This algorithm is called
+<b>gradient descent</b>.
+</p>
+
+<p>
+The most naive application of gradient descent consists of taking the
+derivative of the loss function, which is an average of the losses
+computed on every single example in the dataset. In practice, this can
+be extremely slow: we must pass over the entire dataset before making a
+single update. Thus, we will often settle for sampling a random
+minibatch of examples every time we need to compute the update, a
+variant called <b>minibatch stochastic gradient descent</b>.
+</p>
+
+<p>
+In each iteration, we first randomly sample a minibatch
+\(\mathcal{B}\) consisting of a fixed number of training examples.  We
+then compute the derivative (gradient) of the average loss on the
+minibatch with regard to the model parameters. Finally, we multiply
+the gradient by a predetermined positive value \(\eta\) and subtract
+the resulting term from the current parameter values.
+</p>
+
+<p>
+We can express the update mathematically as follows (\(\partial\)
+denotes the partial derivative):
+</p>
+
+\begin{equation}
+(\mathbf{w},b) \leftarrow (\mathbf{w},b) - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \partial_{(\mathbf{w},b)} l^{(i)}(\mathbf{w},b).
+\end{equation}
+
+<p>
+To summarize, steps of the algorithm are the following: (i) we
+initialize the values of the model parameters, typically at random;
+(ii) we iteratively sample random minibatches from the data, updating
+the parameters in the direction of the negative gradient. For
+quadratic losses and affine transformations, we can write this out
+explicitly as follows:
+</p>
+
+\begin{equation}
+\label{orgad28d27}
+\begin{aligned}
+\mathbf{w} &\leftarrow \mathbf{w} -   \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \partial_{\mathbf{w}} l^{(i)}(\mathbf{w}, b) = \mathbf{w} - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \mathbf{x}^{(i)} \left(\mathbf{w}^\top \mathbf{x}^{(i)} + b - y^{(i)}\right),\\
+b &\leftarrow b -  \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \partial_b l^{(i)}(\mathbf{w}, b)  = b - \frac{\eta}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \left(\mathbf{w}^\top \mathbf{x}^{(i)} + b - y^{(i)}\right).
+\end{aligned}
+\end{equation}
+
+<p>
+Note that \(\mathbf{w}\) and \(\mathbf{x}\) are vectors in equation
+\eqref{orgad28d27}. Here, the more elegant vector notation makes
+the math much more readable than expressing things in terms of
+coefficients, say \(w_1, w_2, \ldots, w_d\). The set cardinality
+\(|\mathcal{B}|\) represents the number of examples in each minibatch
+(the <b>batch size</b>) and \(\eta\) denotes the <b>learning rate</b>. We emphasize
+that the values of the batch size and learning rate are manually
+pre-specified and not typically learned through model training. These
+parameters that are tunable but not updated in the training loop are
+called <b>hyperparameters</b>. <b>Hyperparameter tuning</b> is the process by which
+hyperparameters are chosen, and typically requires that we adjust them
+based on the results of the training loop as assessed on a separate
+<b>validation dataset</b> (or <b>validation set</b>).
+</p>
+
+<p>
+After training for some predetermined number of iterations (or until
+some other stopping criteria are met), we record the estimated model
+parameters, denoted \(\hat{\mathbf{w}}, \hat{b}\). Note that even if
+our function is truly linear and noiseless, these parameters will not
+be the exact minimizers of the loss because, although the algorithm
+converges slowly towards the minimizers it cannot achieve it exactly
+in a finite number of steps.
+</p>
+
+<p>
+Linear regression happens to be a learning problem where there is only
+one minimum over the entire domain. However, for more complicated
+models, like deep networks, the loss surfaces contain many minima.
+Fortunately, for reasons that are not yet fully understood, deep
+learning practitioners seldom struggle to find parameters that
+minimize the loss <b>on training sets</b>. The more formidable task is to
+find parameters that will achieve low loss on data that we have not
+seen before, a challenge called <b>generalization</b>. We return to these
+topics throughout the book.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2ad5267" class="outline-4">
+<h4 id="org2ad5267"><span class="section-number-4">1.1.5.</span> Making Predictions with the Learned Model</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+Given the learned linear regression model \(\hat{\mathbf{w}}^\top
+\mathbf{x} + \hat{b}\), we can now estimate the price of a new house
+(not contained in the training data) given its area \(x_1\) and age
+\(x_2\). Estimating targets given features is commonly called
+<b>prediction</b> or <b>inference</b>.
+</p>
+
+<p>
+We will try to stick with <b>prediction</b> because calling this step
+<b>inference</b>, despite emerging as standard jargon in deep learning, is
+somewhat of a misnomer. In statistics, <b>inference</b> more often denotes
+estimating parameters based on a dataset. This misuse of terminology
+is a common source of confusion when deep learning practitioners talk
+to statisticians.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd07e8b5" class="outline-3">
+<h3 id="orgd07e8b5"><span class="section-number-3">1.2.</span> Vectorization for Speed</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+When training our models, we typically want to process whole
+minibatches of examples simultaneously. Doing this efficiently
+requires that we vectorize the calculations and leverage fast linear
+algebra libraries rather than writing costly loops in Clojure.
+</p>
+
+<p>
+We will use <a href="https://github.com/dm3/stopwatch">dm3/stopwatch</a> to measure the time duration.
+</p>
+
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.vec4speed</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">ns</span> <span style="color: #000000; font-style: italic; text-decoration: underline;">clj-d2l.linear_regression</span>
   <span style="color: #7388d6;">(</span><span style="color: #110099;">:require</span> <span style="color: #909183;">[</span>clj-djl.ndarray <span style="color: #110099;">:as</span> nd<span style="color: #909183;">]</span>
-            <span style="color: #909183;">[</span>stopwatch.core <span style="color: #110099;">:as</span> stopwatch<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+            <span style="color: #909183;">[</span>stopwatch.core <span style="color: #110099;">:as</span> stopwatch<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-chart.chart <span style="color: #110099;">:as</span> chart<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-chart.plot <span style="color: #110099;">:as</span> plot<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clojure.java.io <span style="color: #110099;">:as</span> io<span style="color: #909183;">]</span>
+            <span style="color: #909183;">[</span>clj-d2l.core <span style="color: #110099;">:as</span> d2l<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
+<p>
+To illustrate why this matters so much, we can consider two methods
+for adding vectors. To start we instantiate two 10000-dimensional
+vectors containing all ones. In one method we will loop over the
+vectors with a Clojure <code>doseq</code>. In the other method we will rely on
+a single call to <code>+</code>.
+</p>
+
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">n</span> 10000<span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">manager</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/new-base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">a</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones manager <span style="color: #909183;">[</span>n<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">b</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones manager <span style="color: #909183;">[</span>n<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">ndm</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/base-manager<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">a</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones ndm <span style="color: #909183;">[</span>n<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">b</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/ones ndm <span style="color: #909183;">[</span>n<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">c</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros ndm <span style="color: #909183;">[</span>n<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
+
+<p>
+Now we can benchmark the workloads. First, we add them, one coordinate
+at a time, using a <code>doseq</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>elapsed <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">stopwatch</span>/start<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>i <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">range</span> n<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/<span style="color: #7F0055; font-weight: bold;">set</span> c <span style="color: #709870;">[</span>i<span style="color: #709870;">]</span> <span style="color: #709870;">(</span>+ <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element a <span style="color: #6276ba;">[</span>i<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element b <span style="color: #6276ba;">[</span>i<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Elapsed: "</span> <span style="color: #909183;">(</span>/ <span style="color: #709870;">(</span>elapsed<span style="color: #709870;">)</span> 1e9<span style="color: #909183;">)</span> <span style="color: #2A00FF;">"sec"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+Elapsed:  4.044424873 sec
+</pre>
+
+
+
+<p>
+Alternatively, we rely on the <code>clj-djl.ndarray/+</code> operator to compute
+the elementwise sum.
+</p>
 
 <div class="org-src-container">
 <pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>elapsed <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">stopwatch</span>/start<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
   <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/+ a b<span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>println <span style="color: #2A00FF;">"Elapsed: "</span> <span style="color: #909183;">(</span>/ <span style="color: #709870;">(</span>elapsed<span style="color: #709870;">)</span> 1e9<span style="color: #909183;">)</span> <span style="color: #2A00FF;">"sec"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">println</span> <span style="color: #2A00FF;">"Elapsed: "</span> <span style="color: #909183;">(</span>/ <span style="color: #709870;">(</span>elapsed<span style="color: #709870;">)</span> 1e9<span style="color: #909183;">)</span> <span style="color: #2A00FF;">"sec"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
 <pre class="example">
-Elapsed:  3.21498E-4 sec
+Elapsed:  1.64916E-4 sec
 </pre>
 
+
+<p>
+You probably noticed that the second method is dramatically faster
+than the first. Vectorizing code often yields order-of-magnitude
+speedups.  Moreover, we push more of the mathematics to the library
+and need not write as many calculations ourselves, reducing the
+potential for errors.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org66c4bfd" class="outline-3">
+<h3 id="org66c4bfd"><span class="section-number-3">1.3.</span> The Normal Distribution and Squared Loss</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+While you can already get your hands dirty using only the information
+above, in the following we can more formally motivate the squared loss
+objective via assumptions about the distribution of noise.
+</p>
+
+<p>
+Linear regression was invented by Gauss in 1795, who also discovered
+the <b>normal distribution</b> (also called the <b>Gaussian</b>). It turns out that
+the connection between the normal distribution and linear regression
+runs deeper than common parentage. To refresh your memory, the
+probability density of a normal distribution with mean \(\mu\) and
+variance \(\sigma^2\) (standard deviation \(\sigma\)) is given as
+</p>
+
+\begin{equation}
+p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right).
+\end{equation}
+
+<p>
+Below we define a Clojure function to compute the normal distribution.
+</p>
 
 <div class="org-src-container">
-<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">c</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/zeros manager <span style="color: #909183;">[</span>n<span style="color: #909183;">]</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
-<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>elapsed <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">stopwatch</span>/start<span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
-  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">doseq</span> <span style="color: #909183;">[</span>i <span style="color: #709870;">(</span>range n<span style="color: #709870;">)</span><span style="color: #909183;">]</span>
-    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/set c <span style="color: #709870;">[</span>i<span style="color: #709870;">]</span> <span style="color: #709870;">(</span>+ <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element a <span style="color: #6276ba;">[</span>i<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span> <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/get-element b <span style="color: #6276ba;">[</span>i<span style="color: #6276ba;">]</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">)</span><span style="color: #7388d6;">)</span>
-  <span style="color: #7388d6;">(</span>println <span style="color: #2A00FF;">"Elapsed: "</span> <span style="color: #909183;">(</span>/ <span style="color: #709870;">(</span>elapsed<span style="color: #709870;">)</span> 1e9<span style="color: #909183;">)</span> <span style="color: #2A00FF;">"sec"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">defn</span> <span style="color: #0000ff; font-weight: bold;">normal</span> <span style="color: #7388d6;">[</span>x mu sigma<span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #909183;">[</span>p <span style="color: #709870;">(</span>/ 1.0 <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">Math</span>/sqrt <span style="color: #6276ba;">(</span>* 2 <span style="color: #000000; font-style: italic; text-decoration: underline;">Math</span>/PI <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">Math</span>/pow sigma 2<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span><span style="color: #909183;">]</span>
+    <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* <span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/exp <span style="color: #907373;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/* <span style="color: #6276ba;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/pow <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/- x mu<span style="color: #858580;">)</span> 2<span style="color: #6276ba;">)</span>
+                        <span style="color: #6276ba;">(</span>/ -0.5 <span style="color: #858580;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">Math</span>/pow sigma 2<span style="color: #858580;">)</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span>
+          p<span style="color: #909183;">)</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
 
-<pre class="example">
-Elapsed:  10.531492801 sec
+<div class="org-src-container">
+<pre class="src src-clojure"><span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">x</span> <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/arange ndm -7. 7. 0.01<span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">def</span> <span style="color: #000000;">params</span> <span style="color: #7388d6;">[</span><span style="color: #909183;">[</span>0 1<span style="color: #909183;">]</span> <span style="color: #909183;">[</span>0 2<span style="color: #909183;">]</span> <span style="color: #909183;">[</span>3 1<span style="color: #909183;">]</span><span style="color: #7388d6;">]</span><span style="color: #707183;">)</span>
+<span style="color: #707183;">(</span><span style="color: #7F0055; font-weight: bold;">let</span> <span style="color: #7388d6;">[</span>titles <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">str</span> <span style="color: #2A00FF;">"mean "</span> <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">first</span> <span style="color: #000000;">%</span><span style="color: #907373;">)</span> <span style="color: #2A00FF;">", std "</span> <span style="color: #907373;">(</span><span style="color: #7F0055; font-weight: bold;">second</span> <span style="color: #000000;">%</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span> params<span style="color: #909183;">)</span>
+      yss <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> #<span style="color: #709870;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec <span style="color: #907373;">(</span>normal x <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">first</span> <span style="color: #000000;">%</span><span style="color: #6276ba;">)</span> <span style="color: #6276ba;">(</span><span style="color: #7F0055; font-weight: bold;">second</span> <span style="color: #000000;">%</span><span style="color: #6276ba;">)</span><span style="color: #907373;">)</span><span style="color: #709870;">)</span> params<span style="color: #909183;">)</span>
+      xs <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">nd</span>/to-vec x<span style="color: #909183;">)</span>
+      series <span style="color: #909183;">(</span><span style="color: #7F0055; font-weight: bold;">map</span> <span style="color: #709870;">(</span><span style="color: #7F0055; font-weight: bold;">fn</span> <span style="color: #907373;">[</span>t ys-<span style="color: #907373;">]</span> <span style="color: #907373;">{</span><span style="color: #110099;">:name</span> t <span style="color: #110099;">:xs</span> xs <span style="color: #110099;">:ys</span> ys-<span style="color: #907373;">}</span><span style="color: #709870;">)</span> titles yss<span style="color: #909183;">)</span>
+      c <span style="color: #909183;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">chart</span>/line <span style="color: #709870;">{</span><span style="color: #110099;">:series</span> series<span style="color: #709870;">}</span><span style="color: #909183;">)</span><span style="color: #7388d6;">]</span>
+  <span style="color: #7388d6;">(</span><span style="color: #000000; font-style: italic; text-decoration: underline;">plot</span>/store! c <span style="color: #110099;">nil</span> <span style="color: #2A00FF;">"notes/figures/normal-distribution.svg"</span><span style="color: #7388d6;">)</span><span style="color: #707183;">)</span>
 </pre>
 </div>
+
+
+<div id="org07aa217" class="figure">
+<p><img src="figures/normal-distribution.svg" alt="normal-distribution.svg" class="org-svg" />
+</p>
+</div>
+
+<p>
+As we can see, changing the mean corresponds to a shift along the
+\(x\)-axis, and increasing the variance spreads the distribution out,
+lowering its peak.
+</p>
+
+<p>
+One way to motivate linear regression with the mean squared error loss
+function (or simply squared loss) is to formally assume that
+observations arise from noisy observations, where the noise is normally
+distributed as follows:
+</p>
+
+\begin{equation}
+y = \mathbf{w}^\top \mathbf{x} + b + \epsilon \text{ where } \epsilon \sim \mathcal{N}(0, \sigma^2).
+\end{equation}
+
+<p>
+Thus, we can now write out the <b>likelihood</b> of seeing a particular \(y\)
+for a given \(\mathbf{x}\) via
+</p>
+
+\begin{equation}
+P(y \mid \mathbf{x}) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (y - \mathbf{w}^\top \mathbf{x} - b)^2\right).
+\end{equation}
+
+<p>
+Now, according to the principle of maximum likelihood, the best values
+of parameters \(\mathbf{w}\) and \(b\) are those that maximize the
+<b>likelihood</b> of the entire dataset:
+</p>
+
+\begin{equation}
+P(\mathbf y \mid \mathbf X) = \prod_{i=1}^{n} p(y^{(i)}|\mathbf{x}^{(i)}).
+\end{equation}
+
+
+<p>
+Estimators chosen according to the principle of maximum likelihood are
+called <b>maximum likelihood estimators</b>. While, maximizing the product of
+many exponential functions, might look difficult, we can simplify
+things significantly, without changing the objective, by maximizing
+the log of the likelihood instead. For historical reasons,
+optimizations are more often expressed as minimization rather than
+maximization. So, without changing anything we can minimize the
+<b>negative log-likelihood</b> \(-\log P(\mathbf y \mid \mathbf X)\). Working
+out the mathematics gives us:
+</p>
+
+\begin{equation}
+-\log P(\mathbf y \mid \mathbf X) = \sum_{i=1}^n \frac{1}{2} \log(2 \pi \sigma^2) + \frac{1}{2 \sigma^2} \left(y^{(i)} - \mathbf{w}^\top \mathbf{x}^{(i)} - b\right)^2.
+\end{equation}
+
+<p>
+Now we just need one more assumption that \(\sigma\) is some fixed
+constant. Thus we can ignore the first term because it does not depend
+on \(\mathbf{w}\) or \(b\). Now the second term is identical to the
+squared error loss introduced earlier, except for the multiplicative
+constant \(\frac{1}{\sigma^2}\). Fortunately, the solution does not
+depend on \(\sigma\). It follows that minimizing the mean squared
+error is equivalent to maximum likelihood estimation of a linear model
+under the assumption of additive Gaussian noise.
+</p>
+</div>
 </div>
 
 
-<div id="outline-container-org74aab41" class="outline-3">
-<h3 id="org74aab41"><span class="section-number-3">1.2</span> The Normal Distribution and Squared Loss</h3>
+<div id="outline-container-org34ea020" class="outline-3">
+<h3 id="org34ea020"><span class="section-number-3">1.4.</span> From Linear Regression to Deep Networks</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+So far we only talked about linear models. While neural networks cover
+a much richer family of models, we can begin thinking of the linear
+model as a neural network by expressing it in the language of neural
+networks.  To begin, let us start by rewriting things in a &ldquo;layer&rdquo;
+notation.
+</p>
+</div>
+
+<div id="outline-container-org10c931a" class="outline-4">
+<h4 id="org10c931a"><span class="section-number-4">1.4.1.</span> Neural Network Diagram</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+Deep learning practitioners like to draw diagrams to visualize what is
+happening in their models. In fig <a href="#org30de283">2</a>, we depict our
+linear regression model as a neural network. Note that these diagrams
+highlight the connectivity pattern such as how each input is connected
+to the output, but not the values taken by the weights or biases.
+</p>
+
+
+<div id="org30de283" class="figure">
+<p><img src="figures/singleneuron.svg" alt="singleneuron.svg" class="org-svg" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Linear regression is a single-layer neural network.</p>
+</div>
+
+<p>
+For the neural network shown in fig <a href="#org30de283">2</a>, the inputs are
+\(x_1, \ldots, x_d\), so the <b>number of inputs</b> (or <b>feature
+dimensionality</b>) in the input layer is \(d\). The output of the network
+in fig <a href="#org30de283">2</a> is \(o_1\), so the <b>number of outputs</b> in the
+output layer is 1. Note that the input values are all <b>given</b> and there
+is just a single <b>computed</b> neuron. Focusing on where computation takes
+place, conventionally we do not consider the input layer when counting
+layers. That is to say, the <b>number of layers</b> for the neural network in
+fig <a href="#org30de283">2</a> is 1. We can think of linear regression models
+As neural networks consisting of just a single artificial neuron, or
+as single-layer neural networks.
+</p>
+
+<p>
+Since for linear regression, every input is connected to every output
+(in this case there is only one output), we can regard this
+transformation (the output layer in fig <a href="#org30de283">2</a> as a
+<b>fully-connected layer</b> or <b>dense layer</b>. We will talk a lot more about
+networks composed of such layers in the next chapter.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e516c6" class="outline-4">
+<h4 id="org9e516c6"><span class="section-number-4">1.4.2.</span> Biology</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+Since linear regression (invented in 1795) predates computational
+neuroscience, it might seem anachronistic to describe linear
+regression as a neural network. To see why linear models were a
+natural place to begin when the cyberneticists/neurophysiologists
+Warren McCulloch and Walter Pitts began to develop models of
+artificial neurons, consider the cartoonish picture of a biological
+neuron in fig <a href="#orgd66c669">3</a>, consisting of <b>dendrites</b> (input terminals),
+the <b>nucleus</b> (CPU), the <b>axon</b> (output wire), and the <b>axon terminals</b>
+(output terminals), enabling connections to other neurons via
+<b>synapses</b>.
+</p>
+
+
+<div id="orgd66c669" class="figure">
+<p><img src="figures/neuron.svg" alt="neuron.svg" class="org-svg" />
+</p>
+<p><span class="figure-number">Figure 3: </span>The real neuron.</p>
+</div>
+
+
+<p>
+Information \(x_i\) arriving from other neurons (or environmental
+sensors such as the retina) is received in the dendrites. In particular,
+that information is weighted by <b>synaptic weights</b> \(w_i\)
+determining the effect of the inputs (e.g., activation or inhibition via
+the product \(x_i w_i\)). The weighted inputs arriving from multiple
+sources are aggregated in the nucleus as a weighted sum
+\(y = \sum_i x_i w_i + b\), and this information is then sent for
+further processing in the axon \(y\), typically after some nonlinear
+processing via \(\sigma(y)\). From there it either reaches its
+destination (e.g., a muscle) or is fed into another neuron via its
+dendrites.
+</p>
+
+<p>
+Certainly, the high-level idea that many such units could be cobbled
+together with the right connectivity and right learning algorithm, to
+produce far more interesting and complex behavior than any one neuron
+alone could express owes to our study of real biological neural systems.
+</p>
+
+<p>
+At the same time, most research in deep learning today draws little
+direct inspiration in neuroscience. We invoke Stuart Russell and Peter
+Norvig who, in their classic AI text book <b>Artificial Intelligence: A
+Modern Approach</b> [Russell &amp; Norvig, 2016], pointed out that although
+airplanes might have been <b>inspired</b> by birds, ornithology has not been
+the primary driver of aeronautics innovation for some
+centuries. Likewise, inspiration in deep learning these days comes in
+equal or greater measure from mathematics, statistics, and computer
+science.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5aac620" class="outline-3">
+<h3 id="org5aac620"><span class="section-number-3">1.5.</span> Summary</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>Key ingredients in a machine learning model are training data, a loss
+function, an optimization algorithm, and quite obviously, the model
+itself.</li>
+<li>Vectorizing makes everything better (mostly math) and faster (mostly
+code).</li>
+<li>Minimizing an objective function and performing maximum likelihood
+estimation can mean the same thing.</li>
+<li>Linear regression models are neural networks, too.</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-04-11 Sun 20:59</p>
+<p class="author">Author: Kimi Ma</p>
+<p class="date">Created: 2022-05-17 Tue 08:06</p>
 </div>
 </body>
 </html>
