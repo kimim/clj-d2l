@@ -14,7 +14,7 @@ This is the Clojure fork of famous Deep Learning AI book D2L.ai.
 - [[file:2.6-probability.org][2.6-probability]]
 - [[file:2.7-dataset.org][2.7-dataset]]
 - [[file:3.1-linear-regression.org][3.1-linear-regression]]
-- [[file:3.2-linear-reg-impl-from-scrach.org][3.2-linear-reg-impl-from-scrach]]
+- [[file:3.2-linear-reg-impl-from-scratch.org][3.2-linear-reg-impl-from-scratch]]
 - [[file:3.3-concise-impl-of-linear-reg.org][3.3-concise-impl-of-linear-reg]]
 - [[file:3.5-the-image-classification-dataset.org][3.5-the-image-classification-dataset]]
 - [[file:3.6-implementation-of-softmax-regression-from-scratch.org][3.6-implementation-of-softmax-regression-from-scratch]]
