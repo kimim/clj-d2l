@@ -18,10 +18,21 @@ jobs:
       uses: purcell/setup-emacs@master
       with:
         version: 27.1
+        
+    - name: Prepare java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '8'
+
+    - name: Install clojure tools
+      uses: DeLaGuardo/setup-clojure@5.0
+      with:
+        cli: 1.11.1.1113 # Clojure CLI based on tools.deps
+          
     - uses: actions/checkout@v2
     - name: Tangle Sources
       run: emacs --batch -l tangle.el
-    - name: Install dependencies
-      run: lein deps
+
     - name: Run tests
-      run: lein test
+      run: clojure -T:build test
