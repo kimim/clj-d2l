@@ -1,40 +1,4 @@
-((nil . ((org-export-use-babel . nil)
-         (org-html-head . "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/style.css\" />")
-         (eval
-          .
-          (defun org-babel-expand-body:clojure (body params)
-            "Expand BODY according to PARAMS, return the expanded body."
-            (let* ((vars (org-babel--get-vars params))
-	               (ns (or (cdr (assq :ns params))
-		                   (if (eq org-babel-clojure-backend 'cider)
-		                       (or cider-buffer-ns
-			                       (let ((repl-buf (cider-current-connection)))
-			                         (and repl-buf (buffer-local-value
-					                                'cider-buffer-ns repl-buf))))
-		                     org-babel-clojure-default-ns)))
-	               (result-params (cdr (assq :result-params params)))
-	               (print-level nil)
-	               (print-length nil)
-	               ;; Remove comments, they break (let [...] ...) bindings
-	               (body (replace-regexp-in-string "^[ 	]*;+.*$" "" body))
-	               (body (org-trim
-		                  (concat
-		                   ;; Source block specified namespace :ns.
-		                   (and (cdr (assq :ns params)) (format "(ns %s)\n" ns))
-		                   ;; Variables binding.
-		                   (if (null vars) (org-trim body)
-		                     (format "(let [%s]\n%s)"
-			                         (mapconcat
-			                          (lambda (var)
-			                            (format "%S %S" (car var) (cdr var)))
-			                          vars
-			                          "\n      ")
-			                         body))))))
-              (if (or (member "code" result-params)
-	                  (member "pp" result-params))
-	              (format "(clojure.core/print (str (do %s)))" body)
-                body))))
-         (org-publish-project-alist
+((nil . ((org-publish-project-alist
           .
           (("clj-d2l"
             ;; Path to your org files.

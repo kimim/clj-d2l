@@ -1,37 +1,37 @@
 #+PROPERTY: header-args    :tangle src/clj_d2l/data_manipulation.clj
+#+startup: latexpreview
 
 * Data Manipulation
 
 In order to get anything done, we need some way to store and
-manipulate data. Generally, there are two important things we need
-to do with data: (i) acquire them; and (ii) process them once they
-are inside the computer. There is no point in acquiring data without
-some way to store it, so let us get our hands dirty first by playing
-with synthetic data. To start, we introduce the $n$-dimensional
-array, which is also called the /ndarray/.
+manipulate data. Generally, there are two important things we need to
+do with data: (i) acquire them; and (ii) process them once they are
+inside the computer. There is no point in acquiring data without some
+way to store it, so let us get our hands dirty first by playing with
+synthetic data. To start, we introduce the $n$-dimensional array,
+which is also called the /ndarray/.
 
 If you have worked with NumPy, the most widely-used scientific
 computing package in Python, then you will find this section
-familiar. No matter which framework you use, its tensor class
-(/ndarray/ in MXNet, DJL and clj-djl, /Tensor/ in both PyTorch and
-TensorFlow) is similar to NumPy's ndarray with a few killer
-features. First, GPU is well-supported to accelerate the computation
-whereas NumPy only supports CPU computation. Second, the tensor
-class supports automatic differentiation. These properties make the
-tensor class suitable for deep learning. Throughout the book, when
-we say ndarrays, we are referring to instances of the ndarray class
-unless otherwise stated.
+familiar. No matter which framework you use, its tensor class (/ndarray/
+in MXNet, DJL and clj-djl, /Tensor/ in both PyTorch and TensorFlow) is
+similar to NumPy's ndarray with a few killer features. First, GPU is
+well-supported to accelerate the computation whereas NumPy only
+supports CPU computation. Second, the tensor class supports automatic
+differentiation. These properties make the tensor class suitable for
+deep learning. Throughout the book, when we say ndarrays, we are
+referring to instances of the ndarray class unless otherwise stated.
 
 ** Getting Started
 
-In this section, we aim to get you up and running, equipping you
-with the basic math and numerical computing tools that you will
-build on as you progress through the book. Do not worry if you
-struggle to grok some of the mathematical concepts or library
-functions. The following sections will revisit this material in the
-context of practical examples and it will sink. On the other hand,
-if you already have some background and want to go deeper into the
-mathematical content, just skip this section.
+In this section, we aim to get you up and running, equipping you with
+the basic math and numerical computing tools that you will build on as
+you progress through the book. Do not worry if you struggle to grok
+some of the mathematical concepts or library functions. The following
+sections will revisit this material in the context of practical
+examples and it will sink. On the other hand, if you already have some
+background and want to go deeper into the mathematical content, just
+skip this section.
 
 To start, we import the ndarray namespace from clj-djl. Here, the
 ndarray namespace includes functions supported by clj-djl.
@@ -43,33 +43,37 @@ ndarray namespace includes functions supported by clj-djl.
 #+end_src
 
 An ndarray represents a (possibly multi-dimensional) array of
-numerical values. With one axis, an ndarray corresponds (in math) to
-a vector. With two axes, an ndarray corresponds to a
-matrix. NDArrays with more than two axes do not have special
-mathematical names.
+numerical values. With one axis, an ndarray corresponds (in math) to a
+vector. With two axes, an ndarray corresponds to a matrix. NDArrays
+with more than two axes do not have special mathematical names.
 
 To start, we can use arange to create a row vector x containing the
-first 12 integers starting with 0. Each of the values in an ndarray
-is called an element of the ndarray. For instance, there are 12
-elements in the ndarray x. Unless otherwise specified, a new ndarray
-will be stored in main memory and designated for CPU-based
-computation.
+first 12 integers starting with 0. Each of the values in an ndarray is
+called an element of the ndarray. For instance, there are 12 elements
+in the ndarray x. Unless otherwise specified, a new ndarray will be
+stored in main memory and designated for CPU-based computation.
 
-#+begin_src clojure :results pp :exports both :eval no-export
+#+begin_src clojure :results output :exports both :eval no-export
 (def ndm (nd/base-manager))
 (def x (nd/arange ndm 0 12))
-x
+(-> x nd/pp)
 #+end_src
 
 #+RESULTS:
 : ND: (12) cpu() int32
 : [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11]
 
+#+begin_center
+Note: The default ~toString~ method of ~ndarray~ will generate some
+verbose string, ~clj-djl.ndarray/pp~ prints out its simple format.
+#+end_center
+
 We can access an ndarray's shape (the length along each axis) by
 inspecting its shape property.
 
-#+begin_src clojure :results pp :exports both :eval no-export
-(nd/shape x)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/shape x)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -78,27 +82,39 @@ inspecting its shape property.
 If we just want to know the total number of elements in an ndarray,
 i.e., the product of all of the shape elements, we can inspect its
 size. Because we are dealing with a vector here, the single element
-of its shape is same to its size. The difference is that ~shape~
-will return a /Shape/ object.
+of its shape is same to its size.
 
-#+begin_src clojure :results pp :exports both :eval no-export
-(nd/size x)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/size x)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
 : 12
 
+The difference is that ~shape~ will return a /Shape/ object.
+
+#+begin_src clojure :results value  :exports both :eval no-export
+(type (nd/shape x))
+(type (nd/size x))
+#+end_src
+
+#+RESULTS:
+| ai.djl.ndarray.types.Shape |
+| java.lang.Long             |
+
+
 To change the shape of an ndarray without altering either the number
 of elements or their values, we can invoke the ~reshape~ function. For
-example, we can transform our ndarray, x, from a row vector with
-shape (12) to a matrix with shape (3, 4). This new ndarray contains
-the exact same values, but views them as a matrix organized as 3
-rows and 4 columns. To reiterate, although the shape has changed,
-the elements have not. Note that the size is unaltered by reshaping.
+example, we can transform our ~ndarray~, ~x~, from a row vector with shape
+~(12)~ to a matrix with shape ~(3, 4)~. This new ndarray contains the
+exact same values, but views them as a matrix organized as 3 rows and
+4 columns. To reiterate, although the shape has changed, the elements
+have not. Note that the size is unaltered by reshaping.
 
-#+begin_src clojure :results pp :exports both :eval no-export
+#+begin_src clojure :results output :exports both :eval no-export
 (def y (nd/reshape x [3 4]))
-y
+(nd/pp y)
 #+end_src
 
 #+RESULTS:
@@ -109,8 +125,8 @@ y
 : ]
 
 Reshaping by manually specifying every dimension is unnecessary. If
-our target shape is a matrix with shape (height, width), then after we
-know the width, the height is given implicitly. Why should we have to
+our target shape is a matrix with shape ~(height, width)~, then after we
+know the ~width~, the ~height~ is given implicitly. Why should we have to
 perform the division ourselves? In the example above, to get a matrix
 with 3 rows, we specified both that it should have 3 rows and 4
 columns. Fortunately, ndarrays can automatically work out one
@@ -119,9 +135,9 @@ the dimension that we would like ndarrays to automatically infer. In
 our case, instead of calling ~(reshape x [3 4])~, we could have
 equivalently called ~(nd/reshape x [-1 4])~ or ~(nd/reshape x [3 -1])~.
 
-#+begin_src clojure :results pp :exports both
-(def y (nd/reshape x [3 -1]))
-y
+#+begin_src clojure :results output :exports both :eval no-export
+(def y (nd/reshape x [-1 4]))
+(nd/pp y)
 #+end_src
 
 #+RESULTS:
@@ -131,30 +147,44 @@ y
 :  [ 8,  9, 10, 11],
 : ]
 
-Passing create method with only Shape will grab a chunk of memory and
+#+begin_src clojure :results output :exports both :eval no-export
+(def y (nd/reshape x [3 -1]))
+(nd/pp y)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+: ]
+
+Passing ~create~ method with only Shape will grab a chunk of memory and
 hands us back a matrix without bothering to change the value of any of
 its entries. This is remarkably efficient but we must be careful
 because the entries might take arbitrary values, including very big
 ones!
 
-#+begin_src clojure :results pp :exports both :eval no-export
-(nd/create ndm (nd/shape [3 4]))
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/create ndm (nd/shape [3 4]))
+    nd/pp)
 #+end_src
 
 #+RESULTS:
 : ND: (3, 4) cpu() float32
-: [[ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  0.00000000e+00],
-:  [ 1.21782351e+29,  0.00000000e+00,  1.21783258e+29,  0.00000000e+00],
-:  [ 1.19888078e+29,  0.00000000e+00,  1.21744119e+29,  0.00000000e+00],
+: [[ 5.60519386e-45,  0.00000000e+00,  5.60519386e-45,  0.00000000e+00],
+:  [-1.34115696e-01,  7.42688186e-43, -1.34113312e-01,  7.42688186e-43],
+:  [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  4.91855761e-43],
 : ]
 
 Typically, we will want our matrices initialized either with zeros,
 ones, some other constants, or numbers randomly sampled from a
-specific distribution. We can create a ndarray representing a tensor
-with all elements set to 0 and a shape of =[2 3 4]= as follows:
+specific distribution. We can create a ~ndarray~ representing a tensor
+with all elements set to 0 and a shape of ~[2 3 4]~ as follows:
 
-#+begin_src clojure :results pp :exports both :eval no-export
-(nd/zeros ndm [2 3 4])
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/zeros ndm [2 3 4])
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -173,8 +203,9 @@ ND: (2, 3, 4) cpu() float32
 
 Similarly, we can create ndarrays with each element set to 1 as follows:
 
-#+begin_src clojure :results value pp :exports both
-(nd/ones ndm [2 3 4])
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/ones ndm [2 3 4])
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -199,35 +230,9 @@ creates an ndarray with shape (3, 4). Each of its elements is randomly
 sampled from a standard Gaussian (normal) distribution with a mean of
 0 and a standard deviation of 1.
 
-#+begin_src clojure :results value pp :exports both
-(nd/random-normal ndm 0 1 (nd/shape [3 4]))
-#+end_src
-
-#+RESULTS:
-: ND: (3, 4) cpu() float32
-: [[ 1.1631,  2.2122,  0.4838,  0.774 ],
-:  [ 0.2996,  1.0434,  0.153 ,  1.1839],
-:  [-1.1688,  1.8917,  1.5581, -1.2347],
-: ]
-
-We can directly use a clojure vec as the shape:
-
-#+begin_src clojure :results value pp :exports both
-(nd/random-normal ndm 0 1 [3 4])
-#+end_src
-
-#+RESULTS:
-: ND: (3, 4) cpu() float32
-: [[-0.5459, -1.771 , -2.3556, -0.4514],
-:  [ 0.5414,  0.5794,  2.6785, -1.8561],
-:  [ 1.2546, -1.9769, -0.5488, -0.208 ],
-: ]
-
-You can also just pass the shape and it will use default values for mean and
-standard deviation (0 and 1).
-
-#+begin_src clojure :results value pp :exports both
-(nd/random-normal ndm [3 4])
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/random-normal ndm 0 1 (nd/shape [3 4]))
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -237,12 +242,50 @@ standard deviation (0 and 1).
 :  [ 0.5713,  0.5746, -2.758 ,  1.4661],
 : ]
 
-We can also specify the exact values for each element in the desired ndarray by
-supplying a clojure vec (or list) containing the numerical values. Here, the
-outermost list corresponds to axis 0, and the inner list to axis 1.
+We can directly use a clojure vec as the shape:
 
-#+begin_src clojure :results value pp :exports both
-(nd/create ndm [2 1 4 3 1 2 3 4 4 3 2 1] [3 4])
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/random-normal ndm 0 1 [2 3 4])
+    nd/pp)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ND: (2, 3, 4) cpu() float32
+[[[-1.2483, -0.3979,  0.0313, -1.0497],
+  [-0.8517, -0.1988,  1.084 ,  0.2071],
+  [ 0.1169, -0.0387,  0.8375, -0.1826],
+ ],
+ [[ 1.2381, -0.6358, -1.6634, -1.0019],
+  [-0.4984, -0.2358, -0.4708,  1.3969],
+  [-0.8198, -0.3897, -0.2876,  0.0197],
+ ],
+]
+#+end_example
+
+You can also just pass the shape and it will use default values for mean and
+standard deviation (0 and 1).
+
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/random-normal ndm [3 4])
+    nd/pp)
+#+end_src
+
+#+RESULTS:
+: ND: (3, 4) cpu() float32
+: [[ 1.0308, -0.7444, -0.2581, -0.1531],
+:  [-0.6139,  0.2654,  0.5676,  1.0241],
+:  [-1.5466, -0.4121, -0.4799,  1.5228],
+: ]
+
+We can also specify the exact values for each element in the desired
+ndarray by supplying a clojure vec (or list) containing the numerical
+values. Here, the outermost list corresponds to axis 0, and the inner
+list to axis 1.
+
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/create ndm [2 1 4 3 1 2 3 4 4 3 2 1] [3 4])
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -252,8 +295,22 @@ outermost list corresponds to axis 0, and the inner list to axis 1.
 :  [ 4,  3,  2,  1],
 : ]
 
-#+begin_src clojure :results value pp :exports both
-(nd/create ndm [[2 1 4 3][1 2 3 4][4 3 2 1]])
+If we do not provide the shape, it will infer the shape fron clojure vector.
+
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/create ndm [2 1 4 3 1 2 3 4 4 3 2 1])
+    nd/pp)
+#+end_src
+
+#+RESULTS:
+: ND: (12) cpu() int64
+: [ 2,  1,  4,  3,  1,  2,  3,  4,  4,  3,  2,  1]
+
+Or it will get shape from multiple dimension vector:
+
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/create ndm [[2 1 4 3][1 2 3 4][4 3 2 1]])
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -276,7 +333,7 @@ the two arrays. We can create an elementwise function from any
 function that maps from a scalar to a scalar.
 
 In mathematical notation, we would denote such a unary scalar operator
-(taking one input) by the signature $f: \mathbb{R} \ rightarrow
+(taking one input) by the signature $f: \mathbb{R} \rightarrow
 \mathbb{R}$. This just means that the function is mapping from any
 real number ($\mathbb{R}$) onto another. Likewise, we denote a binary
 scalar operator (taking two real inputs, and yielding one output) by
@@ -302,34 +359,38 @@ elementwise operation.
 The common standard arithmetic operators (=+=, =-=, =*=, =/=) have all been
 lifted to elementwise operations.
 
-#+begin_src clojure :results pp :exports both
+#+begin_src clojure :results output :exports both :eval no-export
 (def x (nd/create ndm [1. 2. 4. 8.]))
 (def y (nd/create ndm [2. 2. 2. 2.]))
-(nd/+ x y)
+(-> (nd/+ x y)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() float64
 : [ 3.,  4.,  6., 10.]
 
-#+begin_src clojure :results value pp :exports both
-(nd/- x y)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/- x y)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() float64
 : [-1.,  0.,  2.,  6.]
 
-#+begin_src clojure :results value pp :exports both
-(nd// x y)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd// x y)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() float64
 : [0.5, 1. , 2. , 4. ]
 
-#+begin_src clojure :results value pp :exports both
-(nd/pow x y)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/pow x y)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -339,7 +400,7 @@ lifted to elementwise operations.
 Many more operations can be applied elementwise, including unary
 operators like exponentiation.
 
-#+begin_src clojure :results value pp :exports both
+#+begin_src clojure :results value pp :exports both :eval no-export
 (nd/exp x)
 #+end_src
 
@@ -363,10 +424,10 @@ input ndarrays' axis-0 lengths $(3+3)$; while the second output
 ndarray's shape is (3, 8), its axis-1 length (8) is the sum of the two
 input ndarrays' axis-1 lengths $(4+4)$.
 
-#+begin_src clojure :results value pp :exports both
+#+begin_src clojure :results output :exports both :eval no-export
 (def X (-> (nd/arange ndm 12)
            (nd/reshape [3 4])))
-X
+(nd/pp X)
 #+end_src
 
 #+RESULTS:
@@ -376,9 +437,9 @@ X
 :  [ 8,  9, 10, 11],
 : ]
 
-#+begin_src clojure :results value pp :exports both
+#+begin_src clojure :results output :exports both :eval no-export
 (def Y (nd/create ndm [[2 1 4 3][1 2 3 4][4 3 2 1]]))
-Y
+(nd/pp Y)
 #+end_src
 
 #+RESULTS:
@@ -388,10 +449,11 @@ Y
 :  [ 4,  3,  2,  1],
 : ]
 
-#+begin_src clojure :results value pp :exports both
+#+begin_src clojure :results output :exports both :eval no-export
 ;; concat only support int32 and float32 datatype
 (def Y (nd/to-type Y :int32 false))
-(nd/concat Y Y)
+(-> (nd/concat Y Y)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -404,8 +466,9 @@ Y
 :  [ 4,  3,  2,  1],
 : ]
 
-#+begin_src clojure :results value pp :exports both
-(nd/concat X Y 1)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/concat X Y 1)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -418,14 +481,29 @@ Y
 The third argument of ~nd/concat~ is to specify the axis to concatenate,
 default is axis-0.
 
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/concat X Y 0)
+    nd/pp)
+#+end_src
+
+#+RESULTS:
+: ND: (6, 4) cpu() int32
+: [[ 0,  1,  2,  3],
+:  [ 4,  5,  6,  7],
+:  [ 8,  9, 10, 11],
+:  [ 2,  1,  4,  3],
+:  [ 1,  2,  3,  4],
+:  [ 4,  3,  2,  1],
+: ]
+
 Sometimes, we want to construct a binary ndarray via logical
 statements. Take ~(nd/= X Y)~ as an example. For each position, if X and
 Y are equal at that position, the corresponding entry in the new
 tensor takes a value of ~true~, meaning that the logical statement ~(nd/=
 X Y)~ is true at that position; otherwise that position takes ~false~.
 
-#+begin_src clojure :results output pp :exports both
-(nd/= X Y)
+#+begin_src clojure :results output :exports both :eval no-export
+(nd/pp (nd/= X Y))
 #+end_src
 
 #+RESULTS:
@@ -438,8 +516,8 @@ X Y)~ is true at that position; otherwise that position takes ~false~.
 Summing all the elements in the ndarray yields a ndarray with only one
 element.
 
-#+begin_src clojure :results value pp :exports both
-(nd/sum X)
+#+begin_src clojure :results output :exports both :eval no-export
+(nd/pp (nd/sum X))
 #+end_src
 
 #+RESULTS:
@@ -451,20 +529,21 @@ element.
 :ID:       9dcbe412-db7e-485a-bb3c-d7181f2f7f05
 :END:
 
-In the above section, we saw how to perform elementwise operations on two
-ndarrays of the same shape. Under certain conditions, even when shapes differ,
-we can still perform elementwise operations by invoking the broadcasting
-mechanism. This mechanism works in the following way: First, expand one or both
-arrays by copying elements appropriately so that after this transformation, the
-two ndarrays have the same shape. Second, carry out the elementwise operations
-on the resulting arrays.
+In the above section, we saw how to perform elementwise operations on
+two ndarrays of the same shape. Under certain conditions, even when
+shapes differ, we can still perform elementwise operations by invoking
+the broadcasting mechanism. This mechanism works in the following way:
+First, expand one or both arrays by copying elements appropriately so
+that after this transformation, the two ndarrays have the same
+shape. Second, carry out the elementwise operations on the resulting
+arrays.
 
-In most cases, we broadcast along an axis where an array initially only has
-length 1, such as in the following example:
+In most cases, we broadcast along an axis where an array initially
+only has length 1, such as in the following example:
 
-#+begin_src clojure :results value pp :exports both
-(def a (-> (nd/arange ndm 3) (nd/reshape [3 1])))
-a
+#+begin_src clojure :results output :exports both :eval no-export
+(def a (-> (nd/range ndm 3) (nd/reshape [3 1])))
+(nd/pp a)
 #+end_src
 
 #+RESULTS:
@@ -474,9 +553,9 @@ a
 :  [ 2],
 : ]
 
-#+begin_src clojure :results pp
-(def b (-> (nd/arange ndm 2) (nd/reshape [1 2])))
-b
+#+begin_src clojure :results output :exports both :eval no-export
+(def b (-> (nd/range ndm 2) (nd/reshape [1 2])))
+(nd/pp b)
 #+end_src
 
 #+RESULTS:
@@ -492,8 +571,9 @@ the rows before adding up both elementwise.
 
 The result of $a$ broadcasted is:
 
-#+begin_src clojure :results pp :exports both :eval no-export
-(nd/concat a a 1)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/concat a a 1)
+    nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -505,10 +585,11 @@ The result of $a$ broadcasted is:
 
 The result of $b$ broadcasted is:
 
-#+begin_src clojure :results pp :exports both :eval no-export
+#+begin_src clojure :results output :exports both :eval no-export
 (->> b
      (nd/concat b)
-     (nd/concat b))
+     (nd/concat b)
+     nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -520,8 +601,8 @@ The result of $b$ broadcasted is:
 
 Thus the result is:
 
-#+begin_src clojure :results pp
-(nd/+ a b)
+#+begin_src clojure :results output :exports both :eval no-export
+(nd/pp (nd/+ a b))
 #+end_src
 
 #+RESULTS:
@@ -543,8 +624,11 @@ indices.
 Java and Clojure do not support ~operator[]~ overload, a simulation is
 done with index and slice string.
 
-#+begin_src clojure :results pp
-X
+
+#+begin_src clojure :results output :exports both :eval no-export
+(def X (-> (nd/arange ndm 12)
+           (nd/reshape [3 4])))
+(nd/pp X)
 #+end_src
 
 #+RESULTS:
@@ -557,16 +641,16 @@ X
 Thus, [-1] selects the last element and [1:3] selects the second and the third
 elements as follows:
 
-#+begin_src clojure :results pp
-(nd/get X "-1")
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/get X "-1") nd/pp)
 #+end_src
 
 #+RESULTS:
 : ND: (4) cpu() int32
 : [ 8,  9, 10, 11]
 
-#+begin_src clojure :results pp
-(nd/get X "1:3")
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/get X "1:3") nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -577,8 +661,8 @@ elements as follows:
 
 Beyond reading, we can also set elements of a matrix by specifying indices.
 
-#+begin_src clojure :results pp
-(nd/set X "1,2" 999)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/set X "1,2" 999) nd/pp)
 #+end_src
 
 #+RESULTS:
@@ -588,21 +672,22 @@ Beyond reading, we can also set elements of a matrix by specifying indices.
 :  [  8,   9,  10,  11],
 : ]
 
-If we want to assign multiple elements the same value, we simply index all of
-them and then assign them the value. For instance, [0:2, :] accesses the first
-and second rows, where : takes all the elements along axis 1 (column). While we
-discussed indexing for matrices, this obviously also works for vectors and for
-tensors of more than 2 dimensions.
+If we want to assign multiple elements the same value, we simply index
+all of them and then assign them the value. For instance, [0:2, :]
+accesses the first and second rows, where : takes all the elements
+along axis 1 (column). While we discussed indexing for matrices, this
+obviously also works for vectors and for tensors of more than 2
+dimensions.
 
-#+begin_src clojure :results pp
-(nd/set X "0:2,:" 12)
+#+begin_src clojure :results output :exports both :eval no-export
+(-> (nd/set X "0:1,:" 12) nd/pp)
 #+end_src
 
 #+RESULTS:
 : ND: (3, 4) cpu() int32
-: [[12, 12, 12, 12],
-:  [12, 12, 12, 12],
-:  [ 8,  9, 10, 11],
+: [[ 12,  12,  12,  12],
+:  [  4,   5, 999,   7],
+:  [  8,   9,  10,  11],
 : ]
 
 ** Saving Memory
@@ -617,7 +702,7 @@ that Y and Y' are different objects. That is because Clojure first
 evaluates Y + X, allocating new memory for the result and then makes Y
 point to this new location in memory.
 
-#+begin_src clojure :results pp :exports both
+#+begin_src clojure :results pp :exports both :eval no-export
 (def Y (nd/zeros ndm (nd/get-shape X)))
 (def Y' (nd/+ Y X))
 (identical? Y Y')
@@ -625,14 +710,16 @@ point to this new location in memory.
 
 #+RESULTS:
 : false
+: 
 
-#+begin_src clojure :results pp :exports both
+#+begin_src clojure :results pp :exports both :eval no-export
 (def Y'' (nd/+! Y X))
 (identical? Y Y'')
 #+end_src
 
 #+RESULTS:
 : true
+: 
 
 Running operations can cause new memory to be allocated to host
 results. For example, if we write y = x.add(y), we will dereference
@@ -653,7 +740,7 @@ Fortunately, performing in-place operations in DJL is easy. We can
 assign the result of an operation to a previously allocated array
 using inplace operators like addi, subi, muli, and divi.
 
-#+begin_src clojure :results pp :exports both
+#+begin_src clojure :results pp :exports both :eval no-export
 (def Y (nd/zeros ndm (nd/get-shape X)))
 (def Y' (nd/+ Y X))
 (identical? Y Y')
@@ -661,6 +748,7 @@ using inplace operators like addi, subi, muli, and divi.
 
 #+RESULTS:
 : false
+: 
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (def Y'' (nd/+! Y X))
@@ -669,60 +757,62 @@ using inplace operators like addi, subi, muli, and divi.
 
 #+RESULTS:
 : true
+: 
 
 ** Conversion to Other Clojure Objects
 
-#+begin_src clojure :results pp :exports both :eval no-export
+#+begin_src clojure :results value :exports both :eval no-export
 (type (nd/to-vec X))
 #+end_src
 
 #+RESULTS:
-: class clojure.lang.PersistentVector
+: clojure.lang.PersistentVector
 
 #+begin_src clojure :results pp :exports both :eval no-export
 (nd/to-vec X)
 #+end_src
 
 #+RESULTS:
-: [12 12 12 12 12 12 12 12 8 9 10 11]
+: [12 12 12 12 4 5 999 7 8 9 10 11]
+: 
 
-#+begin_src clojure :results pp :exports both :eval no-export
+#+begin_src clojure :results value :exports both :eval no-export
 (type (nd/to-array X))
 #+end_src
 
 #+RESULTS:
-: class [Ljava.lang.Integer;
+: [Ljava.lang.Integer;
 
-#+begin_src clojure :results pp :exports both :eval no-export
+#+begin_src clojure :results value :exports both :eval no-export
 (type X)
 #+end_src
 
 #+RESULTS:
-: class ai.djl.mxnet.engine.MxNDArray
+: ai.djl.mxnet.engine.MxNDArray
 
-#+begin_src clojure :results pp :exports both :eval no-export
-X
+#+begin_src clojure :results output :exports both :eval no-export
+(nd/pp X)
 #+end_src
 
 #+RESULTS:
 : ND: (3, 4) cpu() int32
-: [[12, 12, 12, 12],
-:  [12, 12, 12, 12],
-:  [ 8,  9, 10, 11],
+: [[ 12,  12,  12,  12],
+:  [  4,   5, 999,   7],
+:  [  8,   9,  10,  11],
 : ]
 
 To convert a size-1 tensor to a scalar
 
-#+begin_src clojure :results pp :exports both
+#+begin_src clojure :results output :exports both :eval no-export
 (def a (nd/create ndm [3.5]))
-a
+(nd/pp a)
 #+end_src
 
 #+RESULTS:
 : ND: (1) cpu() float64
 : [3.5]
 
-#+begin_src clojure :results pp :exports both :eval no-export
+#+begin_src clojure :results value :exports both :eval no-export
 (nd/get-element a)
 #+end_src
 
